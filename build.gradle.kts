@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 
 plugins {
-    kotlin("multiplatform") version "1.4.32"
+    kotlin("multiplatform") version "1.5.0"
     application
 }
 
@@ -17,7 +17,7 @@ repositories {
 kotlin {
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = "1.8"
+            kotlinOptions.jvmTarget = "16"
         }
         testRuns["test"].executionTask.configure {
             useJUnit()
@@ -42,8 +42,11 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-server-netty:1.4.0")
-                implementation("io.ktor:ktor-html-builder:1.4.0")
+                implementation(kotlin("stdlib"))
+                implementation("io.ktor:ktor-server-core:1.5.4")
+                implementation("io.ktor:ktor-server-netty:1.5.4")
+                implementation("ch.qos.logback:logback-classic:1.2.3")
+                implementation("io.ktor:ktor-html-builder:1.5.4")
                 implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
                 implementation("org.postgresql:postgresql:42.2.20")
             }
@@ -55,12 +58,12 @@ kotlin {
         }
         val jsMain by getting {
             dependencies {
-                implementation("org.jetbrains:kotlin-react:17.0.1-pre.148-kotlin-1.4.21")
-                implementation("org.jetbrains:kotlin-react-dom:17.0.1-pre.148-kotlin-1.4.21")
-                implementation(npm("react", "17.0.1"))
-                implementation(npm("react-dom", "17.0.1"))
-                implementation("org.jetbrains:kotlin-styled:5.2.1-pre.148-kotlin-1.4.21")
-                implementation(npm("styled-components", "~5.2.1"))
+                implementation("org.jetbrains:kotlin-react:17.0.1-pre.148-kotlin-1.4.30")
+                implementation("org.jetbrains:kotlin-react-dom:17.0.1-pre.148-kotlin-1.4.30")
+                implementation(npm("react", "17.0.2"))
+                implementation(npm("react-dom", "17.0.2"))
+                implementation("org.jetbrains:kotlin-styled:5.2.1-pre.148-kotlin-1.4.30")
+                implementation(npm("styled-components", "~5.3.0"))
             }
         }
         val jsTest by getting {
@@ -72,7 +75,7 @@ kotlin {
 }
 
 application {
-    mainClassName = "ServerKt"
+    mainClass.set("io.ktor.server.netty.EngineMain")
 }
 
 tasks.getByName<KotlinWebpack>("jsBrowserProductionWebpack") {
