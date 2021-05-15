@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 
 plugins {
-    kotlin("multiplatform") version "1.4.32"
+    kotlin("multiplatform") version "1.5.0"
     application
 }
 
@@ -42,8 +42,11 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-server-netty:1.4.0")
-                implementation("io.ktor:ktor-html-builder:1.4.0")
+                implementation(kotlin("stdlib"))
+                implementation("io.ktor:ktor-server-core:1.5.4")
+                implementation("io.ktor:ktor-server-netty:1.5.4")
+                implementation("ch.qos.logback:logback-classic:1.2.3")
+                implementation("io.ktor:ktor-html-builder:1.5.4")
                 implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
                 implementation("org.postgresql:postgresql:42.2.20")
             }
@@ -72,7 +75,7 @@ kotlin {
 }
 
 application {
-    mainClassName = "ServerKt"
+    mainClass.set("io.ktor.server.netty.EngineMain")
 }
 
 tasks.getByName<KotlinWebpack>("jsBrowserProductionWebpack") {
