@@ -30,6 +30,8 @@ class Header : RComponent<HeaderProps, RState>() {
                     borderColor = Color.black
                     textDecoration = TextDecoration.none
                     fontFamily = "Arial"
+                    cursor = Cursor.pointer
+                    userSelect = UserSelect.none
 
                     color = Color.black
                     hover {

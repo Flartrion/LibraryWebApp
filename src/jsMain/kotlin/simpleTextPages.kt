@@ -69,6 +69,8 @@ class ContactsPage : RComponent<RProps, RState>() {
                 }
                 attrs {
                     onClickFunction = {
+                        document.title = "Fuck you, leatherman"
+
                         val xml = XMLHttpRequest()
                         xml.addEventListener("load", {
                             console.log(xml.responseText)

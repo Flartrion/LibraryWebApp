@@ -1,3 +1,4 @@
+import kotlinx.browser.document
 import kotlinx.css.*
 import react.RBuilder
 import react.RComponent

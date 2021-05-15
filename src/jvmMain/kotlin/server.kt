@@ -48,6 +48,17 @@ fun main() {
                     }
                 }
             }
+            get("/book/{id}") {
+                val bookId = call.parameters["id"]
+                call.respondHtml(HttpStatusCode.OK) {
+                    head {
+                        title("urbook")
+                    }
+                    body {
+                        id = "root"
+                    }
+                }
+            }
             post("/auth") {
                 val params = call.receiveParameters()
                 call.respond(HttpStatusCode.NotImplemented, "Wrong door, leatherman \n${params["login"]}, ${params["pass"]}")

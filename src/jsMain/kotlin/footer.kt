@@ -1,5 +1,6 @@
 import kotlinx.css.*
 import kotlinx.css.properties.TextDecoration
+import kotlinx.html.js.onClickFunction
 import react.*
 import styled.*
 
@@ -17,11 +18,14 @@ class Footer : RComponent<HeaderProps, RState>() {
                 display = Display.flex
                 justifyContent = JustifyContent.spaceAround
                 alignContent = Align.center
-                a {
+
+                b {
                     padding(top = 30.px, bottom = 30.px, left = 15.px, right = 15.px)
                     borderColor = Color.black
                     textDecoration = TextDecoration.none
                     fontFamily = "Arial"
+                    cursor = Cursor.pointer
+                    userSelect = UserSelect.none
 
                     color = Color.black
                     link {
@@ -39,27 +43,35 @@ class Footer : RComponent<HeaderProps, RState>() {
                     }
                 }
             }
-            styledA {
+            styledB {
                 attrs {
-                    href = "localhost:8080"
+                    onClickFunction = {
+                        props.onChangeLocation(SiteLocation.Main)
+                    }
                 }
                 +"Главная"
             }
-            styledA {
+            styledB {
                 attrs {
-                    href = "localhost:8080"
+                    onClickFunction = {
+                        props.onChangeLocation(SiteLocation.About)
+                    }
                 }
                 +"О библиотеке"
             }
-            styledA {
+            styledB {
                 attrs {
-                    href = "localhost:8080"
+                    onClickFunction = {
+                        props.onChangeLocation(SiteLocation.Schedule)
+                    }
                 }
                 +"Читателям"
             }
-            styledA {
+            styledB {
                 attrs {
-                    href = "localhost:8080"
+                    onClickFunction = {
+                        props.onChangeLocation(SiteLocation.Contacts)
+                    }
                 }
                 +"Контакты"
             }
