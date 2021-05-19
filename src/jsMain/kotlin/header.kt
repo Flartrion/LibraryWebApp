@@ -1,9 +1,7 @@
 import kotlinx.css.*
 import kotlinx.css.properties.TextDecoration
-import kotlinx.html.classes
 import kotlinx.html.js.onClickFunction
 import react.*
-import react.dom.img
 import styled.*
 
 external interface HeaderProps : RProps {
@@ -71,6 +69,16 @@ class Header : RComponent<HeaderProps, RState>() {
                     }
                 }
                 +"Контакты"
+            }
+            if ("admin" == "admin") {
+                styledB {
+                    attrs {
+                        onClickFunction = {
+                            props.onChangeLocation(SiteLocation.AdminPanel)
+                        }
+                    }
+                    +"Администрирование"
+                }
             }
         }
     }

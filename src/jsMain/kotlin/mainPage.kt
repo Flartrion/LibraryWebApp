@@ -1,4 +1,4 @@
-import kotlinx.browser.document
+import adminPageRelated.adminPage
 import kotlinx.css.*
 import react.RBuilder
 import react.RComponent
@@ -16,7 +16,7 @@ external interface MainPageProps : RProps {
 data class LocationState(val location: SiteLocation) : RState
 
 @JsExport
-class MainPage() : RComponent<MainPageProps, LocationState>() {
+class MainPage : RComponent<MainPageProps, LocationState>() {
 
     init {
         state = LocationState(SiteLocation.Main)
@@ -45,6 +45,7 @@ class MainPage() : RComponent<MainPageProps, LocationState>() {
                     SiteLocation.Contacts -> contactsPage()
                     SiteLocation.Schedule -> schedulePage()
                     SiteLocation.About -> aboutPage()
+                    SiteLocation.AdminPanel -> adminPage()
                     else -> generalBody()
                 }
 

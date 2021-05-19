@@ -3,19 +3,26 @@ import kotlinx.css.*
 import kotlinx.css.properties.*
 import kotlinx.html.InputType
 import kotlinx.html.hidden
+import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onClickFunction
+import org.w3c.xhr.XMLHttpRequest
 import react.*
+import react.dom.br
 import styled.*
 
 
-data class BookSearchState(val isSearchVisible: Boolean) : RState {
+data class BookSearchState(val isSearchVisible: Boolean) : RState
 
+external interface BookSearchProps : RProps {
+    var bookName: String?
+    var authorName: String?
+    var bookType: String?
 }
 
 @JsExport
-class BookSearch : RComponent<RProps, BookSearchState>() {
+class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
     init {
-        setState(BookSearchState(false))
+        state = BookSearchState(false)
     }
 
     override fun RBuilder.render() {
@@ -46,31 +53,119 @@ class BookSearch : RComponent<RProps, BookSearchState>() {
                 }
                 +"Search"
             }
-            styledDiv {
+            styledTable {
                 attrs {
-                    hidden = state.isSearchVisible
+                    hidden = !state.isSearchVisible
                 }
                 css {
-                    overflow = Overflow.hidden
-                    transition += Transition("height", Time("1s"), Timing.linear, Time("0s"))
+                    width = LinearDimension.fillAvailable
+                    backgroundColor = Color("#888888")
+                    children {
+                        children {
+                            textAlign = TextAlign.left
+                            firstChild {
+                                textAlign = TextAlign.right
+                            }
+                            input {
+                                width = 500.px
+                            }
+                        }
+                        lastChild {
+                            children {
+                                textAlign = TextAlign.center
+                            }
+                        }
+                    }
                 }
-                styledForm {
-                    styledInput {
-                        attrs {
-                            name = "ahaha"
-                            type = InputType.text
+                styledColGroup {
+                    styledCol {
+                        css {
+                            width = LinearDimension("30%")
+                            textAlign = TextAlign.right
                         }
                     }
-                    styledInput {
-                        attrs {
-                            name = "ahaha2"
-                            type = InputType.text
+                    styledCol {
+                        css {
+                            textAlign = TextAlign.left
                         }
                     }
-                    styledInput {
+                }
+                styledTr {
+                    styledTd {
+                        styledLabel { +"Заглавие: " }
+                    }
+                    styledTd {
+                        styledInput {
+                            attrs {
+                                onChangeFunction = {
+                                    props.bookName = value
+                                }
+                                type = InputType.text
+                            }
+                        }
+                    }
+                }
+                styledTr {
+                    styledTd {
+                        styledLabel { +"Авторы: " }
+                    }
+                    styledTd {
+                        styledInput {
+                            attrs {
+                                onChangeFunction = {
+                                    props.authorName = value
+                                }
+                                type = InputType.text
+                            }
+                        }
+                    }
+                }
+
+                styledTr {
+                    styledTd {
+                        styledLabel { +"Тип: " }
+                    }
+                    styledTd {
+                        styledInput {
+                            attrs {
+                                onChangeFunction = {
+                                    props.bookType = value
+                                }
+                                type = InputType.text
+                            }
+                        }
+                    }
+                }
+
+                styledTr {
+                    styledTd {
                         attrs {
-                            name = "ahaha3"
-                            type = InputType.text
+                            colSpan = "2"
+                        }
+                        styledInput {
+                            attrs {
+                                value = "Let's goooo"
+                                type = InputType.submit
+                                onClickFunction = {
+                                    val request = XMLHttpRequest()
+                                    request.open("post", "/")
+                                    request.addEventListener("load", {
+
+                                    })
+                                    request.send()
+                                }
+                            }
+                            css {
+                                borderRadius = 0.px
+                                fontFamily = "Arial"
+                                borderStyle = BorderStyle.none
+                                backgroundColor = Color("#999999")
+                                color = Color.white
+                                hover {
+                                    backgroundColor = Color("#cccccc")
+                                    color = Color.darkRed
+                                }
+                            }
                         }
                     }
                 }

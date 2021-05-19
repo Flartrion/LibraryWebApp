@@ -2,5 +2,6 @@ enum class SiteLocation {
     Main,
     About,
     Contacts,
-    Schedule
+    Schedule,
+    AdminPanel
 }
