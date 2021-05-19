@@ -48,81 +48,61 @@ class AdminPage : RComponent<RProps, AdminPageState>() {
                     }
                 }
             }
-            when (state.curLocation) {
-                AdminPageLocation.MainMenu -> {
-                    styledButton {
-                        attrs {
-                            onClickFunction = {
-                                setState(AdminPageState(AdminPageLocation.ManageStorages))
-                            }
+            if (state.curLocation == AdminPageLocation.MainMenu) {
+                styledButton {
+                    attrs {
+                        onClickFunction = {
+                            setState(AdminPageState(AdminPageLocation.ManageStorages))
                         }
-                        +"Хранилища"
                     }
-                    styledButton {
-                        attrs {
-                            onClickFunction = {
-                                setState(AdminPageState(AdminPageLocation.AddBook))
-                            }
-                        }
-                        +"Добавить книгу"
-                    }
-                    br { }
-                    styledButton {
-                        +"Кнопка один"
-                    }
-                    styledButton {
-                        +"Кнопка два"
-                    }
+                    +"Хранилища"
                 }
-                AdminPageLocation.ManageStorages -> {
-                    css {
-                        display = Display.flex
-                        flexDirection = FlexDirection.column
-                        alignItems = Align.stretch
-                        alignContent = Align.center
-                        padding(top = 0.px)
-                    }
-                    styledButton {
-                        css {
-                            maxWidth = 100.px
-                            maxHeight = 100.px
-                            alignSelf = Align.start
-                        }
-                        attrs {
-                            onClickFunction = {
-                                setState(AdminPageState(AdminPageLocation.MainMenu))
-                            }
-                        }
-                        +"←"
-                    }
-                    styledDiv {
-                        child(StorageManagementPage::class) {
+                styledButton {
+                    attrs {
+                        onClickFunction = {
+                            setState(AdminPageState(AdminPageLocation.AddBook))
                         }
                     }
+                    +"Добавить книгу"
                 }
-                AdminPageLocation.AddBook -> {
+                br { }
+                styledButton {
+                    +"Кнопка один"
+                }
+                styledButton {
+                    +"Кнопка два"
+                }
+            } else {
+                css {
+                    display = Display.flex
+                    flexDirection = FlexDirection.column
+                    alignItems = Align.stretch
+                    alignContent = Align.center
+                    padding(top = 0.px)
+                }
+                styledButton {
                     css {
-                        display = Display.flex
-                        flexDirection = FlexDirection.column
-                        alignItems = Align.stretch
-                        alignContent = Align.center
-                        padding(top = 0.px)
+                        maxWidth = 100.px
+                        maxHeight = 100.px
+                        alignSelf = Align.start
                     }
-                    styledButton {
-                        css {
-                            maxWidth = 100.px
-                            maxHeight = 100.px
-                            alignSelf = Align.start
+                    attrs {
+                        onClickFunction = {
+                            setState(AdminPageState(AdminPageLocation.MainMenu))
                         }
-                        attrs {
-                            onClickFunction = {
-                                setState(AdminPageState(AdminPageLocation.MainMenu))
-                            }
-                        }
-                        +"←"
                     }
-                    styledDiv {
-                        child(AddBookPage::class) {
+                    +"←"
+                }
+                styledDiv {
+                    when (state.curLocation) {
+                        AdminPageLocation.ManageStorages -> child(StorageManagementPage::class) {
+
+                        }
+                        AdminPageLocation.AddBook -> child(AddBookPage::class) {
+
+                        }
+                        else -> {
+
                         }
                     }
                 }
