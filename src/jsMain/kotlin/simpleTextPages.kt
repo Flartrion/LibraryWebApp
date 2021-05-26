@@ -1,12 +1,13 @@
 import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.css.*
-import kotlinx.css.properties.TextDecoration
 import kotlinx.html.js.onClickFunction
-import org.w3c.fetch.Request
 import org.w3c.xhr.XMLHttpRequest
 import react.*
-import styled.*
+import styled.css
+import styled.styledB
+import styled.styledButton
+import styled.styledDiv
 
 @JsExport
 class AboutPage : RComponent<RProps, RState>() {
@@ -28,8 +29,20 @@ class AboutPage : RComponent<RProps, RState>() {
     }
 }
 
+data class ContactsPageState(val storages: String) : RState
+
 @JsExport
-class ContactsPage : RComponent<RProps, RState>() {
+class ContactsPage : RComponent<RProps, ContactsPageState>() {
+
+    override fun componentDidMount() {
+        val xml = XMLHttpRequest()
+        xml.open("post", "/storages")
+        xml.onload = {
+            setState(ContactsPageState(xml.responseText))
+        }
+        xml.send()
+    }
+
     override fun RBuilder.render() {
         styledDiv {
             css {
@@ -69,8 +82,6 @@ class ContactsPage : RComponent<RProps, RState>() {
                 }
                 attrs {
                     onClickFunction = {
-                        document.title = "Fuck you, leatherman"
-
                         val xml = XMLHttpRequest()
                         xml.addEventListener("load", {
                             console.log(xml.responseText)

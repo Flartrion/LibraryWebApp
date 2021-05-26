@@ -25,6 +25,9 @@ fun Application.module(testing: Boolean = false) {
                 }
             }
         }
+        post("/storages") {
+            call.respond("yep")
+        }
         post("/") {
             call.respond("Ok")
         }
