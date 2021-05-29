@@ -54,29 +54,20 @@ class LoginMenu : RComponent<RProps, RState>() {
                     maxHeight = 150.px
                     height = window.innerHeight.px
                 }
-                styledDiv {
-                    styledLabel {
-                        +"Логин:"
-                    }
-                    styledInput {
-                        attrs {
-                            name = "login"
-                            id = "loginTextArea"
-                        }
+                styledInput {
+                    attrs {
+                        placeholder = "Логин"
+                        name = "login"
+                        id = "loginTextArea"
                     }
                 }
 
-                styledDiv {
-                    styledLabel {
-                        +"Пароль:"
-                    }
-
-                    styledInput {
-                        attrs {
-                            type = InputType.password
-                            name = "pass"
-                            id = "passTextArea"
-                        }
+                styledInput {
+                    attrs {
+                        placeholder = "Пароль"
+                        type = InputType.password
+                        name = "pass"
+                        id = "passTextArea"
                     }
                 }
 

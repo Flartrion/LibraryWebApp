@@ -6,6 +6,7 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import kotlinx.html.*
+import java.io.File
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -28,12 +29,28 @@ fun Application.module(testing: Boolean = false) {
         post("/storages") {
             call.respond("yep")
         }
+        post("/search") {
+            val params = call.receiveParameters()
+            val name = params["name"]
+            val authors = params["authors"]
+            val type = params["type"]
+            val sort = params["sorting"]
+            val ascDesc = params["ascDesc"] == "on"
+            println("$name + $authors + $type + $sort + $ascDesc")
+            call.respondText("$name + $authors + $type + $sort + $ascDesc")
+        }
         post("/") {
             call.respond("Ok")
         }
         post("/auth") {
             val params = call.receiveParameters()
             call.respond(HttpStatusCode.NotImplemented, "Wrong door, leatherman \n${params["login"]}, ${params["pass"]}")
+        }
+        get("/image/{name}") {
+            val picname = call.parameters["name"]
+            val file = File("C:/resources/$picname")
+            println(file.absolutePath)
+            call.respondFile(file)
         }
         static("/static") {
             resources()
