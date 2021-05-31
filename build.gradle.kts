@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 
 plugins {
     kotlin("multiplatform") version "1.5.0"
+    kotlin("plugin.serialization") version "1.5.0"
     application
 }
 
@@ -17,7 +18,7 @@ repositories {
 kotlin {
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = "16"
+            kotlinOptions.jvmTarget = "15"
         }
         testRuns["test"].executionTask.configure {
             useJUnit()
@@ -33,27 +34,23 @@ kotlin {
         }
     }
     sourceSets {
-        val commonMain by getting
-        val commonTest by getting {
+        val commonMain by getting {
             dependencies {
-                implementation(kotlin("test-common"))
-                implementation(kotlin("test-annotations-common"))
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1")
             }
         }
         val jvmMain by getting {
             dependencies {
-                implementation(kotlin("stdlib"))
+                implementation("io.ktor:ktor-serialization:1.5.4")
                 implementation("io.ktor:ktor-server-core:1.5.4")
                 implementation("io.ktor:ktor-server-netty:1.5.4")
                 implementation("ch.qos.logback:logback-classic:1.2.3")
                 implementation("io.ktor:ktor-html-builder:1.5.4")
                 implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
                 implementation("org.postgresql:postgresql:42.2.20")
-            }
-        }
-        val jvmTest by getting {
-            dependencies {
-                implementation(kotlin("test-junit"))
+                //implementation("org.jetbrains.exposed:exposed-core:0.31.1")
+                //implementation("org.jetbrains.exposed:exposed-jdbc:0.31.1")
+                //implementation("com.zaxxer:HikariCP:4.0.3")
             }
         }
         val jsMain by getting {
@@ -64,11 +61,6 @@ kotlin {
                 implementation(npm("react-dom", "17.0.2"))
                 implementation("org.jetbrains:kotlin-styled:5.2.1-pre.148-kotlin-1.4.30")
                 implementation(npm("styled-components", "~5.3.0"))
-            }
-        }
-        val jsTest by getting {
-            dependencies {
-                implementation(kotlin("test-js"))
             }
         }
     }
