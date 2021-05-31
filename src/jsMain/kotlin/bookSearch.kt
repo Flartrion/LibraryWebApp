@@ -1,37 +1,39 @@
-import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.css.*
-import kotlinx.css.properties.*
 import kotlinx.html.*
-import kotlinx.html.js.*
+import kotlinx.html.js.onChangeFunction
+import kotlinx.html.js.onClickFunction
+import kotlinx.html.js.onSubmitFunction
+import org.w3c.dom.HTMLFormElement
+import org.w3c.dom.HTMLInputElement
+import org.w3c.dom.HTMLSelectElement
+import org.w3c.xhr.FormData
 import org.w3c.xhr.XMLHttpRequest
 import react.*
-import react.dom.br
 import react.dom.option
 import styled.*
 
 
-data class BookSearchState(val isSearchVisible: Boolean, val ascDesc: Boolean) : RState
+data class BookSearchState(
+    val isSearchVisible: Boolean,
+    val nameInput: String = "",
+    val authorInput: String = "",
+    val typeInput: String = "",
+    val ascDesc: Boolean,
+    val sorting: String
+) : RState
 
 external interface BookSearchProps : RProps {
-    var bookName: String
-    var authorName: String
-    var bookType: String
-    var searchSorting: SearchSorting
+
 }
 
 @JsExport
 class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
-    init {
-        state = BookSearchState(isSearchVisible = false, ascDesc = false)
-    }
 
     override fun componentDidMount() {
-        props.bookName = ""
-        props.authorName = ""
-        props.bookType = ""
-        props.searchSorting = SearchSorting.ByDateReleased
+        setState(BookSearchState(isSearchVisible = false, ascDesc = false, sorting = "ByDateAdded"))
     }
+
     override fun RBuilder.render() {
         styledDiv {
             css {
@@ -55,11 +57,21 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
                 }
                 attrs {
                     onClickFunction = {
-                        setState(BookSearchState(!state.isSearchVisible, state.ascDesc))
+                        setState(
+                            BookSearchState(
+                                !state.isSearchVisible,
+                                state.nameInput,
+                                state.authorInput,
+                                state.typeInput,
+                                state.ascDesc,
+                                state.sorting
+                            )
+                        )
                     }
                 }
                 +"Search"
             }
+
             styledForm {
                 attrs {
                     action = "/search"
@@ -67,6 +79,9 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
                     id = "searchForm"
 //                    target = "_blank"
                     onSubmitFunction = {
+                        val xxx = it.target as HTMLFormElement
+                        console.log(xxx.elements)
+                        val sss = XMLHttpRequest()
                         it.preventDefault()
                     }
                 }
@@ -118,6 +133,21 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
                                     form = "searchForm"
                                     name = "name"
                                     type = InputType.text
+                                    value = state.nameInput
+                                    onChangeFunction = {
+                                        val newValue = (it.target as HTMLInputElement).value
+//                                        setState(state.copy(nameInput = value))
+                                        setState(
+                                            BookSearchState(
+                                                state.isSearchVisible,
+                                                newValue,
+                                                state.authorInput,
+                                                state.typeInput,
+                                                state.ascDesc,
+                                                state.sorting
+                                            )
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -131,10 +161,21 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
                                 attrs {
                                     form = "searchForm"
                                     name = "authors"
-                                    onChangeFunction = {
-                                        props.authorName = value
-                                    }
                                     type = InputType.text
+                                    value = state.authorInput
+                                    onChangeFunction = {
+                                        val newValue = (it.target as HTMLInputElement).value
+                                        setState(
+                                            BookSearchState(
+                                                state.isSearchVisible,
+                                                state.nameInput,
+                                                newValue,
+                                                state.typeInput,
+                                                state.ascDesc,
+                                                state.sorting
+                                            )
+                                        )
+                                    }
                                 }
                             }
                         }
@@ -149,10 +190,20 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
                                 attrs {
                                     form = "searchForm"
                                     name = "type"
+                                    value = state.typeInput
                                     onChangeFunction = {
-                                        props.bookType = value
+                                        val newValue = (it.target as HTMLInputElement).value
+                                        setState(
+                                            BookSearchState(
+                                                state.isSearchVisible,
+                                                state.nameInput,
+                                                state.authorInput,
+                                                newValue,
+                                                state.ascDesc,
+                                                state.sorting
+                                            )
+                                        )
                                     }
-                                    type = InputType.text
                                 }
                             }
                         }
@@ -169,7 +220,7 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
                                 }
                                 b {
                                     userSelect = UserSelect.none
-                                    padding(left = 5.px, right = 5.px)
+                                    padding(left = 5.px, right = 5.px, bottom = 2.px)
                                     borderStyle = BorderStyle.solid
                                     borderWidth = 1.px
                                     backgroundColor = Color("#999999")
@@ -184,6 +235,20 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
                                 attrs {
                                     form = "searchForm"
                                     name = "sorting"
+                                    value = state.sorting
+                                    onChangeFunction = {
+                                        val newValue = (it.target as HTMLSelectElement).value
+                                        setState(
+                                            BookSearchState(
+                                                state.isSearchVisible,
+                                                state.nameInput,
+                                                state.authorInput,
+                                                state.typeInput,
+                                                state.ascDesc,
+                                                newValue
+                                            )
+                                        )
+                                    }
                                 }
                                 option {
                                     attrs {
@@ -217,7 +282,16 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
                             styledB {
                                 attrs {
                                     onClickFunction = {
-                                        setState(BookSearchState(true, !state.ascDesc))
+                                        setState(
+                                            BookSearchState(
+                                                true,
+                                                state.nameInput,
+                                                state.authorInput,
+                                                state.typeInput,
+                                                !state.ascDesc,
+                                                state.sorting
+                                            )
+                                        )
                                     }
                                 }
                                 if (state.ascDesc)

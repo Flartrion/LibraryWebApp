@@ -23,6 +23,9 @@ fun Application.module(testing: Boolean = false) {
                 }
                 body {
                     id = "root"
+                    b {
+                        +(bookId ?: "Fuck you")
+                    }
                 }
             }
         }
