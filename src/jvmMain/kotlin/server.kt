@@ -38,7 +38,7 @@ fun Application.module(testing: Boolean = false) {
             val authors = params["authors"]
             val type = params["type"]
             val sort = params["sorting"]
-            val ascDesc = params["ascDesc"] == "on"
+            val ascDesc = params["ascDesc"]
             println("$name + $authors + $type + $sort + $ascDesc")
             call.respondText("$name + $authors + $type + $sort + $ascDesc")
         }

@@ -40,7 +40,11 @@ class MainPage : RComponent<MainPageProps, LocationState>() {
                     display = Display.flex
                     flexDirection = FlexDirection.row
                 }
-                loginMenu()
+                loginMenu() {
+                    onRegisterPressed = {
+                        setState(LocationState(SiteLocation.Register))
+                    }
+                }
 
 
                 when (state.location) {
@@ -64,7 +68,10 @@ class MainPage : RComponent<MainPageProps, LocationState>() {
                         adminPage()
                         document.title = "AWAKEN, MY MASTERS!"
                     }
-                    else -> generalBody()
+                    SiteLocation.Register -> {
+                        registerPage()
+                        document.title = "HOHO, MUKATTE KURU NO KA?"
+                    }
                 }
 
                 styledDiv {

@@ -14,15 +14,14 @@ import react.dom.head
 import react.dom.title
 import styled.*
 
+external interface LoginMenuProps : RProps {
+    var onRegisterPressed: () -> Unit
+}
+
 @JsExport
-class LoginMenu : RComponent<RProps, RState>() {
+class LoginMenu : RComponent<LoginMenuProps, RState>() {
     override fun RBuilder.render() {
-        styledForm {
-            attrs {
-                action = "/auth"
-                method = FormMethod.post
-                encType = FormEncType.applicationXWwwFormUrlEncoded
-            }
+        styledDiv {
             css {
                 padding(30.px)
                 display = Display.flex
@@ -44,51 +43,79 @@ class LoginMenu : RComponent<RProps, RState>() {
                     width = LinearDimension.fillAvailable
                 }
             }
-            styledDiv {
-                css {
-                    display = Display.flex
-                    flexDirection = FlexDirection.column
-                    flexBasis = FlexBasis.maxContent
-                    justifyContent = JustifyContent.spaceEvenly
-                    alignContent = Align.flexStart
-                    maxHeight = 150.px
-                    height = window.innerHeight.px
+            styledForm {
+                attrs {
+                    action = "/auth"
+                    method = FormMethod.post
+                    encType = FormEncType.applicationXWwwFormUrlEncoded
                 }
-                styledInput {
-                    attrs {
-                        placeholder = "Логин"
-                        name = "login"
-                        id = "loginTextArea"
-                    }
-                }
-
-                styledInput {
-                    attrs {
-                        placeholder = "Пароль"
-                        type = InputType.password
-                        name = "pass"
-                        id = "passTextArea"
-                    }
-                }
-
-                styledInput {
+                styledDiv {
                     css {
-                        borderRadius = 0.px
-                        borderStyle = BorderStyle.none
-                        backgroundColor = Color("#999999")
-                        color = Color.white
-                        hover {
-                            color = Color("#aa0000")
-                            backgroundColor = Color("#aaaaaa")
+                        display = Display.flex
+                        flexDirection = FlexDirection.column
+                        flexBasis = FlexBasis.maxContent
+                        justifyContent = JustifyContent.spaceEvenly
+                        alignContent = Align.flexStart
+                        maxHeight = 150.px
+                        height = window.innerHeight.px
+                    }
+                    styledInput {
+                        attrs {
+                            placeholder = "Логин"
+                            name = "login"
+                            id = "loginTextArea"
                         }
                     }
-                    attrs {
-                        id = "loginButton"
-                        type = InputType.submit
-                        value = "Войти"
+
+                    styledInput {
+                        attrs {
+                            placeholder = "Пароль"
+                            type = InputType.password
+                            name = "pass"
+                            id = "passTextArea"
+                        }
+                    }
+
+                    styledInput {
+                        css {
+                            borderRadius = 0.px
+                            borderStyle = BorderStyle.none
+                            backgroundColor = Color("#999999")
+                            color = Color.white
+                            hover {
+                                color = Color("#aa0000")
+                                backgroundColor = Color("#aaaaaa")
+                            }
+                        }
+                        attrs {
+                            id = "loginButton"
+                            type = InputType.submit
+                            value = "Войти"
+                        }
                     }
                 }
             }
+            styledButton {
+                css {
+                    borderRadius = 0.px
+                    borderStyle = BorderStyle.none
+                    backgroundColor = Color("#999999")
+                    color = Color.white
+                    hover {
+                        color = Color("#aa0000")
+                        backgroundColor = Color("#aaaaaa")
+                    }
+
+                }
+                attrs {
+                    id = "registerButton"
+                    onClickFunction = {
+                        props.onRegisterPressed()
+                    }
+                }
+                +"Зарегистрироваться"
+            }
+
             styledDiv {
                 css {
 //                    width = 150.px
@@ -97,12 +124,13 @@ class LoginMenu : RComponent<RProps, RState>() {
                     height = LinearDimension("100%")
                 }
             }
+
         }
     }
 }
 
-fun RBuilder.loginMenu(): ReactElement {
+fun RBuilder.loginMenu(handler: LoginMenuProps.() -> Unit): ReactElement {
     return child(LoginMenu::class) {
-
+        attrs.handler()
     }
 }

@@ -3,5 +3,6 @@ enum class SiteLocation {
     About,
     Contacts,
     Schedule,
-    AdminPanel
+    AdminPanel,
+    Register
 }
