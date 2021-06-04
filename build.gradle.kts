@@ -48,13 +48,11 @@ kotlin {
                 implementation("io.ktor:ktor-html-builder:1.5.4")
                 implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
                 implementation("org.postgresql:postgresql:42.2.20")
-                //implementation("org.jetbrains.exposed:exposed-core:0.31.1")
-                //implementation("org.jetbrains.exposed:exposed-jdbc:0.31.1")
-                //implementation("com.zaxxer:HikariCP:4.0.3")
             }
         }
         val jsMain by getting {
             dependencies {
+                implementation(kotlin("stdlib"))
                 implementation("org.jetbrains:kotlin-react:17.0.1-pre.148-kotlin-1.4.30")
                 implementation("org.jetbrains:kotlin-react-dom:17.0.1-pre.148-kotlin-1.4.30")
                 implementation(npm("react", "17.0.2"))

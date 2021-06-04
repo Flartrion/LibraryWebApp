@@ -8,6 +8,7 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.serialization.*
 import kotlinx.html.*
+import java.io.File
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.SQLException
@@ -21,11 +22,26 @@ fun Application.module(testing: Boolean = false) {
     properties.setProperty("user", "postgres")
     properties.setProperty("password", "1")
 
-    val connection = connect(url, properties)!!
+//    val connection = connect(url, properties)!!
+    val connection =
+        DriverManager.getConnection(url, properties.getProperty("user"), properties.getProperty("password"))
+    val statement = connection.createStatement()
 
-    install(ContentNegotiation) {
-        json()
+    try {
+
+        val count =
+            statement.executeUpdate("INSERT INTO \"Facilities\".\"Storages\" (address) VALUES ('проспект Джорджа Джостара, д. 17')")
+//        val count = statement.executeUpdate("DELETE FROM \"Facilities\".\"Storages\" WHERE address='какой-то адрес'")
+    } catch (e: Exception) {
+        File("C:\\Users\\vlade\\Downloads\\error.txt").printWriter().use { out ->
+            out.println(e.message)
+        }
     }
+
+
+//    install(ContentNegotiation) {
+//        json()
+//    }
 
     install(CORS) {
         method(HttpMethod.Get)
@@ -34,9 +50,9 @@ fun Application.module(testing: Boolean = false) {
         anyHost()
     }
 
-    install(Compression) {
-        gzip()
-    }
+//    install(Compression) {
+//        gzip()
+//    }
 
     routing {
         get("/hello") {
@@ -59,6 +75,8 @@ fun Application.module(testing: Boolean = false) {
         post("/") {
             call.respond("Ok")
         }
+
+        //------------------------------------------------------------------------------------------------Authentication
         post("/auth") {
             val params = call.receiveParameters()
             call.respond(
@@ -66,9 +84,211 @@ fun Application.module(testing: Boolean = false) {
                 "Wrong door, leatherman \n${params["login"]}, ${params["pass"]}"
             )
         }
-        delete {
 
+        //------------------------------------------------------------------------------------------------------Storages
+        get("/storages/{id}") {
+            val temp = statement
+                .executeUpdate(
+                    "SELECT * FROM \"Facilities\".\"Storages\"" +
+                            " WHERE address = 'где-то'"
+                )
         }
+        post("/storages/insert/{id}") {
+            val temp = statement
+                .executeUpdate(
+                    "INSERT INTO \"Facilities\".\"Storages\" (address)" +
+                            " VALUES ('проспект Джорджа Джостара, д. 17')"
+                )
+        }
+        post("/storages/update/{id}") {
+            val temp = statement
+                .executeUpdate(
+                    "UPDATE \"Facilities\".\"Storages\"" +
+                            " SET address = 'где-то'" +
+                            " WHERE id_storage = 'id'"
+                )
+        }
+        delete("/storages/delete/{id}") {
+            statement.executeUpdate(
+                "DELETE FROM \"Facilities\".\"Storages\"" +
+                        " WHERE id_storage = 'id'"
+            )
+        }
+        //---------------------------------------------------------------------------------------------------------Users
+        get("/users/{id}") {
+            val temp = statement
+                .executeUpdate(
+                    "SELECT * FROM \"HumanResources\".\"Users\"" +
+                            " WHERE email = 'что-то'"
+                )
+        }
+        post("/users/insert/{id}") {
+            val temp = statement
+                .executeUpdate(
+                    "INSERT INTO \"HumanResources\".\"Users\" (role, full_name, date_of_birth, phone_number, email)" +
+                            " VALUES ('','','','','')"
+                )
+        }
+        post("/users/update/{id}") {
+            val temp = statement
+                .executeUpdate(
+                    "UPDATE \"HumanResources\".\"Users\"" +
+                            " SET role = '', full_name = '', date_of_birth = '', phone_number = '', email = ''" +
+                            " WHERE id_user = 'id'"
+                )
+        }
+        delete("/users/delete/{id}") {
+            statement.executeUpdate(
+                "DELETE FROM \"HumanResources\".\"Users\"" +
+                        " WHERE id_user = 'id'"
+            )
+        }
+        //---------------------------------------------------------------------------------------------------BankHistory
+        get("/bankHistory/{id}") {
+            val temp = statement
+                .executeUpdate(
+                    "SELECT * FROM \"Inventory\".\"BankHistory\"" +
+                            " WHERE id_copy = 'что-то'"
+                )
+        }
+        post("/bankHistory/insert/{id}") {
+            val temp = statement
+                .executeUpdate(
+                    "INSERT INTO \"Inventory\".\"BankHistory\" (id_copy, change, date)" +
+                            " VALUES ('', '', '')"
+                )
+        }
+        post("/bankHistory/update/{id}") {
+            val temp = statement
+                .executeUpdate(
+                    "UPDATE \"Inventory\".\"BankHistory\"" +
+                            " SET id_copy = '', change = '', date = ''" +
+                            " WHERE id_entry = 'id'"
+                )
+        }
+        delete("/bankHistory/delete/{id}") {
+            statement.executeUpdate(
+                "DELETE FROM \"Inventory\".\"BankHistory\"" +
+                        " WHERE id_entry = 'id'"
+            )
+        }
+        //--------------------------------------------------------------------------------------------------------Copies
+        get("/copies/{id}") {
+            val temp = statement
+                .executeUpdate(
+                    "SELECT * FROM \"Inventory\".\"Copies\"" +
+                            " WHERE id_item = 'id'"
+                )
+        }
+        post("/copies/insert/{id}") {
+            val temp = statement
+                .executeUpdate(
+                    "INSERT INTO \"Inventory\".\"Copies\" (id_item, tome, language, bank)" +
+                            " VALUES ('', '', '', '')"
+                )
+        }
+        post("/copies/update/{id}") {
+            val temp = statement
+                .executeUpdate(
+                    "UPDATE \"Inventory\".\"Copies\"" +
+                            " SET id_item = '', tome = '', language = '', bank = ''" +
+                            " WHERE id_copy = 'id'"
+                )
+        }
+        delete("/copies/delete/{id}") {
+            statement.executeUpdate(
+                "DELETE FROM \"Inventory\".\"Copies\"" +
+                        " WHERE id_copy = ''"
+            )
+        }
+        //--------------------------------------------------------------------------------------------------CopyLocation
+        get("/copyLocation/{id}") {
+            val temp = statement
+                .executeUpdate(
+                    "SELECT * FROM \"Inventory\".\"CopyLocation\"" +
+                            " WHERE id_copy = 'id'"
+                )
+        }
+        post("/copyLocation/insert/{id}") {
+            val temp = statement
+                .executeUpdate(
+                    "INSERT INTO \"Inventory\".\"CopyLocation\" (id_copy, id_storage, amount)" +
+                            " VALUES ('', '', '')"
+                )
+        }
+        post("/copyLocation/update/{id}") {
+            val temp = statement
+                .executeUpdate(
+                    "UPDATE \"Inventory\".\"CopyLocation\"" +
+                            " SET id_copy = '', id_storage = '', amount = ''" +
+                            " WHERE id_copy = 'id'"
+                )
+        }
+        delete("/copyLocation/delete/{id}") {
+            statement.executeUpdate(
+                "DELETE FROM \"Inventory\".\"CopyLocation\"" +
+                        " WHERE id_copy = 'id'"
+            )
+        }
+        //---------------------------------------------------------------------------------------------------------Items
+        get("/items/{id}") {
+            val temp = statement
+                .executeUpdate(
+                    "SELECT * FROM \"Inventory\".\"Items\"" +
+                            " WHERE isbn = 'id'"
+                )
+        }
+        post("/items/insert/{id}") {
+            val temp = statement
+                .executeUpdate(
+                    "INSERT INTO \"Inventory\".\"Items\" (isbn, rlbc, title, authors, type, details)" +
+                            " VALUES ('', '', '', '', '', '')"
+                )
+        }
+        post("/items/update/{id}") {
+            val temp = statement
+                .executeUpdate(
+                    "UPDATE \"Inventory\".\"Items\"" +
+                            "SET isbn = '', rlbc = '', title = '', authors = '', type = '', details = ''" +
+                            " WHERE id_item = 'id'"
+                )
+        }
+        delete("/items/delete/{id}") {
+            statement.executeUpdate(
+                "DELETE FROM \"Inventory\".\"Items\"" +
+                        " WHERE id_item = 'id'"
+            )
+        }
+        //---------------------------------------------------------------------------------------------------------Rents
+        get("/rents/{id}") {
+            val temp = statement
+                .executeUpdate(
+                    "SELECT * FROM \"Inventory\".\"Rents\"" +
+                            " WHERE id_user = '' AND id_copy = ''"
+                )
+        }
+        post("/rents/insert/{id}") {
+            val temp = statement
+                .executeUpdate(
+                    "INSERT INTO \"Inventory\".\"Rents\" (id_user, id_copy, from_date, until_date)" +
+                            " VALUES ('', '', '', '')"
+                )
+        }
+        post("rents/update/{id}") {
+            val temp = statement
+                .executeUpdate(
+                    "UPDATE \"Inventory\".\"Rents\"" +
+                            " SET id_user = '', id_copy = '', from_date = '', until_date = ''" +
+                            " WHERE id_rent = 'id'"
+                )
+        }
+        delete("/rents/delete/{id}") {
+            statement.executeUpdate(
+                "DELETE FROM \"Inventory\".\"Rents\"" +
+                        " WHERE id_rent = 'id'"
+            )
+        }
+
         static("/static") {
             resources()
         }
@@ -87,13 +307,12 @@ fun HTML.index() {
 }
 
 fun connect(url: String, properties: Properties): Connection? {
-    val connection : Connection
+    val connection: Connection
     try {
         connection =
             DriverManager.getConnection(url, properties.getProperty("user"), properties.getProperty("password"))
         println("Successfully connected to database")
-    }
-    catch (e: SQLException) {
+    } catch (e: SQLException) {
         println(e.message)
         return null
     }
