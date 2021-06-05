@@ -12,15 +12,16 @@ import kotlinx.html.js.onClickFunction
 import org.w3c.dom.Storage
 import org.w3c.dom.XMLDocument
 import org.w3c.xhr.XMLHttpRequest
-import react.RBuilder
-import react.RComponent
-import react.RProps
-import react.RState
+import react.*
 import react.dom.br
 import styled.*
 import kotlin.js.Json
 
-data class StorageManagementPageState(var isAddMenuVisible: Boolean, var storages: ArrayList<Storages>) : RState
+data class StorageManagementPageState(
+    var isAddMenuVisible: Boolean,
+    var storagesLoaded: Boolean,
+    var storages: ArrayList<Storages>
+) : RState
 
 external interface StorageManagementPageProps : RProps {
     var storageAddress: String
@@ -29,14 +30,20 @@ external interface StorageManagementPageProps : RProps {
 
 class StorageManagementPage : RComponent<StorageManagementPageProps, StorageManagementPageState>() {
 
+    init {
+        state = StorageManagementPageState(false, false, arrayListOf())
+    }
 
     override fun componentDidMount() {
-//        state = StorageManagementPageState(false, arrayListOf(Storages("2", "5"), Storages("2", "66")))
         val xml = XMLHttpRequest()
         xml.open("get", "/storages")
         xml.onload = {
-            setState(StorageManagementPageState(false, JSON.parse(xml.responseText)))
-            console.log(JSON.parse(xml.responseText))
+            console.log(xml.responseText)
+//            console.log(JSON.parse(xml.responseText))
+//            setState {
+//                storages = JSON.parse(xml.responseText)
+//                storagesLoaded = true
+//            }
         }
         xml.send()
     }
@@ -60,19 +67,19 @@ class StorageManagementPage : RComponent<StorageManagementPageProps, StorageMana
                     }
                 }
             }
-            if (state.storages.isEmpty()) {
+            if (!state.storagesLoaded) {
                 styledP { +"You fool" }
             } else {
                 styledP { +"Mmmm, yes, this is wise" }
-                for (storage in state.storages) {
-                    styledP { storage.id_storage }
-                    +storage.address
+                for (i in 0 until state.storages.size) {
+                    styledP { state.storages[i].id_storage }
+                    +state.storages[i].address
                 }
             }
             styledButton {
                 attrs {
                     onClickFunction = {
-                        setState(StorageManagementPageState(!state.isAddMenuVisible, state.storages))
+                        setState { isAddMenuVisible = !isAddMenuVisible }
                     }
                 }
                 +"Добавить хранилище"
