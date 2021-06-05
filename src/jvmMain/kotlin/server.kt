@@ -22,9 +22,7 @@ fun Application.module(testing: Boolean = false) {
     properties.setProperty("user", "postgres")
     properties.setProperty("password", "1")
 
-//    val connection = connect(url, properties)!!
-    val connection =
-        DriverManager.getConnection(url, properties.getProperty("user"), properties.getProperty("password"))
+    val connection = connect(url, properties)!!
     val statement = connection.createStatement()
 
 //    install(ContentNegotiation) {
@@ -92,28 +90,28 @@ fun Application.module(testing: Boolean = false) {
         //------------------------------------------------------------------------------------------------------Storages
         get("/storages/{id}") {
             val temp = statement
-                .executeUpdate(
+                .executeQuery(
                     "SELECT * FROM \"Facilities\".\"Storages\"" +
                             " WHERE address = 'где-то'"
                 )
         }
         post("/storages/insert/{id}") {
             val temp = statement
-                .executeUpdate(
+                .executeQuery(
                     "INSERT INTO \"Facilities\".\"Storages\" (address)" +
                             " VALUES ('проспект Джорджа Джостара, д. 17')"
                 )
         }
         post("/storages/update/{id}") {
             val temp = statement
-                .executeUpdate(
+                .executeQuery(
                     "UPDATE \"Facilities\".\"Storages\"" +
                             " SET address = 'где-то'" +
                             " WHERE id_storage = 'id'"
                 )
         }
         delete("/storages/delete/{id}") {
-            statement.executeUpdate(
+            statement.executeQuery(
                 "DELETE FROM \"Facilities\".\"Storages\"" +
                         " WHERE id_storage = 'id'"
             )
@@ -121,28 +119,28 @@ fun Application.module(testing: Boolean = false) {
         //---------------------------------------------------------------------------------------------------------Users
         get("/users/{id}") {
             val temp = statement
-                .executeUpdate(
+                .executeQuery(
                     "SELECT * FROM \"HumanResources\".\"Users\"" +
                             " WHERE email = 'что-то'"
                 )
         }
         post("/users/insert/{id}") {
             val temp = statement
-                .executeUpdate(
+                .executeQuery(
                     "INSERT INTO \"HumanResources\".\"Users\" (role, full_name, date_of_birth, phone_number, email)" +
                             " VALUES ('','','','','')"
                 )
         }
         post("/users/update/{id}") {
             val temp = statement
-                .executeUpdate(
+                .executeQuery(
                     "UPDATE \"HumanResources\".\"Users\"" +
                             " SET role = '', full_name = '', date_of_birth = '', phone_number = '', email = ''" +
                             " WHERE id_user = 'id'"
                 )
         }
         delete("/users/delete/{id}") {
-            statement.executeUpdate(
+            statement.executeQuery(
                 "DELETE FROM \"HumanResources\".\"Users\"" +
                         " WHERE id_user = 'id'"
             )
@@ -150,28 +148,28 @@ fun Application.module(testing: Boolean = false) {
         //---------------------------------------------------------------------------------------------------BankHistory
         get("/bankHistory/{id}") {
             val temp = statement
-                .executeUpdate(
+                .executeQuery(
                     "SELECT * FROM \"Inventory\".\"BankHistory\"" +
                             " WHERE id_copy = 'что-то'"
                 )
         }
         post("/bankHistory/insert/{id}") {
             val temp = statement
-                .executeUpdate(
+                .executeQuery(
                     "INSERT INTO \"Inventory\".\"BankHistory\" (id_copy, change, date)" +
                             " VALUES ('', '', '')"
                 )
         }
         post("/bankHistory/update/{id}") {
             val temp = statement
-                .executeUpdate(
+                .executeQuery(
                     "UPDATE \"Inventory\".\"BankHistory\"" +
                             " SET id_copy = '', change = '', date = ''" +
                             " WHERE id_entry = 'id'"
                 )
         }
         delete("/bankHistory/delete/{id}") {
-            statement.executeUpdate(
+            statement.executeQuery(
                 "DELETE FROM \"Inventory\".\"BankHistory\"" +
                         " WHERE id_entry = 'id'"
             )
@@ -179,28 +177,28 @@ fun Application.module(testing: Boolean = false) {
         //--------------------------------------------------------------------------------------------------------Copies
         get("/copies/{id}") {
             val temp = statement
-                .executeUpdate(
+                .executeQuery(
                     "SELECT * FROM \"Inventory\".\"Copies\"" +
                             " WHERE id_item = 'id'"
                 )
         }
         post("/copies/insert/{id}") {
             val temp = statement
-                .executeUpdate(
+                .executeQuery(
                     "INSERT INTO \"Inventory\".\"Copies\" (id_item, tome, language, bank)" +
                             " VALUES ('', '', '', '')"
                 )
         }
         post("/copies/update/{id}") {
             val temp = statement
-                .executeUpdate(
+                .executeQuery(
                     "UPDATE \"Inventory\".\"Copies\"" +
                             " SET id_item = '', tome = '', language = '', bank = ''" +
                             " WHERE id_copy = 'id'"
                 )
         }
         delete("/copies/delete/{id}") {
-            statement.executeUpdate(
+            statement.executeQuery(
                 "DELETE FROM \"Inventory\".\"Copies\"" +
                         " WHERE id_copy = ''"
             )
@@ -208,28 +206,28 @@ fun Application.module(testing: Boolean = false) {
         //--------------------------------------------------------------------------------------------------CopyLocation
         get("/copyLocation/{id}") {
             val temp = statement
-                .executeUpdate(
+                .executeQuery(
                     "SELECT * FROM \"Inventory\".\"CopyLocation\"" +
                             " WHERE id_copy = 'id'"
                 )
         }
         post("/copyLocation/insert/{id}") {
             val temp = statement
-                .executeUpdate(
+                .executeQuery(
                     "INSERT INTO \"Inventory\".\"CopyLocation\" (id_copy, id_storage, amount)" +
                             " VALUES ('', '', '')"
                 )
         }
         post("/copyLocation/update/{id}") {
             val temp = statement
-                .executeUpdate(
+                .executeQuery(
                     "UPDATE \"Inventory\".\"CopyLocation\"" +
                             " SET id_copy = '', id_storage = '', amount = ''" +
                             " WHERE id_copy = 'id'"
                 )
         }
         delete("/copyLocation/delete/{id}") {
-            statement.executeUpdate(
+            statement.executeQuery(
                 "DELETE FROM \"Inventory\".\"CopyLocation\"" +
                         " WHERE id_copy = 'id'"
             )
@@ -237,28 +235,28 @@ fun Application.module(testing: Boolean = false) {
         //---------------------------------------------------------------------------------------------------------Items
         get("/items/{id}") {
             val temp = statement
-                .executeUpdate(
+                .executeQuery(
                     "SELECT * FROM \"Inventory\".\"Items\"" +
                             " WHERE isbn = 'id'"
                 )
         }
         post("/items/insert/{id}") {
             val temp = statement
-                .executeUpdate(
+                .executeQuery(
                     "INSERT INTO \"Inventory\".\"Items\" (isbn, rlbc, title, authors, type, details)" +
                             " VALUES ('', '', '', '', '', '')"
                 )
         }
         post("/items/update/{id}") {
             val temp = statement
-                .executeUpdate(
+                .executeQuery(
                     "UPDATE \"Inventory\".\"Items\"" +
                             "SET isbn = '', rlbc = '', title = '', authors = '', type = '', details = ''" +
                             " WHERE id_item = 'id'"
                 )
         }
         delete("/items/delete/{id}") {
-            statement.executeUpdate(
+            statement.executeQuery(
                 "DELETE FROM \"Inventory\".\"Items\"" +
                         " WHERE id_item = 'id'"
             )
@@ -266,28 +264,28 @@ fun Application.module(testing: Boolean = false) {
         //---------------------------------------------------------------------------------------------------------Rents
         get("/rents/{id}") {
             val temp = statement
-                .executeUpdate(
+                .executeQuery(
                     "SELECT * FROM \"Inventory\".\"Rents\"" +
                             " WHERE id_user = '' AND id_copy = ''"
                 )
         }
         post("/rents/insert/{id}") {
             val temp = statement
-                .executeUpdate(
+                .executeQuery(
                     "INSERT INTO \"Inventory\".\"Rents\" (id_user, id_copy, from_date, until_date)" +
                             " VALUES ('', '', '', '')"
                 )
         }
         post("rents/update/{id}") {
             val temp = statement
-                .executeUpdate(
+                .executeQuery(
                     "UPDATE \"Inventory\".\"Rents\"" +
                             " SET id_user = '', id_copy = '', from_date = '', until_date = ''" +
                             " WHERE id_rent = 'id'"
                 )
         }
         delete("/rents/delete/{id}") {
-            statement.executeUpdate(
+            statement.executeQuery(
                 "DELETE FROM \"Inventory\".\"Rents\"" +
                         " WHERE id_rent = 'id'"
             )
