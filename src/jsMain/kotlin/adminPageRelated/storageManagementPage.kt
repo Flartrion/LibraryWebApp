@@ -28,16 +28,15 @@ external interface StorageManagementPageProps : RProps {
 }
 
 class StorageManagementPage : RComponent<StorageManagementPageProps, StorageManagementPageState>() {
-    init {
-        state = StorageManagementPageState(false, ArrayList())
 
-    }
 
     override fun componentDidMount() {
+//        state = StorageManagementPageState(false, arrayListOf(Storages("2", "5"), Storages("2", "66")))
         val xml = XMLHttpRequest()
         xml.open("get", "/storages")
         xml.onload = {
-            setState(StorageManagementPageState(false, JSON.parse(xml.responseText) as ArrayList<Storages>))
+            setState(StorageManagementPageState(false, JSON.parse(xml.responseText)))
+            console.log(JSON.parse(xml.responseText))
         }
         xml.send()
     }

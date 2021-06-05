@@ -66,9 +66,6 @@ fun Application.module(testing: Boolean = false) {
                 }
             }
         }
-        post("/storages") {
-            call.respond("yep")
-        }
         post("/search") {
             val params = call.receiveParameters()
             val name = params["name"]
