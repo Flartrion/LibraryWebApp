@@ -27,18 +27,6 @@ fun Application.module(testing: Boolean = false) {
         DriverManager.getConnection(url, properties.getProperty("user"), properties.getProperty("password"))
     val statement = connection.createStatement()
 
-    try {
-
-        val count =
-            statement.executeUpdate("INSERT INTO \"Facilities\".\"Storages\" (address) VALUES ('проспект Джорджа Джостара, д. 17')")
-//        val count = statement.executeUpdate("DELETE FROM \"Facilities\".\"Storages\" WHERE address='какой-то адрес'")
-    } catch (e: Exception) {
-        File("C:\\Users\\vlade\\Downloads\\error.txt").printWriter().use { out ->
-            out.println(e.message)
-        }
-    }
-
-
 //    install(ContentNegotiation) {
 //        json()
 //    }
@@ -69,8 +57,24 @@ fun Application.module(testing: Boolean = false) {
                 }
                 body {
                     id = "root"
+                    b {
+                        +(bookId ?: "Fuck you")
+                    }
                 }
             }
+        }
+        post("/storages") {
+            call.respond("yep")
+        }
+        post("/search") {
+            val params = call.receiveParameters()
+            val name = params["name"]
+            val authors = params["authors"]
+            val type = params["type"]
+            val sort = params["sorting"]
+            val ascDesc = params["ascDesc"]
+            println("$name + $authors + $type + $sort + $ascDesc")
+            call.respondText("$name + $authors + $type + $sort + $ascDesc")
         }
         post("/") {
             call.respond("Ok")
@@ -289,6 +293,12 @@ fun Application.module(testing: Boolean = false) {
             )
         }
 
+        get("/image/{name}") {
+            val picname = call.parameters["name"]
+            val file = File("C:/resources/$picname")
+            println(file.absolutePath)
+            call.respondFile(file)
+        }
         static("/static") {
             resources()
         }

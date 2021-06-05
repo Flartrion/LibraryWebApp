@@ -1,5 +1,8 @@
 import adminPageRelated.adminPage
+import kotlinx.browser.document
+import kotlinx.browser.window
 import kotlinx.css.*
+import kotlinx.html.LINK
 import react.RBuilder
 import react.RComponent
 import react.RProps
@@ -37,16 +40,38 @@ class MainPage : RComponent<MainPageProps, LocationState>() {
                     display = Display.flex
                     flexDirection = FlexDirection.row
                 }
-                loginMenu()
+                loginMenu() {
+                    onRegisterPressed = {
+                        setState(LocationState(SiteLocation.Register))
+                    }
+                }
 
 
                 when (state.location) {
-                    SiteLocation.Main -> generalBody()
-                    SiteLocation.Contacts -> contactsPage()
-                    SiteLocation.Schedule -> schedulePage()
-                    SiteLocation.About -> aboutPage()
-                    SiteLocation.AdminPanel -> adminPage()
-                    else -> generalBody()
+                    SiteLocation.Main -> {
+                        generalBody()
+                        document.title = "Библиотека книг"
+                    }
+                    SiteLocation.Contacts -> {
+                        contactsPage()
+                        document.title = "Контакты библиотеки"
+                    }
+                    SiteLocation.Schedule -> {
+                        schedulePage()
+                        document.title = "Читателям библиотеки"
+                    }
+                    SiteLocation.About -> {
+                        aboutPage()
+                        document.title = "О библиотеке"
+                    }
+                    SiteLocation.AdminPanel -> {
+                        adminPage()
+                        document.title = "AWAKEN, MY MASTERS!"
+                    }
+                    SiteLocation.Register -> {
+                        registerPage()
+                        document.title = "HOHO, MUKATTE KURU NO KA?"
+                    }
                 }
 
                 styledDiv {

@@ -24,7 +24,6 @@ class AddBookPage : RComponent<AddBookPageProps, RState>() {
         styledTable {
             css {
                 width = LinearDimension.fillAvailable
-                backgroundColor = Color("#888888")
                 children {
                     children {
                         textAlign = TextAlign.left
