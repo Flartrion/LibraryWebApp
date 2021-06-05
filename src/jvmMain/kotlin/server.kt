@@ -23,7 +23,7 @@ fun Application.module(testing: Boolean = false) {
     val url = "jdbc:postgresql://localhost:5432/library"
     val properties = Properties()
     properties.setProperty("user", "postgres")
-    properties.setProperty("password", "volume")
+    properties.setProperty("password", "1")
 
 //    val connection = connect(url, properties)!!
     val connection =
@@ -100,13 +100,12 @@ fun Application.module(testing: Boolean = false) {
         get("/storages") {
             val temp = statement
                 .executeQuery(
-                    "SELECT * FROM \"Facilities\".\"Storages\""
+                    "select * from \"Facilities\".\"Storages\""
                 )
+
             val temp2 = ArrayList<Storages>()
-            temp.next()
-            for (i in 1 until temp.fetchSize) {
+            while (temp.next()) {
                 temp2.add(Storages(temp.getInt(1).toString(), temp.getString(2)))
-                temp.next()
             }
             println(temp.fetchSize)
             println(temp2)
