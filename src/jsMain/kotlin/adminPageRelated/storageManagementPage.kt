@@ -1,5 +1,6 @@
 package adminPageRelated
 
+import Storages
 import kotlinx.css.*
 import kotlinx.css.properties.Time
 import kotlinx.css.properties.Timing
@@ -8,6 +9,7 @@ import kotlinx.html.InputType
 import kotlinx.html.hidden
 import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onClickFunction
+import org.w3c.dom.Storage
 import org.w3c.dom.XMLDocument
 import org.w3c.xhr.XMLHttpRequest
 import react.RBuilder
@@ -18,7 +20,7 @@ import react.dom.br
 import styled.*
 import kotlin.js.Json
 
-data class StorageManagementPageState(val isAddMenuVisible: Boolean, val storages: String) : RState
+data class StorageManagementPageState(var isAddMenuVisible: Boolean, var storages: ArrayList<Storages>) : RState
 
 external interface StorageManagementPageProps : RProps {
     var storageAddress: String
@@ -27,15 +29,15 @@ external interface StorageManagementPageProps : RProps {
 
 class StorageManagementPage : RComponent<StorageManagementPageProps, StorageManagementPageState>() {
     init {
-        state = StorageManagementPageState(false, "")
+        state = StorageManagementPageState(false, ArrayList())
 
     }
 
     override fun componentDidMount() {
         val xml = XMLHttpRequest()
-        xml.open("post", "/storages")
+        xml.open("get", "/storages")
         xml.onload = {
-            setState(StorageManagementPageState(false, xml.responseText))
+            setState(StorageManagementPageState(false, JSON.parse(xml.responseText) as ArrayList<Storages>))
         }
         xml.send()
     }
@@ -63,8 +65,11 @@ class StorageManagementPage : RComponent<StorageManagementPageProps, StorageMana
                 styledP { +"You fool" }
             } else {
                 styledP { +"Mmmm, yes, this is wise" }
+                for (storage in state.storages) {
+                    styledP { storage.id_storage }
+                    +storage.address
+                }
             }
-            +"Some content here (will pull up storages from server here)"
             styledButton {
                 attrs {
                     onClickFunction = {

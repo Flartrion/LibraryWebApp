@@ -8,11 +8,14 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import io.ktor.serialization.*
 import kotlinx.html.*
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import java.io.File
 import java.sql.Connection
 import java.sql.DriverManager
 import java.sql.SQLException
 import java.util.*
+import kotlin.collections.ArrayList
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -96,6 +99,17 @@ fun Application.module(testing: Boolean = false) {
                     "SELECT * FROM \"Facilities\".\"Storages\"" +
                             " WHERE address = 'где-то'"
                 )
+        }
+        get("/storages") {
+            val temp = statement
+                .executeQuery(
+                    "SELECT * FROM \"Facilities\".\"Storages\""
+                )
+            val temp2 = ArrayList<Storages>()
+            for (i in 1..temp.fetchSize) {
+                temp2.add(Storages(temp.getInt(1).toString(), temp.getString(2)))
+            }
+            call.respondText(Json.encodeToString(temp2))
         }
         post("/storages/insert/{id}") {
             val temp = statement
