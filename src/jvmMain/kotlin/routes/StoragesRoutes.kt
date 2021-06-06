@@ -4,6 +4,7 @@ import DataBase.statement
 import Storages
 import io.ktor.application.*
 import io.ktor.http.*
+import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import kotlinx.serialization.encodeToString
@@ -38,7 +39,7 @@ fun Route.storagesRouting() {
             call.respondText(Json.encodeToString(storages))
         }
         post("/insert") {
-            val address = call.parameters["address"] ?: return@post call.respondText(
+            val address = call.receiveParameters()["address"] ?: return@post call.respondText(
                 "Missing or malformed parameters",
                 status = HttpStatusCode.BadRequest
             )
@@ -52,7 +53,7 @@ fun Route.storagesRouting() {
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest
             )
-            val address = call.parameters["address"] ?: return@post call.respondText(
+            val address = call.receiveParameters()["address"] ?: return@post call.respondText(
                 "Missing or malformed parameters",
                 status = HttpStatusCode.BadRequest
             )
