@@ -102,6 +102,7 @@ class StorageManagementPage : RComponent<StorageManagementPageProps, StorageMana
                                     if (window.confirm("Удалить хранилище №${state.storages[i].id_storage}? Это действие нельзя будет отменить.")) {
                                         setState {
                                             inProcess = true
+                                            editing = -1
                                         }
                                         val deleteRequest = XMLHttpRequest()
                                         deleteRequest.open("delete", "/storages/${state.storages[i].id_storage}")
