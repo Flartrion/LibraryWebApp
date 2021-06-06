@@ -25,7 +25,7 @@ fun Route.storagesRouting() {
             call.respondText(Json.encodeToString(storages))
         }
         get("{id}") {
-            val id = call.receiveParameters()["id"] ?: return@get call.respondText(
+            val id = call.parameters["id"] ?: return@get call.respondText(
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest
             )
@@ -40,7 +40,7 @@ fun Route.storagesRouting() {
             call.respondText(Json.encodeToString(storages))
         }
         post("/insert") {
-            val address = call.receiveParameters()["address"] ?: return@post call.respondText(
+            val address = call.parameters["address"] ?: return@post call.respondText(
                 "Missing or malformed parameters",
                 status = HttpStatusCode.BadRequest
             )
@@ -51,7 +51,7 @@ fun Route.storagesRouting() {
             call.respond(HttpStatusCode.OK)
         }
         post("/update/{id}") {
-            val id = call.receiveParameters()["id"] ?: return@post call.respondText(
+            val id = call.parameters["id"] ?: return@post call.respondText(
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest
             )
@@ -67,7 +67,7 @@ fun Route.storagesRouting() {
             call.respond(HttpStatusCode.OK)
         }
         delete("{id}") {
-            val id = call.receiveParameters()["id"] ?: return@delete call.respondText(
+            val id = call.parameters["id"] ?: return@delete call.respondText(
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest
             )

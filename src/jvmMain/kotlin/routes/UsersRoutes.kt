@@ -53,7 +53,7 @@ fun Route.usersRouting() {
             call.respondText(Json.encodeToString(users))
         }
         get("{id}") {
-            val id = call.receiveParameters()["id"] ?: return@get call.respondText(
+            val id = call.parameters["id"] ?: return@get call.respondText(
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest
             )
@@ -104,7 +104,7 @@ fun Route.usersRouting() {
             call.respond(HttpStatusCode.OK)
         }
         post("/update/{id}") {
-            val id = call.receiveParameters()["id"] ?: return@post call.respondText(
+            val id = call.parameters["id"] ?: return@post call.respondText(
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest
             )
@@ -128,7 +128,7 @@ fun Route.usersRouting() {
                     setExpression += ", $i"
                 }
             } else
-                return@post call.respondText("Missing or malformed id", status = HttpStatusCode.BadRequest)
+                return@post call.respondText("Missing or malformed parameters", status = HttpStatusCode.BadRequest)
             statement.executeUpdate(
                 "UPDATE \"HumanResources\".\"Users\"" +
                         setExpression +
@@ -137,7 +137,7 @@ fun Route.usersRouting() {
             call.respond(HttpStatusCode.OK)
         }
         delete("{id}") {
-            val id = call.receiveParameters()["id"] ?: return@delete call.respondText(
+            val id = call.parameters["id"] ?: return@delete call.respondText(
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest
             )
