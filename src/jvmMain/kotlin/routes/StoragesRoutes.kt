@@ -4,6 +4,7 @@ import DataBase.statement
 import Storages
 import io.ktor.application.*
 import io.ktor.http.*
+import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import kotlinx.serialization.encodeToString
@@ -12,18 +13,19 @@ import kotlinx.serialization.json.Json
 fun Route.storagesRouting() {
     route("/storages") {
         get {
-            val address = if (call.parameters["address"] != null) " WHERE " + call.parameters["address"] else ""
+            val address =
+                if (call.receiveParameters()["address"] != null) " WHERE " + call.parameters["address"] else ""
             val resultSet = statement
                 .executeQuery(
                     "SELECT * FROM \"Facilities\".\"Storages\"$address"
                 )
             val storages = ArrayList<Storages>()
             while (resultSet.next())
-                storages.add(Storages(resultSet.getInt(1).toString(), resultSet.getString(2)))
+                storages.add(Storages(resultSet.getString(1), resultSet.getString(2)))
             call.respondText(Json.encodeToString(storages))
         }
         get("{id}") {
-            val id = call.parameters["id"] ?: return@get call.respondText(
+            val id = call.receiveParameters()["id"] ?: return@get call.respondText(
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest
             )
@@ -38,7 +40,7 @@ fun Route.storagesRouting() {
             call.respondText(Json.encodeToString(storages))
         }
         post("/insert") {
-            val address = call.parameters["address"] ?: return@post call.respondText(
+            val address = call.receiveParameters()["address"] ?: return@post call.respondText(
                 "Missing or malformed parameters",
                 status = HttpStatusCode.BadRequest
             )
@@ -46,13 +48,14 @@ fun Route.storagesRouting() {
                 "INSERT INTO \"Facilities\".\"Storages\" (address)" +
                         " VALUES ('$address')"
             )
+            call.respond(HttpStatusCode.OK)
         }
         post("/update/{id}") {
-            val id = call.parameters["id"] ?: return@post call.respondText(
+            val id = call.receiveParameters()["id"] ?: return@post call.respondText(
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest
             )
-            val address = call.parameters["address"] ?: return@post call.respondText(
+            val address = call.receiveParameters()["address"] ?: return@post call.respondText(
                 "Missing or malformed parameters",
                 status = HttpStatusCode.BadRequest
             )
@@ -61,9 +64,10 @@ fun Route.storagesRouting() {
                         " SET address = '$address'" +
                         " WHERE id_storage = $id"
             )
+            call.respond(HttpStatusCode.OK)
         }
         delete("{id}") {
-            val id = call.parameters["id"] ?: return@delete call.respondText(
+            val id = call.receiveParameters()["id"] ?: return@delete call.respondText(
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest
             )
@@ -71,6 +75,7 @@ fun Route.storagesRouting() {
                 "DELETE FROM \"Facilities\".\"Storages\"" +
                         " WHERE id_storage = $id"
             )
+            call.respond(HttpStatusCode.OK)
         }
     }
 }

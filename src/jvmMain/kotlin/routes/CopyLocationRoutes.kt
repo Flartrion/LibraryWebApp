@@ -2,6 +2,8 @@ package routes
 
 import DataBase.statement
 import io.ktor.application.*
+import io.ktor.http.*
+import io.ktor.response.*
 import io.ktor.routing.*
 
 fun Route.copyLocationRouting() {
@@ -18,6 +20,7 @@ fun Route.copyLocationRouting() {
                 "INSERT INTO \"Inventory\".\"CopyLocation\" (id_copy, id_storage, amount)" +
                         " VALUES ('', '', '')"
             )
+            call.respond(HttpStatusCode.OK)
         }
         post("/update/{id}") {
             statement.executeUpdate(
@@ -25,12 +28,14 @@ fun Route.copyLocationRouting() {
                         " SET id_copy = '', id_storage = '', amount = ''" +
                         " WHERE id_copy = 'id'"
             )
+            call.respond(HttpStatusCode.OK)
         }
         delete("{id}") {
             statement.executeUpdate(
                 "DELETE FROM \"Inventory\".\"CopyLocation\"" +
                         " WHERE id_copy = 'id'"
             )
+            call.respond(HttpStatusCode.OK)
         }
     }
 }
