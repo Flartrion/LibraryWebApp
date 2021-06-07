@@ -16,16 +16,35 @@ import react.*
 import react.dom.option
 import styled.*
 
+external interface BookSearchState : RState {
+    var isSearchVisible: Boolean
+    var titleInput: String
+    var authorsInput: String
+    var typeInput: String
+    var isbnInput: String
+    var rlbcInput: String
+    var ascDesc: Boolean
+    var sorting: String
+    var bookList: List<Items>
+    var listLoaded: Boolean
+    var editing: Int
+    var inProcess: Boolean
+}
 
-data class BookSearchState(
-    var isSearchVisible: Boolean = false,
-    var titleInput: String = "",
-    var authorsInput: String = "",
-    var typeInput: String = "",
-    var ascDesc: Boolean = false,
-    var sorting: String = "Alphabetic",
-    var bookList: List<Items> = ArrayList()
-) : RState
+//data class BookSearchState(
+//    var isSearchVisible: Boolean = false,
+//    var titleInput: String = "",
+//    var authorsInput: String = "",
+//    var typeInput: String = "",
+//    var isbnInput: String = "",
+//    var rlbcInput: String = "",
+//    var ascDesc: Boolean = false,
+//    var sorting: String = "Alphabetic",
+//    var bookList: List<Items> = ArrayList(),
+//    var listLoaded: Boolean = false,
+//    var editing: Int = -1,
+//    var inProcess: Boolean = false
+//) : RState
 
 external interface BookSearchProps : RProps {
 
@@ -35,9 +54,19 @@ external interface BookSearchProps : RProps {
 class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
 
     override fun componentDidMount() {
-        setState(
-            BookSearchState()
-        )
+        setState {
+            titleInput = ""
+            authorsInput = ""
+            typeInput = ""
+            isbnInput = ""
+            rlbcInput = ""
+            ascDesc = false
+            listLoaded = false
+            inProcess = false
+            isSearchVisible = false
+            editing = -1
+            sorting = "Alphabetic"
+        }
     }
 
     override fun RBuilder.render() {
@@ -76,6 +105,7 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
                     method = FormMethod.post
                     id = "searchForm"
                     onSubmitFunction = {
+                        it.preventDefault()
                         val getRequest = XMLHttpRequest()
                         var queryString = "/items?ascDesc=${if (state.ascDesc) "ASC" else "DESC"}"
                         if (!state.titleInput.isBlank())
@@ -84,13 +114,19 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
                             queryString += "&authors=${state.authorsInput}"
                         if (!state.typeInput.isBlank())
                             queryString += "&type=${state.typeInput}"
+                        if (!state.isbnInput.isBlank())
+                            queryString += "&isbn=${state.isbnInput}"
+                        if (!state.rlbcInput.isBlank())
+                            queryString += "&rlbc=${state.rlbcInput}"
                         getRequest.open("get", queryString)
                         getRequest.onload = {
-                            setState { bookList = Json.decodeFromString(getRequest.responseText) }
-                            console.log(getRequest.responseText)
+                            setState {
+                                bookList = Json.decodeFromString(getRequest.responseText)
+                                if (!bookList.isEmpty())
+                                    listLoaded = true
+                            }
                         }
                         getRequest.send()
-                        it.preventDefault()
                     }
                 }
                 styledTable {
@@ -191,6 +227,44 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
 
                     styledTr {
                         styledTd {
+                            styledLabel { +"ISBN: " }
+                        }
+                        styledTd {
+                            styledInput {
+                                attrs {
+                                    form = "searchForm"
+                                    name = "isbn"
+                                    value = state.isbnInput
+                                    onChangeFunction = {
+                                        val newValue = (it.target as HTMLInputElement).value
+                                        setState { isbnInput = newValue }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    styledTr {
+                        styledTd {
+                            styledLabel { +"ББК: " }
+                        }
+                        styledTd {
+                            styledInput {
+                                attrs {
+                                    form = "searchForm"
+                                    name = "rlbc"
+                                    value = state.rlbcInput
+                                    onChangeFunction = {
+                                        val newValue = (it.target as HTMLInputElement).value
+                                        setState { rlbcInput = newValue }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    styledTr {
+                        styledTd {
                             styledLabel { +"Сортировать: " }
                         }
                         styledTd {
@@ -266,14 +340,6 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
                                     name = "submit"
                                     value = "Let's goooo"
                                     type = InputType.submit
-//                                onClickFunction = {
-//                                    val request = XMLHttpRequest()
-//                                    request.open("post", "/")
-//                                    request.addEventListener("load", {
-//
-//                                    })
-//                                    request.send()
-//                                }
                                 }
                                 css {
                                     borderRadius = 0.px
@@ -292,8 +358,46 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
                 }
             }
 
-            styledDiv {
-
+            if (state.listLoaded) {
+                for (i in 0 until state.bookList.size) {
+                    itemListElement {
+                        item = state.bookList[i]
+                        editing = (state.editing == i)
+                        inProcess = state.inProcess
+                        changeInProcess = {
+                            setState { inProcess = it }
+                        }
+                        changeEditing = {
+                            setState { editing = if (it) i else -1 }
+                        }
+                        update = {
+                            val getRequest = XMLHttpRequest()
+                            var queryString = "/items?ascDesc=${if (state.ascDesc) "ASC" else "DESC"}"
+                            if (!state.titleInput.isBlank())
+                                queryString += "&title=${state.titleInput}"
+                            if (!state.authorsInput.isBlank())
+                                queryString += "&authors=${state.authorsInput}"
+                            if (!state.typeInput.isBlank())
+                                queryString += "&type=${state.typeInput}"
+                            if (!state.isbnInput.isBlank())
+                                queryString += "&isbn=${state.isbnInput}"
+                            if (!state.rlbcInput.isBlank())
+                                queryString += "&rlbc=${state.rlbcInput}"
+                            getRequest.open("get", queryString)
+                            getRequest.onload = {
+                                setState {
+                                    inProcess = false
+                                    bookList = Json.decodeFromString(getRequest.responseText)
+                                    if (!bookList.isEmpty())
+                                        listLoaded = true
+                                }
+                            }
+                            getRequest.send()
+                        }
+                    }
+                }
+            } else {
+                +"Nothing here just yet."
             }
         }
     }
