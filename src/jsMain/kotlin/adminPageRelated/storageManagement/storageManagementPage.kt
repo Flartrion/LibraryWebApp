@@ -1,7 +1,6 @@
 package adminPageRelated.storageManagement
 
 import Storages
-import kotlinx.browser.window
 import kotlinx.css.*
 import kotlinx.html.FormMethod
 import kotlinx.html.InputType
@@ -16,7 +15,6 @@ import org.w3c.dom.HTMLInputElement
 import org.w3c.xhr.FormData
 import org.w3c.xhr.XMLHttpRequest
 import react.*
-import react.dom.defaultValue
 import styled.*
 
 data class StorageManagementPageState(
@@ -76,12 +74,12 @@ class StorageManagementPage : RComponent<StorageManagementPageProps, StorageMana
                         processState = state.inProcess
                         storage = state.storages[i]
 
-                        onEditingFun = {
+                        changeEditing = {
                             setState {
                                 editing = if (it) i else -1
                             }
                         }
-                        onProcessChangeFun = {
+                        changeInProcess = {
                             setState {
                                 processState = it
                             }

@@ -7,26 +7,38 @@ import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onClickFunction
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLTextAreaElement
-import org.w3c.dom.ImageBitmap
 import org.w3c.xhr.FormData
 import org.w3c.xhr.XMLHttpRequest
 import react.*
 import styled.*
 
-data class AddBookPageState(
-    var isbnInput: String,
-    var rlbcInput: String,
-    var titleInput: String,
-    var authorsInput: String,
-    var typeInput: String,
+external interface AddItemPageState : RState {
+    var isbnInput: String
+    var rlbcInput: String
+    var titleInput: String
+    var authorsInput: String
+    var typeInput: String
     var detailsInput: String
-) : RState
+    var languageInput: String
+}
 
-external interface AddBookPageProps : RProps {
+external interface AddItemPageProps : RProps {
     var onCompleteFunction: () -> Unit
 }
 
-class AddBookPage : RComponent<AddBookPageProps, AddBookPageState>() {
+class AddItemPage : RComponent<AddItemPageProps, AddItemPageState>() {
+    override fun componentDidMount() {
+        setState {
+            isbnInput = ""
+            rlbcInput = ""
+            titleInput = ""
+            authorsInput = ""
+            typeInput = ""
+            detailsInput = ""
+            languageInput = ""
+        }
+    }
+
     override fun RBuilder.render() {
         styledTable {
             css {
@@ -144,6 +156,22 @@ class AddBookPage : RComponent<AddBookPageProps, AddBookPageState>() {
 
             styledTr {
                 styledTd {
+                    styledLabel { +"Язык: " }
+                }
+                styledTd {
+                    styledInput {
+                        attrs {
+                            onChangeFunction = {
+                                setState { languageInput = (it.target as HTMLInputElement).value }
+                            }
+                            type = InputType.text
+                        }
+                    }
+                }
+            }
+
+            styledTr {
+                styledTd {
                     styledLabel { +"Дополнительно: " }
                 }
                 styledTd {
@@ -177,12 +205,20 @@ class AddBookPage : RComponent<AddBookPageProps, AddBookPageState>() {
                                     }
                                 }
                                 val data = FormData()
-                                data.append("title", state.titleInput)
-                                data.append("authors", state.authorsInput)
-                                data.append("type", state.typeInput)
-                                data.append("isbn", state.isbnInput)
-                                data.append("rlbc", state.rlbcInput)
-                                data.append("details", state.detailsInput)
+                                if (!state.titleInput.isBlank())
+                                    data.append("title", state.titleInput)
+                                if (!state.authorsInput.isBlank())
+                                    data.append("authors", state.authorsInput)
+                                if (!state.typeInput.isBlank())
+                                    data.append("type", state.typeInput)
+                                if (!state.isbnInput.isBlank())
+                                    data.append("isbn", state.isbnInput)
+                                if (!state.rlbcInput.isBlank())
+                                    data.append("rlbc", state.rlbcInput)
+                                if (!state.detailsInput.isBlank())
+                                    data.append("details", state.detailsInput)
+                                if (!state.languageInput.isBlank())
+                                    data.append("language", state.languageInput)
                                 request.send(data)
                             }
                         }

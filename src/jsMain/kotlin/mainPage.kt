@@ -1,8 +1,7 @@
 import adminPageRelated.adminPage
+import itemRelated.generalBody
 import kotlinx.browser.document
-import kotlinx.browser.window
 import kotlinx.css.*
-import kotlinx.html.LINK
 import react.RBuilder
 import react.RComponent
 import react.RProps

@@ -1,3 +1,6 @@
+package itemRelated
+
+import Items
 import kotlinx.browser.window
 import kotlinx.css.*
 import kotlinx.html.InputType
@@ -6,6 +9,7 @@ import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onClickFunction
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLTextAreaElement
+import org.w3c.xhr.FormData
 import org.w3c.xhr.XMLHttpRequest
 import react.*
 import react.dom.defaultValue
@@ -18,6 +22,7 @@ external interface ItemListElementState : RState {
     var typeInput: String
     var isbnInput: String
     var rlbcInput: String
+    var languageInput: String
     var detailsInput: String
 }
 
@@ -31,6 +36,19 @@ external interface ItemListElementProps : RProps {
 }
 
 class ItemListElement : RComponent<ItemListElementProps, ItemListElementState>() {
+    override fun componentDidMount() {
+        setState {
+            detailsOpened = false
+            titleInput = props.item.title
+            authorsInput = props.item.authors
+            typeInput = props.item.type
+            isbnInput = props.item.isbn
+            rlbcInput = props.item.rlbc
+            languageInput = props.item.language
+            detailsInput = props.item.details
+        }
+    }
+
     override fun RBuilder.render() {
         styledDiv {
             css {
@@ -75,6 +93,8 @@ class ItemListElement : RComponent<ItemListElementProps, ItemListElementState>()
                     styledBr { }
                 }
                 +"Тип: ${props.item.type}"
+                styledBr { }
+                +"Язык: ${props.item.language}"
                 styledBr { }
                 +"ISBN: ${props.item.isbn}"
                 styledBr { }
@@ -134,6 +154,18 @@ class ItemListElement : RComponent<ItemListElementProps, ItemListElementState>()
                             type = InputType.text
                             onChangeFunction = {
                                 setState { typeInput = (it.target as HTMLInputElement).value }
+                            }
+                        }
+                    }
+                }
+                styledP {
+                    +"Язык: "
+                    styledInput {
+                        attrs {
+                            defaultValue = props.item.language
+                            type = InputType.text
+                            onChangeFunction = {
+                                setState { languageInput = (it.target as HTMLInputElement).value }
                             }
                         }
                     }
@@ -219,6 +251,39 @@ class ItemListElement : RComponent<ItemListElementProps, ItemListElementState>()
                     styledButton {
                         attrs {
                             disabled = props.inProcess
+                            onClickFunction = {
+                                props.changeInProcess(true)
+
+                                val updateRequest = XMLHttpRequest()
+                                updateRequest.open(
+                                    "post",
+                                    "/items/update/${props.item.id_item}"
+                                )
+                                updateRequest.onload = {
+                                    if (updateRequest.status != 500.toShort()) {
+                                        props.changeEditing(false)
+                                        props.update()
+                                    } else {
+                                        window.alert("Something went wrong!\nReason: ${updateRequest.responseText}")
+                                    }
+                                }
+                                val data = FormData()
+                                if (!state.titleInput.isBlank())
+                                    data.append("title", state.titleInput)
+                                if (!state.authorsInput.isBlank())
+                                    data.append("authors", state.authorsInput)
+                                if (!state.detailsInput.isBlank())
+                                    data.append("details", state.detailsInput)
+                                if (!state.isbnInput.isBlank())
+                                    data.append("isbn", state.isbnInput)
+                                if (!state.languageInput.isBlank())
+                                    data.append("language", state.languageInput)
+                                if (!state.typeInput.isBlank())
+                                    data.append("type", state.typeInput)
+                                if (!state.rlbcInput.isBlank())
+                                    data.append("rlbc", state.rlbcInput)
+                                updateRequest.send(data)
+                            }
                         }
                         +"Подтвердить"
                     }

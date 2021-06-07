@@ -55,7 +55,7 @@ class AdminPage : RComponent<RProps, AdminPageState>() {
                 }
                 styledButton {
                     attrs {
-                        onClickFunction = { setState { curLocation = AdminPageLocation.AddBook } }
+                        onClickFunction = { setState { curLocation = AdminPageLocation.AddItem } }
                     }
                     +"Добавить книгу"
                 }
@@ -93,7 +93,7 @@ class AdminPage : RComponent<RProps, AdminPageState>() {
                         AdminPageLocation.ManageStorages -> child(StorageManagementPage::class) {
 
                         }
-                        AdminPageLocation.AddBook -> child(AddBookPage::class) {
+                        AdminPageLocation.AddItem -> child(AddItemPage::class) {
                             attrs {
                                 onCompleteFunction = { setState { curLocation = AdminPageLocation.MainMenu } }
                             }

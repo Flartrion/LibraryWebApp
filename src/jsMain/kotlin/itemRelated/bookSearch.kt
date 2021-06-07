@@ -1,3 +1,6 @@
+package itemRelated
+
+import Items
 import kotlinx.browser.window
 import kotlinx.css.*
 import kotlinx.html.FormMethod
@@ -31,7 +34,7 @@ external interface BookSearchState : RState {
     var inProcess: Boolean
 }
 
-//data class BookSearchState(
+//data class itemRelated.BookSearchState(
 //    var isSearchVisible: Boolean = false,
 //    var titleInput: String = "",
 //    var authorsInput: String = "",
@@ -323,8 +326,8 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
                                     }
                                 }
                                 if (state.ascDesc)
-                                    +"↑" else
-                                    +"↓"
+                                    +"↓" else
+                                    +"↑"
                             }
                         }
                     }

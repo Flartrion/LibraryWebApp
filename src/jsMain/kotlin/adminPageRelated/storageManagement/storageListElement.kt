@@ -22,8 +22,8 @@ external interface StorageListElementProps : RProps {
     var processState: Boolean
     var storage: Storages
 
-    var onEditingFun: (Boolean) -> Unit
-    var onProcessChangeFun: (Boolean) -> Unit
+    var changeEditing: (Boolean) -> Unit
+    var changeInProcess: (Boolean) -> Unit
     var onUpdateFun: (List<Storages>) -> Unit
 }
 
@@ -63,15 +63,15 @@ class StorageListElement : RComponent<StorageListElementProps, StorageListElemen
                     disabled = props.processState
                     onClickFunction = {
                         if (window.confirm("Удалить хранилище №${props.storage.id_storage}? Это действие нельзя будет отменить.")) {
-                            props.onEditingFun(false)
-                            props.onProcessChangeFun(true)
+                            props.changeEditing(false)
+                            props.changeInProcess(true)
                             val deleteRequest = XMLHttpRequest()
                             deleteRequest.open("delete", "/storages/${props.storage.id_storage}")
                             deleteRequest.onload = {
                                 val updateRequest = XMLHttpRequest()
                                 updateRequest.open("get", "/storages")
                                 updateRequest.onload = {
-                                    props.onProcessChangeFun(false)
+                                    props.changeInProcess(false)
                                     props.onUpdateFun(Json.decodeFromString(updateRequest.responseText))
                                 }
                                 updateRequest.send()
@@ -87,7 +87,7 @@ class StorageListElement : RComponent<StorageListElementProps, StorageListElemen
                     attrs {
                         disabled = props.processState
                         onClickFunction = {
-                            props.onEditingFun(true)
+                            props.changeEditing(true)
                             setState { newAddressInput = props.storage.address }
                         }
                     }
@@ -99,7 +99,7 @@ class StorageListElement : RComponent<StorageListElementProps, StorageListElemen
                         disabled =
                             props.processState || state.newAddressInput == props.storage.address
                         onClickFunction = {
-                            props.onProcessChangeFun(true)
+                            props.changeInProcess(true)
 
                             val updateRequest = XMLHttpRequest()
                             updateRequest.open(
@@ -110,8 +110,8 @@ class StorageListElement : RComponent<StorageListElementProps, StorageListElemen
                                 val updateAfterRequest = XMLHttpRequest()
                                 updateAfterRequest.open("get", "/storages")
                                 updateAfterRequest.onload = {
-                                    props.onEditingFun(false)
-                                    props.onProcessChangeFun(false)
+                                    props.changeEditing(false)
+                                    props.changeInProcess(false)
                                     props.onUpdateFun(Json.decodeFromString<List<Storages>>(updateAfterRequest.responseText))
                                 }
                                 updateAfterRequest.send()
@@ -128,7 +128,7 @@ class StorageListElement : RComponent<StorageListElementProps, StorageListElemen
                     attrs {
                         disabled = props.processState
                         onClickFunction = {
-                            props.onEditingFun(false)
+                            props.changeEditing(false)
                         }
                     }
                     +"Отменить"
