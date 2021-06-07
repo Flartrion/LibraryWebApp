@@ -21,13 +21,15 @@ fun Route.usersRouting() {
                 if (parameters["role"] != null)
                     filterConditions.add("role = '" + parameters["role"] + "'")
                 if (parameters["full_name"] != null)
-                    filterConditions.add("full_name = " + call.receiveParameters()["full_name"])
-                if (call.receiveParameters()["date_of_birth"] != null)
-                    filterConditions.add("date_of_birth = " + call.receiveParameters()["date_of_birth"])
-                if (call.receiveParameters()["phone_number"] != null)
-                    filterConditions.add("phone_number = " + call.receiveParameters()["phone_number"])
-                if (call.receiveParameters()["email"] != null)
-                    filterConditions.add("email = " + call.receiveParameters()["email"])
+                    filterConditions.add("full_name = '" + parameters["full_name"] + "'")
+                if (parameters["date_of_birth"] != null)
+                    filterConditions.add("date_of_birth = '" + parameters["date_of_birth"] + "'")
+                if (parameters["phone_number"] != null)
+                    filterConditions.add("phone_number = '" + parameters["phone_number"] + "'")
+                if (parameters["email"] != null)
+                    filterConditions.add("email = '" + parameters["email"] + "'")
+                if (parameters["card_num"] != null)
+                    filterConditions.add("card_num = '" + parameters["card_num"] + "'")
                 filter += filterConditions[0]
                 filterConditions.removeAt(0)
                 for (i in filterConditions) {
@@ -80,29 +82,34 @@ fun Route.usersRouting() {
             call.respondText(Json.encodeToString(users))
         }
         post("/insert") {
-            val role = call.receiveParameters()["role"] ?: return@post call.respondText(
+            val parameters = call.receiveParameters()
+            val role = parameters["role"] ?: return@post call.respondText(
                 "Missing or malformed role",
                 status = HttpStatusCode.BadRequest
             )
-            val fullName = call.receiveParameters()["full_name"] ?: return@post call.respondText(
+            val fullName = parameters["full_name"] ?: return@post call.respondText(
                 "Missing or malformed full_name",
                 status = HttpStatusCode.BadRequest
             )
-            val dateOfBirth = call.receiveParameters()["date_of_birth"] ?: return@post call.respondText(
+            val dateOfBirth = parameters["date_of_birth"] ?: return@post call.respondText(
                 "Missing or malformed date_of_birth",
                 status = HttpStatusCode.BadRequest
             )
-            val phoneNumber = call.receiveParameters()["phone_number"] ?: return@post call.respondText(
+            val phoneNumber = parameters["phone_number"] ?: return@post call.respondText(
                 "Missing or malformed phone_number",
                 status = HttpStatusCode.BadRequest
             )
-            val email = call.receiveParameters()["email"] ?: return@post call.respondText(
+            val email = parameters["email"] ?: return@post call.respondText(
                 "Missing or malformed email",
                 status = HttpStatusCode.BadRequest
             )
+            val cardNum = parameters["card_num"] ?: return@post call.respondText(
+                "Missing or malformed card_num",
+                status = HttpStatusCode.BadRequest
+            )
             statement.executeUpdate(
-                "INSERT INTO \"HumanResources\".\"Users\" (role, full_name, date_of_birth, phone_number, email)" +
-                        " VALUES ($role, $fullName, $dateOfBirth, $phoneNumber, $email)"
+                "INSERT INTO \"HumanResources\".\"Users\" (role, full_name, date_of_birth, phone_number, email, card_num)" +
+                        " VALUES ('$role', '$fullName', '$dateOfBirth', '$phoneNumber', '$email', '$cardNum')"
             )
             call.respond(HttpStatusCode.OK)
         }
@@ -112,19 +119,22 @@ fun Route.usersRouting() {
                 status = HttpStatusCode.BadRequest
             )
             var setExpression: String
-            if (!call.receiveParameters().isEmpty()) {
+            val parameters = call.receiveParameters()
+            if (!parameters.isEmpty()) {
                 setExpression = " SET "
                 val setParameters = ArrayList<String>()
-                if (call.receiveParameters()["role"] != null)
-                    setParameters.add("role = " + call.receiveParameters()["role"])
-                if (call.receiveParameters()["full_name"] != null)
-                    setParameters.add("full_name = " + call.receiveParameters()["full_name"])
-                if (call.receiveParameters()["date_of_birth"] != null)
-                    setParameters.add("date_of_birth = " + call.receiveParameters()["date_of_birth"])
-                if (call.receiveParameters()["phone_number"] != null)
-                    setParameters.add("phone_number = " + call.receiveParameters()["phone_number"])
-                if (call.receiveParameters()["email"] != null)
-                    setParameters.add("email = " + call.receiveParameters()["email"])
+                if (parameters["role"] != null)
+                    setParameters.add("role = '" + parameters["role"] + "'")
+                if (parameters["full_name"] != null)
+                    setParameters.add("full_name = '" + parameters["full_name"] + "'")
+                if (parameters["date_of_birth"] != null)
+                    setParameters.add("date_of_birth = '" + parameters["date_of_birth"] + "'")
+                if (parameters["phone_number"] != null)
+                    setParameters.add("phone_number = '" + parameters["phone_number"] + "'")
+                if (parameters["email"] != null)
+                    setParameters.add("email = '" + parameters["email"] + "'")
+                if (parameters["card_num"] != null)
+                    setParameters.add("card_num = '" + parameters["card_num"] + "'")
                 setExpression += setParameters[0]
                 setParameters.removeAt(0)
                 for (i in setParameters) {
