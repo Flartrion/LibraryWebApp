@@ -94,7 +94,9 @@ class AdminPage : RComponent<RProps, AdminPageState>() {
 
                         }
                         AdminPageLocation.AddBook -> child(AddBookPage::class) {
-
+                            attrs {
+                                onCompleteFunction = { setState { curLocation = AdminPageLocation.MainMenu } }
+                            }
                         }
                         else -> {
 

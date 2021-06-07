@@ -14,24 +14,26 @@ fun Route.itemsRouting() {
     route("/items") {
         get {
             var filter: String
-            val parameters = call.receiveParameters()
-            if (!parameters.isEmpty()) {
+            val data = call.request.queryParameters
+//            val data = call.receiveParameters()
+            println(data.entries().size)
+            if (data.entries().size > 1) {
                 filter = " WHERE "
                 val filterConditions = ArrayList<String>()
-                if (parameters["isbn"] != null)
-                    filterConditions.add("isbn = '" + parameters["isbn"] + "'")
-                if (parameters["rlbc"] != null)
-                    filterConditions.add("rlbc = '" + parameters["rlbc"] + "'")
-                if (parameters["title"] != null)
-                    filterConditions.add("title = '" + parameters["title"] + "'")
-                if (parameters["authors"] != null)
-                    filterConditions.add("authors = '" + parameters["authors"] + "'")
-                if (parameters["type"] != null)
-                    filterConditions.add("type = '" + parameters["type"] + "'")
-                if (parameters["details"] != null)
-                    filterConditions.add("details = '" + parameters["details"] + "'")
-                if (parameters["language"] != null)
-                    filterConditions.add("language = '" + parameters["language"] + "'")
+                if (data["isbn"] != null)
+                    filterConditions.add("isbn LIKE '%${data["isbn"]}%'")
+                if (data["rlbc"] != null)
+                    filterConditions.add("rlbc LIKE '%${data["rlbc"]}%'")
+                if (data["title"] != null)
+                    filterConditions.add("title LIKE '%${data["title"]}%'")
+                if (data["authors"] != null)
+                    filterConditions.add("authors LIKE '%${data["authors"]}%'")
+                if (data["type"] != null)
+                    filterConditions.add("type LIKE '%${data["type"]}%'")
+                if (data["details"] != null)
+                    filterConditions.add("details LIKE '%${data["details"]}%'")
+                if (data["language"] != null)
+                    filterConditions.add("language LIKE '%${data["language"]}%'")
                 filter += filterConditions[0]
                 filterConditions.removeAt(0)
                 for (i in filterConditions) {
@@ -41,7 +43,8 @@ fun Route.itemsRouting() {
                 filter = String()
             val resultSet = statement
                 .executeQuery(
-                    "SELECT * FROM \"Inventory\".\"Items\"$filter"
+                    "SELECT * FROM \"Inventory\".\"Items\"$filter" +
+                            " ORDER BY authors ${data["ascDesc"]}, title ${data["ascDesc"]}"
                 )
             val items = ArrayList<Items>()
             while (resultSet.next())
@@ -67,7 +70,7 @@ fun Route.itemsRouting() {
             val resultSet = statement
                 .executeQuery(
                     "SELECT * FROM \"Inventory\".\"Items\"" +
-                            " WHERE id_item = '$id'"
+                            " WHERE id_item = $id"
                 )
             val items = ArrayList<Items>()
             while (resultSet.next())

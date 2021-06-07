@@ -1,25 +1,32 @@
 package adminPageRelated
 
+import kotlinx.browser.window
 import kotlinx.css.*
 import kotlinx.html.InputType
 import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onClickFunction
+import org.w3c.dom.HTMLInputElement
+import org.w3c.dom.HTMLTextAreaElement
 import org.w3c.dom.ImageBitmap
+import org.w3c.xhr.FormData
 import org.w3c.xhr.XMLHttpRequest
-import react.RBuilder
-import react.RComponent
-import react.RProps
-import react.RState
+import react.*
 import styled.*
 
+data class AddBookPageState(
+    var isbnInput: String,
+    var rlbcInput: String,
+    var titleInput: String,
+    var authorsInput: String,
+    var typeInput: String,
+    var detailsInput: String
+) : RState
+
 external interface AddBookPageProps : RProps {
-    var bookName: String
-    var authorName: String
-    var bookType: String
-    var image: ImageBitmap
+    var onCompleteFunction: () -> Unit
 }
 
-class AddBookPage : RComponent<AddBookPageProps, RState>() {
+class AddBookPage : RComponent<AddBookPageProps, AddBookPageState>() {
     override fun RBuilder.render() {
         styledTable {
             css {
@@ -54,21 +61,55 @@ class AddBookPage : RComponent<AddBookPageProps, RState>() {
                     }
                 }
             }
+
             styledTr {
                 styledTd {
-                    styledLabel { +"Заглавие: " }
+                    styledLabel { +"ISBN: " }
                 }
                 styledTd {
                     styledInput {
                         attrs {
                             onChangeFunction = {
-                                props.bookName = value
+                                setState { isbnInput = (it.target as HTMLInputElement).value }
                             }
                             type = InputType.text
                         }
                     }
                 }
             }
+
+            styledTr {
+                styledTd {
+                    styledLabel { +"ББК: " }
+                }
+                styledTd {
+                    styledInput {
+                        attrs {
+                            onChangeFunction = {
+                                setState { rlbcInput = (it.target as HTMLInputElement).value }
+                            }
+                            type = InputType.text
+                        }
+                    }
+                }
+            }
+
+            styledTr {
+                styledTd {
+                    styledLabel { +"Название: " }
+                }
+                styledTd {
+                    styledInput {
+                        attrs {
+                            onChangeFunction = {
+                                setState { titleInput = (it.target as HTMLInputElement).value }
+                            }
+                            type = InputType.text
+                        }
+                    }
+                }
+            }
+
             styledTr {
                 styledTd {
                     styledLabel { +"Авторы: " }
@@ -77,7 +118,7 @@ class AddBookPage : RComponent<AddBookPageProps, RState>() {
                     styledInput {
                         attrs {
                             onChangeFunction = {
-                                props.authorName = value
+                                setState { authorsInput = (it.target as HTMLInputElement).value }
                             }
                             type = InputType.text
                         }
@@ -93,9 +134,24 @@ class AddBookPage : RComponent<AddBookPageProps, RState>() {
                     styledInput {
                         attrs {
                             onChangeFunction = {
-                                props.bookType = value
+                                setState { typeInput = (it.target as HTMLInputElement).value }
                             }
                             type = InputType.text
+                        }
+                    }
+                }
+            }
+
+            styledTr {
+                styledTd {
+                    styledLabel { +"Дополнительно: " }
+                }
+                styledTd {
+                    styledTextArea {
+                        attrs {
+                            onChangeFunction = {
+                                setState { detailsInput = (it.target as HTMLTextAreaElement).value }
+                            }
                         }
                     }
                 }
@@ -108,15 +164,26 @@ class AddBookPage : RComponent<AddBookPageProps, RState>() {
                     }
                     styledInput {
                         attrs {
-                            value = "Let's goooo"
+                            value = "Подтвердить"
                             type = InputType.submit
                             onClickFunction = {
                                 val request = XMLHttpRequest()
-                                request.open("post", "/")
-                                request.addEventListener("load", {
-                                    console.info(request.response)
-                                })
-                                request.send()
+                                request.open("post", "/items/insert")
+                                request.onload = {
+                                    if (request.status != 500.toShort()) {
+                                        props.onCompleteFunction()
+                                    } else {
+                                        window.alert("Something went wrong!\nReason: ${request.response}")
+                                    }
+                                }
+                                val data = FormData()
+                                data.append("title", state.titleInput)
+                                data.append("authors", state.authorsInput)
+                                data.append("type", state.typeInput)
+                                data.append("isbn", state.isbnInput)
+                                data.append("rlbc", state.rlbcInput)
+                                data.append("details", state.detailsInput)
+                                request.send(data)
                             }
                         }
                         css {
