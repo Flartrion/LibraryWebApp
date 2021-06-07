@@ -4,7 +4,8 @@ import kotlinx.serialization.Serializable
 data class Rents(
     val id_rent: String,
     val id_user: String,
-    val id_copy: String,
+    val id_item: String,
     val from_date: String,
-    val until_date: String
+    val until_date: String,
+    val id_storage: String
 )
