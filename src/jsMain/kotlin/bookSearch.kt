@@ -1,14 +1,16 @@
 import kotlinx.browser.window
 import kotlinx.css.*
+import kotlinx.html.FormMethod
 import kotlinx.html.InputType
 import kotlinx.html.hidden
 import kotlinx.html.id
 import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.onSubmitFunction
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLSelectElement
-import org.w3c.xhr.FormData
 import org.w3c.xhr.XMLHttpRequest
 import react.*
 import react.dom.option
@@ -16,12 +18,13 @@ import styled.*
 
 
 data class BookSearchState(
-    var isSearchVisible: Boolean,
-    var nameInput: String,
-    var authorInput: String,
-    var typeInput: String,
-    var ascDesc: Boolean,
-    var sorting: String
+    var isSearchVisible: Boolean = false,
+    var titleInput: String = "",
+    var authorsInput: String = "",
+    var typeInput: String = "",
+    var ascDesc: Boolean = false,
+    var sorting: String = "Alphabetic",
+    var bookList: List<Items> = ArrayList()
 ) : RState
 
 external interface BookSearchProps : RProps {
@@ -33,14 +36,7 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
 
     override fun componentDidMount() {
         setState(
-            BookSearchState(
-                isSearchVisible = false,
-                ascDesc = false,
-                sorting = "ByDateAdded",
-                authorInput = "",
-                nameInput = "",
-                typeInput = ""
-            )
+            BookSearchState()
         )
     }
 
@@ -77,21 +73,23 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
 
             styledForm {
                 attrs {
+                    method = FormMethod.post
                     id = "searchForm"
                     onSubmitFunction = {
-//                        val xxx = it.target as HTMLFormElement
-                        val sss = XMLHttpRequest()
-                        sss.open("post", "/search")
-                        val yyy = FormData()
-                        yyy.append("name", state.nameInput)
-                        yyy.append("authors", state.authorInput)
-                        yyy.append("type", state.typeInput)
-                        yyy.append("sorting", state.sorting)
-                        yyy.append("ascDesc", if (state.ascDesc) "true" else "false")
-                        sss.onload = {
-                            console.log(sss.response)
+                        val getRequest = XMLHttpRequest()
+                        var queryString = "/items?ascDesc=${if (state.ascDesc) "ASC" else "DESC"}"
+                        if (!state.titleInput.isBlank())
+                            queryString += "&title=${state.titleInput}"
+                        if (!state.authorsInput.isBlank())
+                            queryString += "&authors=${state.authorsInput}"
+                        if (!state.typeInput.isBlank())
+                            queryString += "&type=${state.typeInput}"
+                        getRequest.open("get", queryString)
+                        getRequest.onload = {
+                            setState { bookList = Json.decodeFromString(getRequest.responseText) }
+                            console.log(getRequest.responseText)
                         }
-                        sss.send(yyy)
+                        getRequest.send()
                         it.preventDefault()
                     }
                 }
@@ -143,10 +141,10 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
                                     form = "searchForm"
                                     name = "name"
                                     type = InputType.text
-                                    value = state.nameInput
+                                    value = state.titleInput
                                     onChangeFunction = {
                                         val newValue = (it.target as HTMLInputElement).value
-                                        setState { nameInput = newValue }
+                                        setState { titleInput = newValue }
                                     }
                                 }
                             }
@@ -162,10 +160,10 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
                                     form = "searchForm"
                                     name = "authors"
                                     type = InputType.text
-                                    value = state.authorInput
+                                    value = state.authorsInput
                                     onChangeFunction = {
                                         val newValue = (it.target as HTMLInputElement).value
-                                        setState { authorInput = newValue }
+                                        setState { authorsInput = newValue }
                                     }
                                 }
                             }
@@ -226,22 +224,23 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
                                 option {
                                     attrs {
                                         value = "Alphabetic"
+                                        selected = true
                                     }
                                     +"По наименованию"
                                 }
-                                option {
-                                    attrs {
-                                        value = "ByDateReleased"
-                                    }
-                                    +"По дате выпуска"
-                                }
-                                option {
-                                    attrs {
-                                        value = "ByDateAdded"
-                                        selected = true
-                                    }
-                                    +"По дате добавления"
-                                }
+//                                option {
+//                                    attrs {
+//                                        value = "ByDateReleased"
+//                                    }
+//                                    +"По дате выпуска"
+//                                }
+//                                option {
+//                                    attrs {
+//                                        value = "ByDateAdded"
+//                                        selected = true
+//                                    }
+//                                    +"По дате добавления"
+//                                }
                             }
                             styledB {
                                 attrs {
@@ -292,9 +291,14 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
                     }
                 }
             }
+
+            styledDiv {
+
+            }
         }
     }
 }
+
 
 fun RBuilder.generalBody(): ReactElement {
     return child(BookSearch::class) {
