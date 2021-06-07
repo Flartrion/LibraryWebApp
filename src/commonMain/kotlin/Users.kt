@@ -7,5 +7,6 @@ data class Users(
     val full_name: String,
     val date_of_birth: String,
     val phone_number: String,
-    val email: String
+    val email: String,
+    val card_num: String
 )

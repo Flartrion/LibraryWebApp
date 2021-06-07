@@ -8,5 +8,6 @@ data class Items(
     val title: String,
     val authors: String,
     val type: String,
-    val details: String
+    val details: String,
+    val language: String,
 )

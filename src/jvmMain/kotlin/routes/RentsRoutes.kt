@@ -14,17 +14,20 @@ fun Route.rentsRouting() {
     route("/rents") {
         get {
             var filter: String
-            if (!call.receiveParameters().isEmpty()) {
+            val parameters = call.receiveParameters()
+            if (!parameters.isEmpty()) {
                 filter = " WHERE "
                 val filterConditions = ArrayList<String>()
-                if (call.receiveParameters()["id_user"] != null)
-                    filterConditions.add("id_user = " + call.receiveParameters()["id_user"])
-                if (call.receiveParameters()["id_copy"] != null)
-                    filterConditions.add("id_copy = " + call.receiveParameters()["id_copy"])
-                if (call.receiveParameters()["from_date"] != null)
-                    filterConditions.add("from_date = " + call.receiveParameters()["from_date"])
-                if (call.receiveParameters()["until_date"] != null)
-                    filterConditions.add("until_date = " + call.receiveParameters()["until_date"])
+                if (parameters["id_user"] != null)
+                    filterConditions.add("id_user = '" + parameters["id_user"] + "'")
+                if (parameters["id_item"] != null)
+                    filterConditions.add("id_item = '" + parameters["id_item"] + "'")
+                if (parameters["from_date"] != null)
+                    filterConditions.add("from_date = '" + parameters["from_date"] + "'")
+                if (parameters["until_date"] != null)
+                    filterConditions.add("until_date = '" + parameters["until_date"] + "'")
+                if (parameters["id_storage"] != null)
+                    filterConditions.add("id_storage = '" + parameters["id_storage"] + "'")
                 filter += filterConditions[0]
                 filterConditions.removeAt(0)
                 for (i in filterConditions) {
@@ -44,7 +47,8 @@ fun Route.rentsRouting() {
                         resultSet.getString(2),
                         resultSet.getString(3),
                         resultSet.getString(4),
-                        resultSet.getString(5)
+                        resultSet.getString(5),
+                        resultSet.getString(6)
                     )
                 )
             call.respondText(Json.encodeToString(rents))
@@ -67,31 +71,37 @@ fun Route.rentsRouting() {
                         resultSet.getString(2),
                         resultSet.getString(3),
                         resultSet.getString(4),
-                        resultSet.getString(5)
+                        resultSet.getString(5),
+                        resultSet.getString(6)
                     )
                 )
             call.respondText(Json.encodeToString(rents))
         }
         post("/insert") {
-            val idUser = call.receiveParameters()["id_user"] ?: return@post call.respondText(
+            val parameters = call.receiveParameters()
+            val idUser = parameters["id_user"] ?: return@post call.respondText(
                 "Missing or malformed id_user",
                 status = HttpStatusCode.BadRequest
             )
-            val idCopy = call.receiveParameters()["id_copy"] ?: return@post call.respondText(
-                "Missing or malformed id_copy",
+            val idItem = parameters["id_item"] ?: return@post call.respondText(
+                "Missing or malformed id_item",
                 status = HttpStatusCode.BadRequest
             )
-            val fromDate = call.receiveParameters()["from_date"] ?: return@post call.respondText(
+            val fromDate = parameters["from_date"] ?: return@post call.respondText(
                 "Missing or malformed from_date",
                 status = HttpStatusCode.BadRequest
             )
-            val untilDate = call.receiveParameters()["until_date"] ?: return@post call.respondText(
+            val untilDate = parameters["until_date"] ?: return@post call.respondText(
                 "Missing or malformed until_date",
                 status = HttpStatusCode.BadRequest
             )
+            val idStorage = parameters["id_storage"] ?: return@post call.respondText(
+                "Missing or malformed id_storage",
+                status = HttpStatusCode.BadRequest
+            )
             statement.executeUpdate(
-                "INSERT INTO \"Inventory\".\"Rents\" (id_user, id_copy, from_date, until_date)" +
-                        " VALUES ($idUser, $idCopy, $fromDate, $untilDate)"
+                "INSERT INTO \"Inventory\".\"Rents\" (id_user, id_item, from_date, until_date, id_storage)" +
+                        " VALUES ('$idUser', '$idItem', '$fromDate', '$untilDate', '$idStorage')"
             )
             call.respond(HttpStatusCode.OK)
         }
@@ -101,17 +111,20 @@ fun Route.rentsRouting() {
                 status = HttpStatusCode.BadRequest
             )
             var setExpression: String
-            if (!call.receiveParameters().isEmpty()) {
+            val parameters = call.receiveParameters()
+            if (!parameters.isEmpty()) {
                 setExpression = " SET "
                 val setParameters = ArrayList<String>()
-                if (call.receiveParameters()["id_user"] != null)
-                    setParameters.add("id_user = " + call.receiveParameters()["id_user"])
-                if (call.receiveParameters()["id_copy"] != null)
-                    setParameters.add("id_copy = " + call.receiveParameters()["id_copy"])
-                if (call.receiveParameters()["from_date"] != null)
-                    setParameters.add("from_date = " + call.receiveParameters()["from_date"])
-                if (call.receiveParameters()["until_date"] != null)
-                    setParameters.add("until_date = " + call.receiveParameters()["until_date"])
+                if (parameters["id_user"] != null)
+                    setParameters.add("id_user = '" + parameters["id_user"] + "'")
+                if (parameters["id_item"] != null)
+                    setParameters.add("id_item = '" + parameters["id_item"] + "'")
+                if (parameters["from_date"] != null)
+                    setParameters.add("from_date = '" + parameters["from_date"] + "'")
+                if (parameters["until_date"] != null)
+                    setParameters.add("until_date = '" + parameters["until_date"] + "'")
+                if (parameters["id_storage"] != null)
+                    setParameters.add("id_storage = '" + parameters["id_storage"] + "'")
                 setExpression += setParameters[0]
                 setParameters.removeAt(0)
                 for (i in setParameters) {
@@ -121,7 +134,7 @@ fun Route.rentsRouting() {
                 return@post call.respondText("Missing or malformed parameters", status = HttpStatusCode.BadRequest)
             statement.executeUpdate(
                 "UPDATE \"Inventory\".\"Rents\"" +
-                        " SET id_user = '', id_copy = '', from_date = '', until_date = ''" +
+                        setExpression +
                         " WHERE id_rent = '$id'"
             )
             call.respond(HttpStatusCode.OK)

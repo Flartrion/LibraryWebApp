@@ -14,15 +14,18 @@ fun Route.bankHistoryRouting() {
     route("/bankHistory") {
         get {
             var filter: String
-            if (!call.receiveParameters().isEmpty()) {
+            val parameters = call.receiveParameters()
+            if (!parameters.isEmpty()) {
                 filter = " WHERE "
                 val filterConditions = ArrayList<String>()
-                if (call.receiveParameters()["id_copy"] != null)
-                    filterConditions.add("id_copy = " + call.receiveParameters()["id_copy"])
-                if (call.receiveParameters()["change"] != null)
-                    filterConditions.add("change = " + call.receiveParameters()["change"])
-                if (call.receiveParameters()["date"] != null)
-                    filterConditions.add("date = " + call.receiveParameters()["date"])
+                if (parameters["id_item"] != null)
+                    filterConditions.add("id_item = '" + parameters["id_item"] + "'")
+                if (parameters["change"] != null)
+                    filterConditions.add("change = '" + parameters["change"] + "'")
+                if (parameters["date"] != null)
+                    filterConditions.add("date = '" + parameters["date"] + "'")
+                if (parameters["id_storage"] != null)
+                    filterConditions.add("id_storage = '" + parameters["id_storage"] + "'")
                 filter += filterConditions[0]
                 filterConditions.removeAt(0)
                 for (i in filterConditions) {
@@ -41,7 +44,8 @@ fun Route.bankHistoryRouting() {
                         resultSet.getString(1),
                         resultSet.getString(2),
                         resultSet.getString(3),
-                        resultSet.getString(4)
+                        resultSet.getString(4),
+                        resultSet.getString(5)
                     )
                 )
             call.respondText(Json.encodeToString(bankHistory))
@@ -63,27 +67,33 @@ fun Route.bankHistoryRouting() {
                         resultSet.getString(1),
                         resultSet.getString(2),
                         resultSet.getString(3),
-                        resultSet.getString(4)
+                        resultSet.getString(4),
+                        resultSet.getString(5)
                     )
                 )
             call.respondText(Json.encodeToString(bankHistory))
         }
         post("/insert") {
-            val idCopy = call.receiveParameters()["id_copy"] ?: return@post call.respondText(
-                "Missing or malformed id_copy",
+            val parameters = call.receiveParameters()
+            val idItem = parameters["id_item"] ?: return@post call.respondText(
+                "Missing or malformed id_item",
                 status = HttpStatusCode.BadRequest
             )
-            val change = call.receiveParameters()["change"] ?: return@post call.respondText(
+            val change = parameters["change"] ?: return@post call.respondText(
                 "Missing or malformed change",
                 status = HttpStatusCode.BadRequest
             )
-            val date = call.receiveParameters()["date"] ?: return@post call.respondText(
+            val date = parameters["date"] ?: return@post call.respondText(
                 "Missing or malformed date",
                 status = HttpStatusCode.BadRequest
             )
+            val idStorage = parameters["id_storage"] ?: return@post call.respondText(
+                "Missing or malformed id_storage",
+                status = HttpStatusCode.BadRequest
+            )
             statement.executeUpdate(
-                "INSERT INTO \"Inventory\".\"BankHistory\" (id_copy, change, date)" +
-                        " VALUES ($idCopy, $change, $date)"
+                "INSERT INTO \"Inventory\".\"BankHistory\" (id_item, change, date, id_storage)" +
+                        " VALUES ('$idItem', '$change', '$date', '$idStorage')"
             )
             call.respond(HttpStatusCode.OK)
         }
@@ -93,15 +103,18 @@ fun Route.bankHistoryRouting() {
                 status = HttpStatusCode.BadRequest
             )
             var setExpression: String
-            if (!call.receiveParameters().isEmpty()) {
+            val parameters = call.receiveParameters()
+            if (!parameters.isEmpty()) {
                 setExpression = " SET "
                 val setParameters = ArrayList<String>()
-                if (call.receiveParameters()["id_copy"] != null)
-                    setParameters.add("id_copy = " + call.receiveParameters()["id_copy"])
-                if (call.receiveParameters()["change"] != null)
-                    setParameters.add("change = " + call.receiveParameters()["change"])
-                if (call.receiveParameters()["date"] != null)
-                    setParameters.add("date = " + call.receiveParameters()["date"])
+                if (parameters["id_item"] != null)
+                    setParameters.add("id_item = '" + parameters["id_item"] + "'")
+                if (parameters["change"] != null)
+                    setParameters.add("change = '" + parameters["change"] + "'")
+                if (parameters["date"] != null)
+                    setParameters.add("date = '" + parameters["date"] + "'")
+                if (parameters["id_storage"] != null)
+                    setParameters.add("id_storage = '" + parameters["id_storage"] + "'")
                 setExpression += setParameters[0]
                 setParameters.removeAt(0)
                 for (i in setParameters) {

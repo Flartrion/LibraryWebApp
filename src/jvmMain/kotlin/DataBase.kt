@@ -6,7 +6,7 @@ import java.util.*
 import kotlin.system.exitProcess
 
 object DataBase {
-    val statement : Statement
+    val statement: Statement
 
     private val connection: Connection
 
