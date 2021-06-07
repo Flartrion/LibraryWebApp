@@ -14,12 +14,13 @@ fun Route.usersRouting() {
     route("/users") {
         get {
             var filter: String
-            if (!call.receiveParameters().isEmpty()) {
+            val parameters = call.receiveParameters()
+            if (!parameters.isEmpty()) {
                 filter = " WHERE "
                 val filterConditions = ArrayList<String>()
-                if (call.receiveParameters()["role"] != null)
-                    filterConditions.add("role = " + call.receiveParameters()["role"])
-                if (call.receiveParameters()["full_name"] != null)
+                if (parameters["role"] != null)
+                    filterConditions.add("role = '" + parameters["role"] + "'")
+                if (parameters["full_name"] != null)
                     filterConditions.add("full_name = " + call.receiveParameters()["full_name"])
                 if (call.receiveParameters()["date_of_birth"] != null)
                     filterConditions.add("date_of_birth = " + call.receiveParameters()["date_of_birth"])
@@ -47,7 +48,8 @@ fun Route.usersRouting() {
                         resultSet.getString(3),
                         resultSet.getString(4),
                         resultSet.getString(5),
-                        resultSet.getString(6)
+                        resultSet.getString(6),
+                        resultSet.getString(7)
                     )
                 )
             call.respondText(Json.encodeToString(users))
@@ -71,7 +73,8 @@ fun Route.usersRouting() {
                         resultSet.getString(3),
                         resultSet.getString(4),
                         resultSet.getString(5),
-                        resultSet.getString(6)
+                        resultSet.getString(6),
+                        resultSet.getString(7)
                     )
                 )
             call.respondText(Json.encodeToString(users))

@@ -11,7 +11,7 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 fun Route.itemLocationRouting() {
-    route("/copyLocation") {
+    route("/itemLocation") {
         get {
             var filter: String
             val parameters = call.receiveParameters()
@@ -19,11 +19,11 @@ fun Route.itemLocationRouting() {
                 filter = " WHERE "
                 val filterConditions = ArrayList<String>()
                 if (parameters["id_item"] != null)
-                    filterConditions.add("id_item = " + parameters["id_item"])
+                    filterConditions.add("id_item = '" + parameters["id_item"] + "'")
                 if (parameters["id_storage"] != null)
-                    filterConditions.add("id_storage = " + parameters["id_storage"])
+                    filterConditions.add("id_storage = '" + parameters["id_storage"] + "'")
                 if (parameters["amount"] != null)
-                    filterConditions.add("amount = " + parameters["amount"])
+                    filterConditions.add("amount = '" + parameters["amount"] + "'")
                 filter += filterConditions[0]
                 filterConditions.removeAt(0)
                 for (i in filterConditions) {
@@ -62,7 +62,7 @@ fun Route.itemLocationRouting() {
             )
             statement.executeUpdate(
                 "INSERT INTO \"Inventory\".\"ItemLocation\" (id_item, id_storage, amount)" +
-                        " VALUES ($idItem, '$idStorage', '$amount')"
+                        " VALUES ('$idItem', '$idStorage', '$amount')"
             )
             call.respond(HttpStatusCode.OK)
         }
@@ -82,7 +82,7 @@ fun Route.itemLocationRouting() {
             statement.executeUpdate(
                 "UPDATE \"Inventory\".\"ItemLocation\"" +
                         " SET amount = '$amount'" +
-                        " WHERE id_item = $idItem AND id_storage = $idStorage"
+                        " WHERE id_item = '$idItem' AND id_storage = '$idStorage'"
             )
             call.respond(HttpStatusCode.OK)
         }
@@ -97,7 +97,7 @@ fun Route.itemLocationRouting() {
             )
             statement.executeUpdate(
                 "DELETE FROM \"Inventory\".\"ItemLocation\"" +
-                        " WHERE id_item = $idItem AND id_storage = $idStorage"
+                        " WHERE id_item = '$idItem' AND id_storage = '$idStorage'"
             )
             call.respond(HttpStatusCode.OK)
         }
