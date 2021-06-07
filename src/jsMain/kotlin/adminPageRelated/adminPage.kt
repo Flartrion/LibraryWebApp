@@ -1,17 +1,15 @@
 package adminPageRelated
 
+import adminPageRelated.storageManagement.StorageManagementPage
+import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.css.*
-import kotlinx.html.InputType
-import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onClickFunction
-import org.w3c.dom.ImageBitmap
-import org.w3c.xhr.XMLHttpRequest
 import react.*
 import react.dom.br
 import styled.*
 
-data class AdminPageState(val curLocation: AdminPageLocation) : RState
+data class AdminPageState(var curLocation: AdminPageLocation) : RState
 
 external interface AdminPageProps : RProps
 
@@ -51,17 +49,13 @@ class AdminPage : RComponent<RProps, AdminPageState>() {
             if (state.curLocation == AdminPageLocation.MainMenu) {
                 styledButton {
                     attrs {
-                        onClickFunction = {
-                            setState(AdminPageState(AdminPageLocation.ManageStorages))
-                        }
+                        onClickFunction = { setState { curLocation = AdminPageLocation.ManageStorages } }
                     }
                     +"Хранилища"
                 }
                 styledButton {
                     attrs {
-                        onClickFunction = {
-                            setState(AdminPageState(AdminPageLocation.AddBook))
-                        }
+                        onClickFunction = { setState { curLocation = AdminPageLocation.AddBook } }
                     }
                     +"Добавить книгу"
                 }
@@ -88,7 +82,8 @@ class AdminPage : RComponent<RProps, AdminPageState>() {
                     }
                     attrs {
                         onClickFunction = {
-                            setState(AdminPageState(AdminPageLocation.MainMenu))
+                            setState { curLocation = AdminPageLocation.MainMenu }
+                            document.title = "AWAKEN, MY MASTERS!"
                         }
                     }
                     +"←"

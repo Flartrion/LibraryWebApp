@@ -14,10 +14,11 @@ fun Route.storagesRouting() {
     route("/storages") {
         get {
             val address =
-                if (call.receiveParameters()["address"] != null) " WHERE " + call.parameters["address"] else ""
+                if (call.request.queryParameters["address"] != null) " WHERE " + call.request.queryParameters["address"] else ""
             val resultSet = statement
                 .executeQuery(
-                    "SELECT * FROM \"Facilities\".\"Storages\"$address"
+                    "SELECT * FROM \"Facilities\".\"Storages\"$address" +
+                            " ORDER BY id_storage ASC"
                 )
             val storages = ArrayList<Storages>()
             while (resultSet.next())
@@ -40,7 +41,7 @@ fun Route.storagesRouting() {
             call.respondText(Json.encodeToString(storages))
         }
         post("/insert") {
-            val address = call.parameters["address"] ?: return@post call.respondText(
+            val address = call.receiveParameters()["address"] ?: return@post call.respondText(
                 "Missing or malformed parameters",
                 status = HttpStatusCode.BadRequest
             )
