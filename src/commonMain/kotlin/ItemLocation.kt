@@ -1,7 +1,7 @@
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CopyLocation(
+data class ItemLocation(
     val id_copy: String,
     val id_storage: String,
     val amount: String

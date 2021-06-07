@@ -13,10 +13,6 @@ import java.io.File
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 fun Application.module(testing: Boolean = false) {
-//    install(ContentNegotiation) {
-//        json()
-//    }
-
     install(CORS) {
         method(HttpMethod.Get)
         method(HttpMethod.Post)
@@ -78,8 +74,7 @@ fun Application.module(testing: Boolean = false) {
         registerStoragesRoutes()
         registerUsersRoutes()
         registerBankHistoryRoutes()
-        registerCopiesRoutes()
-        registerCopyLocationRoutes()
+        registerItemLocationRoutes()
         registerItemsRoutes()
         registerRentsRoutes()
 

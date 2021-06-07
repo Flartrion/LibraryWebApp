@@ -1,6 +1,6 @@
 package routes
 
-import CopyLocation
+import ItemLocation
 import DataBase.statement
 import io.ktor.application.*
 import io.ktor.http.*
@@ -10,19 +10,20 @@ import io.ktor.routing.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-fun Route.copyLocationRouting() {
+fun Route.itemLocationRouting() {
     route("/copyLocation") {
         get {
             var filter: String
-            if (!call.receiveParameters().isEmpty()) {
+            val parameters = call.receiveParameters()
+            if (!parameters.isEmpty()) {
                 filter = " WHERE "
                 val filterConditions = ArrayList<String>()
-                if (call.receiveParameters()["id_copy"] != null)
-                    filterConditions.add("id_copy = " + call.receiveParameters()["id_copy"])
-                if (call.receiveParameters()["id_storage"] != null)
-                    filterConditions.add("id_storage = " + call.receiveParameters()["id_storage"])
-                if (call.receiveParameters()["amount"] != null)
-                    filterConditions.add("amount = " + call.receiveParameters()["amount"])
+                if (parameters["id_item"] != null)
+                    filterConditions.add("id_item = " + parameters["id_item"])
+                if (parameters["id_storage"] != null)
+                    filterConditions.add("id_storage = " + parameters["id_storage"])
+                if (parameters["amount"] != null)
+                    filterConditions.add("amount = " + parameters["amount"])
                 filter += filterConditions[0]
                 filterConditions.removeAt(0)
                 for (i in filterConditions) {
@@ -32,41 +33,42 @@ fun Route.copyLocationRouting() {
                 filter = String()
             val resultSet = statement
                 .executeQuery(
-                    "SELECT * FROM \"Inventory\".\"CopyLocation\"$filter"
+                    "SELECT * FROM \"Inventory\".\"ItemLocation\"$filter"
                 )
-            val copyLocations = ArrayList<CopyLocation>()
+            val itemLocations = ArrayList<ItemLocation>()
             while (resultSet.next())
-                copyLocations.add(
-                    CopyLocation(
+                itemLocations.add(
+                    ItemLocation(
                         resultSet.getString(1),
                         resultSet.getString(2),
                         resultSet.getString(3)
                     )
                 )
-            call.respondText(Json.encodeToString(copyLocations))
+            call.respondText(Json.encodeToString(itemLocations))
         }
         post("/insert") {
-            val idCopy = call.receiveParameters()["id_copy"] ?: return@post call.respondText(
-                "Missing or malformed id_copy",
+            val parameters = call.receiveParameters()
+            val idItem = parameters["id_item"] ?: return@post call.respondText(
+                "Missing or malformed id_item",
                 status = HttpStatusCode.BadRequest
             )
-            val idStorage = call.receiveParameters()["id_storage"] ?: return@post call.respondText(
+            val idStorage = parameters["id_storage"] ?: return@post call.respondText(
                 "Missing or malformed id_storage",
                 status = HttpStatusCode.BadRequest
             )
-            val amount = call.receiveParameters()["amount"] ?: return@post call.respondText(
+            val amount = parameters["amount"] ?: return@post call.respondText(
                 "Missing or malformed amount",
                 status = HttpStatusCode.BadRequest
             )
             statement.executeUpdate(
-                "INSERT INTO \"Inventory\".\"CopyLocation\" (id_copy, id_storage, amount)" +
-                        " VALUES ($idCopy, $idStorage, $amount)"
+                "INSERT INTO \"Inventory\".\"ItemLocation\" (id_item, id_storage, amount)" +
+                        " VALUES ($idItem, '$idStorage', '$amount')"
             )
             call.respond(HttpStatusCode.OK)
         }
         post("/update/{id}") {
-            val idCopy = call.parameters["id_copy"] ?: return@post call.respondText(
-                "Missing or malformed id_copy",
+            val idItem = call.parameters["id_item"] ?: return@post call.respondText(
+                "Missing or malformed id_item",
                 status = HttpStatusCode.BadRequest
             )
             val idStorage = call.parameters["id_storage"] ?: return@post call.respondText(
@@ -78,15 +80,15 @@ fun Route.copyLocationRouting() {
                 status = HttpStatusCode.BadRequest
             )
             statement.executeUpdate(
-                "UPDATE \"Inventory\".\"CopyLocation\"" +
+                "UPDATE \"Inventory\".\"ItemLocation\"" +
                         " SET amount = '$amount'" +
-                        " WHERE id_copy = $idCopy AND id_storage = $idStorage"
+                        " WHERE id_item = $idItem AND id_storage = $idStorage"
             )
             call.respond(HttpStatusCode.OK)
         }
         delete("{id}") {
-            val idCopy = call.parameters["id_copy"] ?: return@delete call.respondText(
-                "Missing or malformed id_copy",
+            val idItem = call.parameters["id_item"] ?: return@delete call.respondText(
+                "Missing or malformed id_item",
                 status = HttpStatusCode.BadRequest
             )
             val idStorage = call.parameters["id_storage"] ?: return@delete call.respondText(
@@ -94,16 +96,16 @@ fun Route.copyLocationRouting() {
                 status = HttpStatusCode.BadRequest
             )
             statement.executeUpdate(
-                "DELETE FROM \"Inventory\".\"CopyLocation\"" +
-                        " WHERE id_copy = $idCopy AND id_storage = $idStorage"
+                "DELETE FROM \"Inventory\".\"ItemLocation\"" +
+                        " WHERE id_item = $idItem AND id_storage = $idStorage"
             )
             call.respond(HttpStatusCode.OK)
         }
     }
 }
 
-fun Application.registerCopyLocationRoutes() {
+fun Application.registerItemLocationRoutes() {
     routing {
-        copyLocationRouting()
+        itemLocationRouting()
     }
 }
