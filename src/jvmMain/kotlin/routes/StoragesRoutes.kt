@@ -40,7 +40,7 @@ fun Route.storagesRouting() {
             call.respondText(Json.encodeToString(storages))
         }
         post("/insert") {
-            val address = call.parameters["address"] ?: return@post call.respondText(
+            val address = call.receiveParameters()["address"] ?: return@post call.respondText(
                 "Missing or malformed parameters",
                 status = HttpStatusCode.BadRequest
             )
