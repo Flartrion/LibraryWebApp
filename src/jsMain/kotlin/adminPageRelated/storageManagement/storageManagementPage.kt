@@ -1,4 +1,4 @@
-package adminPageRelated
+package adminPageRelated.storageManagement
 
 import Storages
 import kotlinx.browser.window
@@ -71,112 +71,24 @@ class StorageManagementPage : RComponent<StorageManagementPageProps, StorageMana
             }
             if (state.isLoaded) {
                 for (i in 0 until state.storages.size) {
-                    styledDiv {
-                        css {
-                            button {
-                                display = Display.inlineBlock
-                                fontSize = 14.px
-                                width = 100.px
+                    storageListElement {
+                        editState = state.editing == i
+                        processState = state.inProcess
+                        storage = state.storages[i]
+
+                        onEditingFun = {
+                            setState {
+                                editing = if (it) i else -1
                             }
                         }
-                        styledP {
-                            if (state.editing != i)
-                                +"${state.storages[i].id_storage}: ${state.storages[i].address}"
-                            else {
-                                +"${state.storages[i].id_storage}: "
-                                styledInput {
-                                    attrs {
-                                        type = InputType.text
-                                        defaultValue = state.storages[i].address
-                                        onChangeFunction = {
-                                            props.newAddressInput = (it.target as HTMLInputElement).value
-                                        }
-                                    }
-                                }
+                        onProcessChangeFun = {
+                            setState {
+                                processState = it
                             }
                         }
-                        styledButton {
-                            attrs {
-                                disabled = state.inProcess
-                                onClickFunction = {
-                                    if (window.confirm("Удалить хранилище №${state.storages[i].id_storage}? Это действие нельзя будет отменить.")) {
-                                        setState {
-                                            inProcess = true
-                                            editing = -1
-                                        }
-                                        val deleteRequest = XMLHttpRequest()
-                                        deleteRequest.open("delete", "/storages/${state.storages[i].id_storage}")
-                                        deleteRequest.onload = {
-                                            val updateRequest = XMLHttpRequest()
-                                            updateRequest.open("get", "/storages")
-                                            updateRequest.onload = {
-                                                setState {
-                                                    inProcess = false
-                                                    storages = Json.decodeFromString(updateRequest.responseText)
-                                                }
-                                            }
-                                            updateRequest.send()
-                                        }
-                                        deleteRequest.send()
-                                    }
-                                }
-                            }
-                            +"Удалить"
-                        }
-                        if (state.editing != i) {
-                            styledButton {
-                                attrs {
-                                    disabled = state.inProcess
-                                    onClickFunction = {
-                                        setState { editing = i }
-                                        props.newAddressInput = state.storages[i].address
-                                    }
-                                }
-                                +"Изменить"
-                            }
-                        } else {
-                            styledButton {
-                                attrs {
-                                    disabled = state.inProcess
-                                    onClickFunction = {
-                                        if (!props.newAddressInput.isNullOrBlank()) {
-                                            setState {
-                                                inProcess = true
-                                            }
-                                            val updateRequest = XMLHttpRequest()
-                                            updateRequest.open(
-                                                "post",
-                                                "/storages/update/${state.storages[i].id_storage}"
-                                            )
-                                            updateRequest.onload = {
-                                                val updateAfterRequest = XMLHttpRequest()
-                                                updateAfterRequest.open("get", "/storages")
-                                                updateAfterRequest.onload = {
-                                                    setState {
-                                                        inProcess = false
-                                                        editing = -1
-                                                        storages =
-                                                            Json.decodeFromString(updateAfterRequest.responseText)
-                                                    }
-                                                }
-                                                updateAfterRequest.send()
-                                            }
-                                            val data = FormData()
-                                            data.append("address", props.newAddressInput ?: "")
-                                            updateRequest.send(data)
-                                        }
-                                    }
-                                }
-                                +"Подтвердить"
-                            }
-                            styledButton {
-                                attrs {
-                                    disabled = state.inProcess
-                                    onClickFunction = {
-                                        setState { editing = -1 }
-                                    }
-                                }
-                                +"Отменить"
+                        onUpdateFun = {
+                            setState {
+                                storages = it
                             }
                         }
                     }

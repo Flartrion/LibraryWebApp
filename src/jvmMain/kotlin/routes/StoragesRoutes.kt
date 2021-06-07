@@ -14,10 +14,11 @@ fun Route.storagesRouting() {
     route("/storages") {
         get {
             val address =
-                if (call.receiveParameters()["address"] != null) " WHERE " + call.parameters["address"] else ""
+                if (call.request.queryParameters["address"] != null) " WHERE " + call.request.queryParameters["address"] else ""
             val resultSet = statement
                 .executeQuery(
-                    "SELECT * FROM \"Facilities\".\"Storages\"$address"
+                    "SELECT * FROM \"Facilities\".\"Storages\"$address" +
+                            " ORDER BY id_storage ASC"
                 )
             val storages = ArrayList<Storages>()
             while (resultSet.next())

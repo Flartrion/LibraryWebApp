@@ -1,13 +1,10 @@
 package adminPageRelated
 
+import adminPageRelated.storageManagement.StorageManagementPage
 import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.css.*
-import kotlinx.html.InputType
-import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onClickFunction
-import org.w3c.dom.ImageBitmap
-import org.w3c.xhr.XMLHttpRequest
 import react.*
 import react.dom.br
 import styled.*
