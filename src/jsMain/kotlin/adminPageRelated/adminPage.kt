@@ -1,6 +1,7 @@
 package adminPageRelated
 
 import adminPageRelated.storageManagement.StorageManagementPage
+import adminPageRelated.userManagement.UserManagementPage
 import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.css.*
@@ -12,7 +13,6 @@ import styled.*
 data class AdminPageState(var curLocation: AdminPageLocation) : RState
 
 external interface AdminPageProps : RProps
-
 
 @JsExport
 class AdminPage : RComponent<RProps, AdminPageState>() {
@@ -61,7 +61,10 @@ class AdminPage : RComponent<RProps, AdminPageState>() {
                 }
                 br { }
                 styledButton {
-                    +"Кнопка один"
+                    attrs {
+                        onClickFunction = { setState { curLocation = AdminPageLocation.ManageUsers } }
+                    }
+                    +"Пользователи"
                 }
                 styledButton {
                     +"Кнопка два"
@@ -98,8 +101,9 @@ class AdminPage : RComponent<RProps, AdminPageState>() {
                                 onCompleteFunction = { setState { curLocation = AdminPageLocation.MainMenu } }
                             }
                         }
+                        AdminPageLocation.ManageUsers -> child(UserManagementPage::class) {
+                        }
                         else -> {
-
                         }
                     }
                 }

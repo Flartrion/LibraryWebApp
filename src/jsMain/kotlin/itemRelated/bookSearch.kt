@@ -34,24 +34,7 @@ external interface BookSearchState : RState {
     var inProcess: Boolean
 }
 
-//data class itemRelated.BookSearchState(
-//    var isSearchVisible: Boolean = false,
-//    var titleInput: String = "",
-//    var authorsInput: String = "",
-//    var typeInput: String = "",
-//    var isbnInput: String = "",
-//    var rlbcInput: String = "",
-//    var ascDesc: Boolean = false,
-//    var sorting: String = "Alphabetic",
-//    var bookList: List<Items> = ArrayList(),
-//    var listLoaded: Boolean = false,
-//    var editing: Int = -1,
-//    var inProcess: Boolean = false
-//) : RState
-
-external interface BookSearchProps : RProps {
-
-}
+external interface BookSearchProps : RProps
 
 @JsExport
 class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
@@ -70,6 +53,17 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
             editing = -1
             sorting = "Alphabetic"
         }
+        val getRequest = XMLHttpRequest()
+        val queryString = "/items?ascDesc=${if (state.ascDesc) "ASC" else "DESC"}"
+        getRequest.open("get", queryString)
+        getRequest.onload = {
+            setState {
+                bookList = Json.decodeFromString(getRequest.responseText)
+                if (!bookList.isEmpty())
+                    listLoaded = true
+            }
+        }
+        getRequest.send()
     }
 
     override fun RBuilder.render() {
