@@ -1,4 +1,7 @@
+import DataBase.statement
+import com.ibm.java.diagnostics.utils.Context.logger
 import io.ktor.application.*
+import io.ktor.auth.*
 import io.ktor.features.*
 import io.ktor.html.*
 import io.ktor.http.*
@@ -6,9 +9,9 @@ import io.ktor.http.content.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import io.ktor.sessions.*
 import kotlinx.html.*
 import routes.*
-import java.io.File
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -19,71 +22,71 @@ fun Application.module(testing: Boolean = false) {
         method(HttpMethod.Delete)
         anyHost()
     }
-
-//    install(Compression) {
-//        gzip()
-//    }
+    install(Compression) {
+        gzip()
+    }
+    install(Sessions) {
+        cookie<UserSession>("ktor_session_cookie", storage = SessionStorageMemory())
+    }
+    install(Authentication) {
+        session<UserSession>("authSession") {
+            validate { session: UserSession ->
+                logger.info { "User ${session.name} logged in by existing session" }
+                session
+            }
+            challenge {
+                logger.info { "No valid session found for this route, redirecting to login form" }
+//                call.sessions.set()
+                call.respondRedirect("/login")
+            }
+        }
+    }
 
     routing {
-        get("/hello") {
-            call.respondText("Hello, API!")
-        }
+
         get("/") {
             call.respondHtml(HttpStatusCode.OK, HTML::index)
         }
-        get("/book/{id}") {
-            val bookId = call.parameters["id"]
-            call.respondHtml(HttpStatusCode.OK) {
-                head {
-                    title("urbook")
-                }
-                body {
-                    id = "root"
-                    b {
-                        +(bookId ?: "Fuck you")
-                    }
-                }
+
+        get("/login") {
+
+        }
+
+        post("/login") {
+//            val parameters = call.receiveParameters()
+//            val username = parameters["username"] ?: return@post call.respondText(
+//                "Missing or malformed role",
+//                status = HttpStatusCode.BadRequest
+//            )
+//            val password = parameters["password"] ?: return@post call.respondText(
+//                "Missing or malformed role",
+//                status = HttpStatusCode.BadRequest
+//            )
+//            val resultSet = statement
+//                .executeQuery(
+//                    "SELECT role, email, card_num FROM \"HumanResources\".\"Users\"" +
+//                            "WHERE email = '$username'"
+//                )
+//            val role =
+            if (true) {
+                // Store principal in session
+                call.sessions.set(UserSession("Bog Boss", "admin"))
+                call.respondRedirect("/")
+            } else {
+                // Stay on login page
+                call.respondRedirect("/login")
             }
         }
-        post("/storages") {
-            call.respond("yep")
-        }
-        post("/search") {
-            val params = call.receiveParameters()
-            val name = params["name"]
-            val authors = params["authors"]
-            val type = params["type"]
-            val sort = params["sorting"]
-            val ascDesc = params["ascDesc"]
-            println("$name + $authors + $type + $sort + $ascDesc")
-            call.respondText("$name + $authors + $type + $sort + $ascDesc")
-        }
-        post("/") {
-            call.respond("Ok")
+
+        authenticate {
+            registerStoragesRoutes()
+            registerUsersRoutes()
+            registerBankHistoryRoutes()
+            registerItemLocationRoutes()
+            registerItemsRoutes()
+            registerRentsRoutes()
         }
 
-        //------------------------------------------------------------------------------------------------Authentication
-        post("/auth") {
-            val params = call.receiveParameters()
-            call.respond(
-                HttpStatusCode.NotImplemented,
-                "Wrong door, leatherman \n${params["login"]}, ${params["pass"]}"
-            )
-        }
-
-        registerStoragesRoutes()
-        registerUsersRoutes()
-        registerBankHistoryRoutes()
-        registerItemLocationRoutes()
-        registerItemsRoutes()
-        registerRentsRoutes()
-
-        get("/image/{name}") {
-            val picname = call.parameters["name"]
-            val file = File("C:/resources/$picname")
-            println(file.absolutePath)
-            call.respondFile(file)
-        }
         static("/static") {
             resources()
         }
@@ -100,3 +103,8 @@ fun HTML.index() {
     }
 
 }
+
+data class UserSession(
+    val name: String,
+    val roles: String
+) : Principal
