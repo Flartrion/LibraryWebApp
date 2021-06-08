@@ -77,6 +77,7 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
             css {
                 textAlign = TextAlign.center
                 width = LinearDimension.fillAvailable
+                maxWidth = LinearDimension("80%")
                 minHeight = (window.outerHeight - 200).px
                 height = LinearDimension.maxContent
 
@@ -137,7 +138,7 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
                         hidden = !state.isSearchVisible
                     }
                     css {
-                        width = LinearDimension.fillAvailable
+                        width = LinearDimension("100%")
                         backgroundColor = Color("#888888")
                         children {
                             children {
@@ -407,7 +408,7 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
 }
 
 
-fun RBuilder.generalBody(): ReactElement {
+fun RBuilder.bookSearch(): ReactElement {
     return child(BookSearch::class) {
 
     }

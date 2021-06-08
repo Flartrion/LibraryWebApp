@@ -32,7 +32,7 @@ class LoginMenu : RComponent<LoginMenuProps, RState>() {
                 paddingLeft = 10.px
                 paddingRight = 10.px
                 backgroundColor = Color.darkRed
-                width = 150.px
+                maxWidth = LinearDimension("10%")
 //                height = LinearDimension.maxContent
                 label {
                     color = Color.white

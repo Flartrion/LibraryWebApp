@@ -1,36 +1,32 @@
 import adminPageRelated.adminPage
-import itemRelated.generalBody
+import itemRelated.bookSearch
 import kotlinx.browser.document
 import kotlinx.css.*
-import react.RBuilder
-import react.RComponent
-import react.RProps
-import react.RState
+import react.*
 import styled.css
 import styled.styledDiv
 
 
 external interface MainPageProps : RProps {
-    var location: SiteLocation
 }
 
 
-data class LocationState(val location: SiteLocation) : RState
+external interface MainPageState : RState {
+    var location: SiteLocation
+}
 
 @JsExport
-class MainPage : RComponent<MainPageProps, LocationState>() {
+class MainPage : RComponent<MainPageProps, MainPageState>() {
 
-    init {
-        state = LocationState(SiteLocation.Main)
-//        setState(LocationState(SiteLocation.Main))
+    override fun componentWillMount() {
+        setState { location = SiteLocation.Main }
     }
 
     override fun RBuilder.render() {
-
         styledDiv {
             header {
                 onChangeLocation = {
-                    setState(LocationState(it))
+                    setState { location = it }
                 }
             }
 
@@ -39,16 +35,16 @@ class MainPage : RComponent<MainPageProps, LocationState>() {
                     display = Display.flex
                     flexDirection = FlexDirection.row
                 }
-                loginMenu() {
+                loginMenu {
                     onRegisterPressed = {
-                        setState(LocationState(SiteLocation.Register))
+                        setState { location = SiteLocation.Register }
                     }
                 }
 
 
                 when (state.location) {
                     SiteLocation.Main -> {
-                        generalBody()
+                        bookSearch()
                         document.title = "Библиотека книг"
                     }
                     SiteLocation.Contacts -> {
@@ -75,12 +71,9 @@ class MainPage : RComponent<MainPageProps, LocationState>() {
 
                 styledDiv {
                     css {
-                        padding(30.px)
                         display = Display.inlineBlock
-                        paddingLeft = 10.px
-                        paddingRight = 10.px
                         backgroundColor = Color.darkRed
-                        width = 170.px
+                        width = LinearDimension("10%")
 //                height = LinearDimension.maxContent
                     }
                 }
@@ -89,7 +82,7 @@ class MainPage : RComponent<MainPageProps, LocationState>() {
 
             footer {
                 onChangeLocation = {
-                    setState(LocationState(it))
+                    setState { location = it }
                 }
             }
         }

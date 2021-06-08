@@ -35,6 +35,7 @@ external interface ItemListElementProps : RProps {
     var update: () -> Unit
 }
 
+@JsExport
 class ItemListElement : RComponent<ItemListElementProps, ItemListElementState>() {
     override fun componentDidMount() {
         setState {
@@ -119,7 +120,14 @@ class ItemListElement : RComponent<ItemListElementProps, ItemListElementState>()
                     attrs {
                         hidden = !state.detailsOpened
                     }
-                    +props.item.details
+                    styledPre {
+                        css {
+                            padding(left = LinearDimension("2%"), right = LinearDimension("2%"))
+                            maxHeight = 300.px
+                            overflow = Overflow.auto
+                        }
+                        +props.item.details
+                    }
                 }
             } else {
                 styledP {
@@ -268,19 +276,19 @@ class ItemListElement : RComponent<ItemListElementProps, ItemListElementState>()
                                     }
                                 }
                                 val data = FormData()
-                                if (!state.titleInput.isBlank())
+                                if (state.titleInput.isNotBlank())
                                     data.append("title", state.titleInput)
-                                if (!state.authorsInput.isBlank())
+                                if (state.authorsInput.isNotBlank())
                                     data.append("authors", state.authorsInput)
-                                if (!state.detailsInput.isBlank())
+                                if (state.detailsInput.isNotBlank())
                                     data.append("details", state.detailsInput)
-                                if (!state.isbnInput.isBlank())
+                                if (state.isbnInput.isNotBlank())
                                     data.append("isbn", state.isbnInput)
-                                if (!state.languageInput.isBlank())
+                                if (state.languageInput.isNotBlank())
                                     data.append("language", state.languageInput)
-                                if (!state.typeInput.isBlank())
+                                if (state.typeInput.isNotBlank())
                                     data.append("type", state.typeInput)
-                                if (!state.rlbcInput.isBlank())
+                                if (state.rlbcInput.isNotBlank())
                                     data.append("rlbc", state.rlbcInput)
                                 updateRequest.send(data)
                             }

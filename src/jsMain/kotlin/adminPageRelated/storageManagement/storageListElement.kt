@@ -15,7 +15,9 @@ import react.*
 import react.dom.defaultValue
 import styled.*
 
-data class StorageListElementState(var newAddressInput: String) : RState
+external interface StorageListElementState : RState {
+    var newAddressInput: String
+}
 
 external interface StorageListElementProps : RProps {
     var editState: Boolean
@@ -27,6 +29,7 @@ external interface StorageListElementProps : RProps {
     var onUpdateFun: (List<Storages>) -> Unit
 }
 
+@JsExport
 class StorageListElement : RComponent<StorageListElementProps, StorageListElementState>() {
     override fun componentDidMount() {
         setState { newAddressInput = props.storage.address }
@@ -112,7 +115,7 @@ class StorageListElement : RComponent<StorageListElementProps, StorageListElemen
                                 updateAfterRequest.onload = {
                                     props.changeEditing(false)
                                     props.changeInProcess(false)
-                                    props.onUpdateFun(Json.decodeFromString<List<Storages>>(updateAfterRequest.responseText))
+                                    props.onUpdateFun(Json.decodeFromString(updateAfterRequest.responseText))
                                 }
                                 updateAfterRequest.send()
                             }

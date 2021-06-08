@@ -26,6 +26,7 @@ external interface AddItemPageProps : RProps {
     var onCompleteFunction: () -> Unit
 }
 
+@JsExport
 class AddItemPage : RComponent<AddItemPageProps, AddItemPageState>() {
     override fun componentDidMount() {
         setState {
@@ -205,19 +206,19 @@ class AddItemPage : RComponent<AddItemPageProps, AddItemPageState>() {
                                     }
                                 }
                                 val data = FormData()
-                                if (!state.titleInput.isBlank())
+                                if (state.titleInput.isNotBlank())
                                     data.append("title", state.titleInput)
-                                if (!state.authorsInput.isBlank())
+                                if (state.authorsInput.isNotBlank())
                                     data.append("authors", state.authorsInput)
-                                if (!state.typeInput.isBlank())
+                                if (state.typeInput.isNotBlank())
                                     data.append("type", state.typeInput)
-                                if (!state.isbnInput.isBlank())
+                                if (state.isbnInput.isNotBlank())
                                     data.append("isbn", state.isbnInput)
-                                if (!state.rlbcInput.isBlank())
+                                if (state.rlbcInput.isNotBlank())
                                     data.append("rlbc", state.rlbcInput)
-                                if (!state.detailsInput.isBlank())
+                                if (state.detailsInput.isNotBlank())
                                     data.append("details", state.detailsInput)
-                                if (!state.languageInput.isBlank())
+                                if (state.languageInput.isNotBlank())
                                     data.append("language", state.languageInput)
                                 request.send(data)
                             }

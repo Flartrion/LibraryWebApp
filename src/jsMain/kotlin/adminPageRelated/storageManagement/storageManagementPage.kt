@@ -30,8 +30,8 @@ external interface StorageManagementPageProps : RProps {
     var newAddressInput: String?
 }
 
+@JsExport
 class StorageManagementPage : RComponent<StorageManagementPageProps, StorageManagementPageState>() {
-
     override fun componentDidMount() {
         val xml = XMLHttpRequest()
         xml.open("get", "/storages")
