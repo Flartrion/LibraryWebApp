@@ -14,7 +14,7 @@ fun Route.usersRouting() {
     route("/users") {
         get {
             var filter: String
-            val parameters = call.receiveParameters()
+            val parameters = call.request.queryParameters
             if (!parameters.isEmpty()) {
                 filter = " WHERE "
                 val filterConditions = ArrayList<String>()
@@ -39,7 +39,8 @@ fun Route.usersRouting() {
                 filter = String()
             val resultSet = statement
                 .executeQuery(
-                    "SELECT * FROM \"HumanResources\".\"Users\"$filter"
+                    "SELECT * FROM \"HumanResources\".\"Users\"$filter" +
+                            " ORDER BY id_user ASC"
                 )
             val users = ArrayList<Users>()
             while (resultSet.next())
