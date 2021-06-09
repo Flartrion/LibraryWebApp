@@ -1,3 +1,4 @@
+import kotlinx.browser.document
 import kotlinx.css.*
 import kotlinx.css.properties.TextDecoration
 import kotlinx.html.js.onClickFunction
@@ -70,7 +71,7 @@ class Header : RComponent<HeaderProps, RState>() {
                 }
                 +"Контакты"
             }
-            if ("admin" == "admin") {
+            if (document.cookie == "role=admin") {
                 styledB {
                     attrs {
                         onClickFunction = {

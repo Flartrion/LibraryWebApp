@@ -1,3 +1,4 @@
+import DataBase.statement
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.html.*
@@ -8,7 +9,6 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import kotlinx.html.*
 import routes.*
-import java.io.File
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -19,56 +19,34 @@ fun Application.module(testing: Boolean = false) {
         method(HttpMethod.Delete)
         anyHost()
     }
-
-//    install(Compression) {
-//        gzip()
-//    }
+    install(Compression) {
+        gzip()
+    }
 
     routing {
-        get("/hello") {
-            call.respondText("Hello, API!")
-        }
+
         get("/") {
             call.respondHtml(HttpStatusCode.OK, HTML::index)
         }
-        get("/book/{id}") {
-            val bookId = call.parameters["id"]
-            call.respondHtml(HttpStatusCode.OK) {
-                head {
-                    title("urbook")
-                }
-                body {
-                    id = "root"
-                    b {
-                        +(bookId ?: "Fuck you")
-                    }
-                }
-            }
-        }
-        post("/storages") {
-            call.respond("yep")
-        }
-        post("/search") {
-            val params = call.receiveParameters()
-            val name = params["name"]
-            val authors = params["authors"]
-            val type = params["type"]
-            val sort = params["sorting"]
-            val ascDesc = params["ascDesc"]
-            println("$name + $authors + $type + $sort + $ascDesc")
-            call.respondText("$name + $authors + $type + $sort + $ascDesc")
-        }
-        post("/") {
-            call.respond("Ok")
-        }
 
-        //------------------------------------------------------------------------------------------------Authentication
-        post("/auth") {
-            val params = call.receiveParameters()
-            call.respond(
-                HttpStatusCode.NotImplemented,
-                "Wrong door, leatherman \n${params["login"]}, ${params["pass"]}"
+        post("/login") {
+            val parameters = call.receiveParameters()
+            val username = parameters["username"] ?: return@post call.respondText(
+                "Missing or malformed role",
+                status = HttpStatusCode.BadRequest
             )
+            val password = parameters["password"] ?: return@post call.respondText(
+                "Missing or malformed role",
+                status = HttpStatusCode.BadRequest
+            )
+            val resultSet = statement
+                .executeQuery(
+                    "SELECT role, email, card_num FROM \"HumanResources\".\"Users\"" +
+                            "WHERE email = '$username' AND card_num = '$password'"
+                )
+            resultSet.next()
+            val role = resultSet.getString(1)
+            call.respond(HttpStatusCode.OK, role)
         }
 
         registerStoragesRoutes()
@@ -78,12 +56,6 @@ fun Application.module(testing: Boolean = false) {
         registerItemsRoutes()
         registerRentsRoutes()
 
-        get("/image/{name}") {
-            val picname = call.parameters["name"]
-            val file = File("C:/resources/$picname")
-            println(file.absolutePath)
-            call.respondFile(file)
-        }
         static("/static") {
             resources()
         }

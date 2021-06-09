@@ -44,8 +44,9 @@ kotlin {
                 implementation("io.ktor:ktor-serialization:1.5.4")
                 implementation("io.ktor:ktor-server-core:1.5.4")
                 implementation("io.ktor:ktor-server-netty:1.5.4")
-                implementation("ch.qos.logback:logback-classic:1.2.3")
+                implementation("io.ktor:ktor-auth:1.5.4")
                 implementation("io.ktor:ktor-html-builder:1.5.4")
+                implementation("ch.qos.logback:logback-classic:1.2.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
                 implementation("org.postgresql:postgresql:42.2.20")
             }
