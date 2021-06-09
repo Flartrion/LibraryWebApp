@@ -13,13 +13,17 @@ external interface MainPageProps : RProps {
 
 external interface MainPageState : RState {
     var location: SiteLocation
+    var loggedRole: String
 }
 
 @JsExport
 class MainPage : RComponent<MainPageProps, MainPageState>() {
 
     override fun componentWillMount() {
-        setState { location = SiteLocation.Main }
+        setState {
+            location = SiteLocation.Main
+            loggedRole = ""
+        }
     }
 
     override fun RBuilder.render() {
@@ -36,8 +40,8 @@ class MainPage : RComponent<MainPageProps, MainPageState>() {
                     flexDirection = FlexDirection.row
                 }
                 loginMenu {
-                    onRegisterPressed = {
-                        setState { location = SiteLocation.Register }
+                    onLogin = {
+                        setState { loggedRole = document.cookie }
                     }
                 }
 

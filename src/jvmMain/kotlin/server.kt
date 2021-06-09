@@ -29,13 +29,13 @@ fun Application.module(testing: Boolean = false) {
             call.respondHtml(HttpStatusCode.OK, HTML::index)
         }
 
-        get("/login") {
+        post("/login") {
             val parameters = call.receiveParameters()
-            val username = parameters["username"] ?: return@get call.respondText(
+            val username = parameters["username"] ?: return@post call.respondText(
                 "Missing or malformed role",
                 status = HttpStatusCode.BadRequest
             )
-            val password = parameters["password"] ?: return@get call.respondText(
+            val password = parameters["password"] ?: return@post call.respondText(
                 "Missing or malformed role",
                 status = HttpStatusCode.BadRequest
             )
@@ -44,6 +44,7 @@ fun Application.module(testing: Boolean = false) {
                     "SELECT role, email, card_num FROM \"HumanResources\".\"Users\"" +
                             "WHERE email = '$username' AND card_num = '$password'"
                 )
+            resultSet.next()
             val role = resultSet.getString(1)
             call.respond(HttpStatusCode.OK, role)
         }

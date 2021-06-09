@@ -1,25 +1,29 @@
 import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.css.*
-import kotlinx.css.properties.TextDecoration
-import kotlinx.css.properties.TextDecorationLine
-import kotlinx.css.properties.TextDecorationStyle
 import kotlinx.html.*
+import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.onSubmitFunction
-import org.w3c.fetch.Request
+import org.w3c.dom.HTMLInputElement
+import org.w3c.xhr.FormData
+import org.w3c.xhr.XMLHttpRequest
 import react.*
-import react.dom.div
-import react.dom.head
-import react.dom.title
 import styled.*
 
 external interface LoginMenuProps : RProps {
-    var onRegisterPressed: () -> Unit
+    var loginInput: String
+    var passwordInput: String
+    var onLogin: () -> Unit
 }
 
 @JsExport
 class LoginMenu : RComponent<LoginMenuProps, RState>() {
+    override fun componentDidMount() {
+        props.loginInput = ""
+        props.passwordInput = ""
+    }
+
     override fun RBuilder.render() {
         styledDiv {
             css {
@@ -32,6 +36,7 @@ class LoginMenu : RComponent<LoginMenuProps, RState>() {
                 paddingLeft = 10.px
                 paddingRight = 10.px
                 backgroundColor = Color.darkRed
+                width = LinearDimension.fillAvailable
                 maxWidth = LinearDimension("10%")
 //                height = LinearDimension.maxContent
                 label {
@@ -45,75 +50,101 @@ class LoginMenu : RComponent<LoginMenuProps, RState>() {
             }
             styledForm {
                 attrs {
-                    action = "/auth"
+                    action = "/login"
                     method = FormMethod.post
                     encType = FormEncType.applicationXWwwFormUrlEncoded
+                    onSubmitFunction = {
+                        it.preventDefault()
+                        val loginRequest = XMLHttpRequest()
+                        loginRequest.open("post", "/login")
+                        loginRequest.onload = {
+                            if (loginRequest.status == 200.toShort()) {
+                                document.cookie = "role=${loginRequest.responseText}"
+                                props.onLogin()
+                            }
+                        }
+                        val data = FormData()
+                        data.append("username", props.loginInput)
+                        data.append("password", props.passwordInput)
+                        loginRequest.send(data)
+                    }
                 }
                 styledDiv {
                     css {
                         display = Display.flex
                         flexDirection = FlexDirection.column
-                        flexBasis = FlexBasis.maxContent
+                        alignContent = Align.stretch
                         justifyContent = JustifyContent.spaceEvenly
-                        alignContent = Align.flexStart
+                        width = LinearDimension.fillAvailable
                         maxHeight = 150.px
                         height = window.innerHeight.px
                     }
-                    styledInput {
-                        attrs {
-                            placeholder = "Логин"
-                            name = "login"
-                            id = "loginTextArea"
-                        }
-                    }
 
-                    styledInput {
-                        attrs {
-                            placeholder = "Пароль"
-                            type = InputType.password
-                            name = "pass"
-                            id = "passTextArea"
-                        }
-                    }
-
-                    styledInput {
-                        css {
-                            borderRadius = 0.px
-                            borderStyle = BorderStyle.none
-                            backgroundColor = Color("#999999")
-                            color = Color.white
-                            hover {
-                                color = Color("#aa0000")
-                                backgroundColor = Color("#aaaaaa")
+                    if (document.cookie.isNullOrBlank()) {
+                        styledInput {
+                            attrs {
+                                placeholder = "Логин"
+                                autoComplete = false
+                                name = "username"
+                                id = "loginTextArea"
+                                onChangeFunction = {
+                                    props.loginInput = (it.target as HTMLInputElement).value
+                                }
                             }
                         }
-                        attrs {
-                            id = "loginButton"
-                            type = InputType.submit
-                            value = "Войти"
+
+                        styledInput {
+                            attrs {
+                                placeholder = "Пароль"
+                                type = InputType.password
+                                name = "password"
+                                id = "passTextArea"
+                                onChangeFunction = {
+                                    props.passwordInput = (it.target as HTMLInputElement).value
+                                }
+                            }
+                        }
+
+                        styledInput {
+                            css {
+                                borderRadius = 0.px
+                                borderStyle = BorderStyle.none
+                                backgroundColor = Color("#999999")
+                                color = Color.white
+                                hover {
+                                    color = Color("#aa0000")
+                                    backgroundColor = Color("#aaaaaa")
+                                }
+                            }
+                            attrs {
+                                id = "loginButton"
+                                type = InputType.submit
+                                value = "Войти"
+                            }
+                        }
+                    } else {
+                        styledButton {
+                            css {
+                                width = LinearDimension.fillAvailable
+                                borderRadius = 0.px
+                                borderStyle = BorderStyle.none
+                                backgroundColor = Color("#999999")
+                                color = Color.white
+                                hover {
+                                    color = Color("#aa0000")
+                                    backgroundColor = Color("#aaaaaa")
+                                }
+                            }
+                            attrs {
+                                onClickFunction = {
+                                    document.cookie = "role=; expires = Thu, 01 Jan 1970 00:00:00 UTC"
+                                    props.onLogin()
+                                }
+                            }
+                            +"Выход"
                         }
                     }
                 }
-            }
-            styledButton {
-                css {
-                    borderRadius = 0.px
-                    borderStyle = BorderStyle.none
-                    backgroundColor = Color("#999999")
-                    color = Color.white
-                    hover {
-                        color = Color("#aa0000")
-                        backgroundColor = Color("#aaaaaa")
-                    }
-
-                }
-                attrs {
-                    id = "registerButton"
-                    onClickFunction = {
-                        props.onRegisterPressed()
-                    }
-                }
-                +"Зарегистрироваться"
             }
 
             styledDiv {
