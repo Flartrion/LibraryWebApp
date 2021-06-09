@@ -1,5 +1,4 @@
 import DataBase.statement
-import com.ibm.java.diagnostics.utils.Context.logger
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.features.*
@@ -27,19 +26,21 @@ fun Application.module(testing: Boolean = false) {
     }
     install(Sessions) {
         cookie<UserSession>("ktor_session_cookie", storage = SessionStorageMemory())
+        cookie<OriginalRequestURI>("original_request_cookie")
     }
     install(Authentication) {
         session<UserSession>("authSession") {
             validate { session: UserSession ->
-                logger.info { "User ${session.name} logged in by existing session" }
                 session
             }
             challenge {
-                logger.info { "No valid session found for this route, redirecting to login form" }
-//                call.sessions.set()
+                call.sessions.set(OriginalRequestURI(call.request.uri))
                 call.respondRedirect("/login")
             }
         }
+    }
+    install(RoleBasedAuthorization) {
+        getRoles { (it as UserSession).roles }
     }
 
     routing {
@@ -68,24 +69,31 @@ fun Application.module(testing: Boolean = false) {
 //                            "WHERE email = '$username'"
 //                )
 //            val role =
-            if (true) {
-                // Store principal in session
-                call.sessions.set(UserSession("Bog Boss", "admin"))
-                call.respondRedirect("/")
+            val params = call.receiveParameters()
+            val username = params["username"]
+            val password = params["password"]
+            val roles = params.getAll("roles")?.toSet() ?: emptySet()
+            if (username != null && password == "secret") {
+                call.sessions.set(UserSession(username, roles))
+                val redirectURL = call.sessions.get<OriginalRequestURI>()?.also {
+                    call.sessions.clear<OriginalRequestURI>()
+                }
+                call.respondRedirect(redirectURL?.uri ?: "/")
             } else {
-                // Stay on login page
                 call.respondRedirect("/login")
             }
         }
 
-        authenticate {
-            registerStoragesRoutes()
-            registerUsersRoutes()
-            registerBankHistoryRoutes()
-            registerItemLocationRoutes()
-            registerItemsRoutes()
-            registerRentsRoutes()
-        }
+//        authenticate {
+            withRole("admin") {
+                registerStoragesRoutes()
+                registerUsersRoutes()
+                registerBankHistoryRoutes()
+                registerItemLocationRoutes()
+                registerItemsRoutes()
+                registerRentsRoutes()
+            }
+//        }
 
         static("/static") {
             resources()
@@ -104,7 +112,9 @@ fun HTML.index() {
 
 }
 
-data class UserSession(
-    val name: String,
-    val roles: String
-) : Principal
+//data class UserSession(
+//    val name: String,
+//    val role: String
+//) : Principal
+data class UserSession(val name: String, val roles: Set<String> = emptySet()) : Principal
+data class OriginalRequestURI(val uri: String)
