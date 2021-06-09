@@ -29,7 +29,7 @@ fun Application.module(testing: Boolean = false) {
         cookie<OriginalRequestURI>("original_request_cookie")
     }
     install(Authentication) {
-        session<UserSession>("authSession") {
+        session<UserSession> {
             validate { session: UserSession ->
                 session
             }
@@ -84,7 +84,7 @@ fun Application.module(testing: Boolean = false) {
             }
         }
 
-//        authenticate {
+        authenticate {
             withRole("admin") {
                 registerStoragesRoutes()
                 registerUsersRoutes()
@@ -93,7 +93,7 @@ fun Application.module(testing: Boolean = false) {
                 registerItemsRoutes()
                 registerRentsRoutes()
             }
-//        }
+        }
 
         static("/static") {
             resources()
