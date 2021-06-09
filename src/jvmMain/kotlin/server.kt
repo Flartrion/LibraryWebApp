@@ -39,9 +39,6 @@ fun Application.module(testing: Boolean = false) {
             }
         }
     }
-    install(RoleBasedAuthorization) {
-        getRoles { (it as UserSession).roles }
-    }
 
     routing {
 
@@ -50,38 +47,22 @@ fun Application.module(testing: Boolean = false) {
         }
 
         get("/login") {
-
-        }
-
-        post("/login") {
-//            val parameters = call.receiveParameters()
-//            val username = parameters["username"] ?: return@post call.respondText(
-//                "Missing or malformed role",
-//                status = HttpStatusCode.BadRequest
-//            )
-//            val password = parameters["password"] ?: return@post call.respondText(
-//                "Missing or malformed role",
-//                status = HttpStatusCode.BadRequest
-//            )
-//            val resultSet = statement
-//                .executeQuery(
-//                    "SELECT role, email, card_num FROM \"HumanResources\".\"Users\"" +
-//                            "WHERE email = '$username'"
-//                )
-//            val role =
-            val params = call.receiveParameters()
-            val username = params["username"]
-            val password = params["password"]
-            val roles = params.getAll("roles")?.toSet() ?: emptySet()
-            if (username != null && password == "secret") {
-                call.sessions.set(UserSession(username, roles))
-                val redirectURL = call.sessions.get<OriginalRequestURI>()?.also {
-                    call.sessions.clear<OriginalRequestURI>()
-                }
-                call.respondRedirect(redirectURL?.uri ?: "/")
-            } else {
-                call.respondRedirect("/login")
-            }
+            val parameters = call.receiveParameters()
+            val username = parameters["username"] ?: return@get call.respondText(
+                "Missing or malformed role",
+                status = HttpStatusCode.BadRequest
+            )
+            val password = parameters["password"] ?: return@get call.respondText(
+                "Missing or malformed role",
+                status = HttpStatusCode.BadRequest
+            )
+            val resultSet = statement
+                .executeQuery(
+                    "SELECT role, email, card_num FROM \"HumanResources\".\"Users\"" +
+                            "WHERE email = '$username' AND card_num = '$password'"
+                )
+            val role = resultSet.getString(1)
+            call.respond(HttpStatusCode.OK, role)
         }
 
         authenticate {
