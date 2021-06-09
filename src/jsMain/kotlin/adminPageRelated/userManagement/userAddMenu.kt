@@ -67,7 +67,7 @@ class UserAddMenu : RComponent<UserAddMenuProps, UserAddMenuState>() {
                     val insertRequest = XMLHttpRequest()
                     insertRequest.open("post", "/users/insert")
                     insertRequest.onload = {
-                        if (insertRequest.status != 500.toShort()) {
+                        if (insertRequest.status == 200.toShort()) {
                             props.update()
                         } else {
                             console.error(insertRequest.responseText)

@@ -219,7 +219,7 @@ class UserListElement : RComponent<UserListElementProps, UserListElementState>()
                                         "/users/update/${props.user.id_user}"
                                     )
                                     updateRequest.onload = {
-                                        if (updateRequest.status != 500.toShort())
+                                        if (updateRequest.status == 200.toShort())
                                             props.updateFun()
                                         else {
                                             window.alert(updateRequest.responseText)

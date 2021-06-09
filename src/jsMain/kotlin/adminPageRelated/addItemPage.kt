@@ -199,7 +199,7 @@ class AddItemPage : RComponent<AddItemPageProps, AddItemPageState>() {
                                 val request = XMLHttpRequest()
                                 request.open("post", "/items/insert")
                                 request.onload = {
-                                    if (request.status != 500.toShort()) {
+                                    if (request.status == 200.toShort()) {
                                         props.onCompleteFunction()
                                     } else {
                                         window.alert("Something went wrong!\nReason: ${request.response}")

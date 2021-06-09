@@ -14,7 +14,7 @@ fun Route.bankHistoryRouting() {
     route("/bankHistory") {
         get {
             var filter: String
-            val parameters = call.receiveParameters()
+            val parameters = call.request.queryParameters
             if (!parameters.isEmpty()) {
                 filter = " WHERE "
                 val filterConditions = ArrayList<String>()
@@ -35,7 +35,8 @@ fun Route.bankHistoryRouting() {
                 filter = String()
             val resultSet = statement
                 .executeQuery(
-                    "SELECT * FROM \"Inventory\".\"BankHistory\"$filter"
+                    "SELECT * FROM \"Inventory\".\"BankHistory\"$filter" +
+                            " ORDER BY date DESC"
                 )
             val bankHistory = ArrayList<BankHistory>()
             while (resultSet.next())
@@ -91,11 +92,16 @@ fun Route.bankHistoryRouting() {
                 "Missing or malformed id_storage",
                 status = HttpStatusCode.BadRequest
             )
-            statement.executeUpdate(
-                "INSERT INTO \"Inventory\".\"BankHistory\" (id_item, change, date, id_storage)" +
-                        " VALUES ('$idItem', '$change', '$date', '$idStorage')"
-            )
-            call.respond(HttpStatusCode.OK)
+            try {
+                statement.executeUpdate(
+                    "INSERT INTO \"Inventory\".\"BankHistory\" (id_item, change, date, id_storage)" +
+                            " VALUES ('$idItem', '$change', '$date', '$idStorage')"
+                )
+                call.respond(HttpStatusCode.OK)
+            }
+            catch (e: Exception) {
+                call.respond(HttpStatusCode.BadRequest, e.message ?: "Unknown error")
+            }
         }
         post("/update/{id}") {
             val id = call.parameters["id"] ?: return@post call.respondText(

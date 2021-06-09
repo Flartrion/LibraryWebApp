@@ -33,7 +33,8 @@ fun Route.itemLocationRouting() {
                 filter = String()
             val resultSet = statement
                 .executeQuery(
-                    "SELECT * FROM \"Inventory\".\"ItemLocation\"$filter"
+                    "SELECT * FROM \"Inventory\".\"ItemLocation\"$filter" +
+                            "ORDER BY id_storage ASC"
                 )
             val itemLocations = ArrayList<ItemLocation>()
             while (resultSet.next())

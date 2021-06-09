@@ -27,7 +27,6 @@ data class StorageManagementPageState(
 
 external interface StorageManagementPageProps : RProps {
     var addressInput: String?
-    var newAddressInput: String?
 }
 
 @JsExport
@@ -116,7 +115,7 @@ class StorageManagementPage : RComponent<StorageManagementPageProps, StorageMana
                             val insertRequest = XMLHttpRequest()
                             insertRequest.open("post", "/storages/insert")
                             insertRequest.onload = {
-                                if (insertRequest.status != 400.toShort()) {
+                                if (insertRequest.status == 200.toShort()) {
                                     val updateRequest = XMLHttpRequest()
                                     updateRequest.open("get", "/storages")
                                     updateRequest.onload = {

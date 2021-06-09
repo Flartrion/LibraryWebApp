@@ -1,5 +1,6 @@
 package adminPageRelated
 
+import adminPageRelated.balanceManagement.BalanceManagementPage
 import adminPageRelated.storageManagement.StorageManagementPage
 import adminPageRelated.userManagement.UserManagementPage
 import kotlinx.browser.document
@@ -11,8 +12,6 @@ import react.dom.br
 import styled.*
 
 data class AdminPageState(var curLocation: AdminPageLocation) : RState
-
-external interface AdminPageProps : RProps
 
 @JsExport
 class AdminPage : RComponent<RProps, AdminPageState>() {
@@ -67,7 +66,10 @@ class AdminPage : RComponent<RProps, AdminPageState>() {
                     +"Пользователи"
                 }
                 styledButton {
-                    +"Кнопка два"
+                    attrs {
+                        onClickFunction = { setState { curLocation = AdminPageLocation.ManageBalance } }
+                    }
+                    +"Баланс"
                 }
             } else {
                 css {
@@ -102,6 +104,9 @@ class AdminPage : RComponent<RProps, AdminPageState>() {
                             }
                         }
                         AdminPageLocation.ManageUsers -> child(UserManagementPage::class) {
+                        }
+                        AdminPageLocation.ManageBalance -> child(BalanceManagementPage::class) {
+//                            TODO("Insert balance page")
                         }
                         else -> {
                         }

@@ -93,6 +93,8 @@ class ItemListElement : RComponent<ItemListElementProps, ItemListElementState>()
                     +props.item.authors
                     styledBr { }
                 }
+                +"id: ${props.item.id_item}"
+                styledBr { }
                 +"Тип: ${props.item.type}"
                 styledBr { }
                 +"Язык: ${props.item.language}"
@@ -154,6 +156,7 @@ class ItemListElement : RComponent<ItemListElementProps, ItemListElementState>()
                         }
                     }
                 }
+                +"id: ${props.item.id_item}"
                 styledP {
                     +"Тип: "
                     styledInput {
@@ -268,7 +271,7 @@ class ItemListElement : RComponent<ItemListElementProps, ItemListElementState>()
                                     "/items/update/${props.item.id_item}"
                                 )
                                 updateRequest.onload = {
-                                    if (updateRequest.status != 500.toShort()) {
+                                    if (updateRequest.status == 200.toShort()) {
                                         props.changeEditing(false)
                                         props.update()
                                     } else {

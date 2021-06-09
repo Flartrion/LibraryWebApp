@@ -4,5 +4,6 @@ enum class AdminPageLocation {
     MainMenu,
     ManageStorages,
     AddItem,
-    ManageUsers
+    ManageUsers,
+    ManageBalance
 }
