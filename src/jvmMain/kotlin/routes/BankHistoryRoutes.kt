@@ -97,9 +97,21 @@ fun Route.bankHistoryRouting() {
                     "INSERT INTO \"Inventory\".\"BankHistory\" (id_item, change, date, id_storage)" +
                             " VALUES ('$idItem', '$change', '$date', '$idStorage')"
                 )
+                try {
+                    statement.executeUpdate(
+                        "UPDATE \"Inventory\".\"ItemLocation\"" +
+                                " SET amount = amount + $change" +
+                                " WHERE id_storage = '$idStorage' AND id_item = '$idItem'"
+                    )
+                } catch (e: Exception) {
+                    statement.executeUpdate(
+                        "INSERT INTO \"Inventory\".\"ItemLocation\"" +
+                                " (id_item, id_storage, amount) VALUES" +
+                                " ('$idItem', '$idStorage', '$change')"
+                    )
+                }
                 call.respond(HttpStatusCode.OK)
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 call.respond(HttpStatusCode.BadRequest, e.message ?: "Unknown error")
             }
         }
@@ -140,11 +152,32 @@ fun Route.bankHistoryRouting() {
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest
             )
-            statement.executeUpdate(
-                "DELETE FROM \"Inventory\".\"BankHistory\"" +
+            val data = statement.executeQuery(
+                "SELECT * FROM \"Inventory\".\"BankHistory\"" +
                         " WHERE id_entry = '$id'"
             )
-            call.respond(HttpStatusCode.OK)
+            data.next()
+            val entry = BankHistory(
+                data.getString(1),
+                data.getString(2),
+                data.getString(3),
+                data.getString(4),
+                data.getString(5)
+            )
+            try {
+                statement.executeUpdate(
+                    "UPDATE \"Inventory\".\"ItemLocation\"" +
+                            " SET amount = amount - '${entry.change}'" +
+                            " WHERE id_storage = '${entry.id_storage}' AND id_item = '${entry.id_item}'"
+                )
+                statement.executeUpdate(
+                    "DELETE FROM \"Inventory\".\"BankHistory\"" +
+                            " WHERE id_entry = '$id'"
+                )
+                call.respond(HttpStatusCode.OK)
+            } catch (e: Exception) {
+                call.respond(HttpStatusCode.BadRequest, e.message?:"Unknown error")
+            }
         }
     }
 }

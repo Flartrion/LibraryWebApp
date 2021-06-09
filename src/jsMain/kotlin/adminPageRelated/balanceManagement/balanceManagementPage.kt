@@ -220,6 +220,9 @@ class BalanceManagementPage : RComponent<BalanceManagementPageProps, BalanceMana
                                                 getEntriesRequest.send()
                                             } else {
                                                 window.alert("${insertRequest.statusText} : ${insertRequest.responseText}")
+                                                setState {
+                                                    entriesLoaded = true
+                                                }
                                             }
                                             setState { inProcess = false }
                                         }
