@@ -1,6 +1,5 @@
 import DataBase.statement
 import io.ktor.application.*
-import io.ktor.auth.*
 import io.ktor.features.*
 import io.ktor.html.*
 import io.ktor.http.*
@@ -8,7 +7,6 @@ import io.ktor.http.content.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import io.ktor.sessions.*
 import kotlinx.html.*
 import routes.*
 
@@ -23,21 +21,6 @@ fun Application.module(testing: Boolean = false) {
     }
     install(Compression) {
         gzip()
-    }
-    install(Sessions) {
-        cookie<UserSession>("ktor_session_cookie", storage = SessionStorageMemory())
-        cookie<OriginalRequestURI>("original_request_cookie")
-    }
-    install(Authentication) {
-        session<UserSession> {
-            validate { session: UserSession ->
-                session
-            }
-            challenge {
-                call.sessions.set(OriginalRequestURI(call.request.uri))
-                call.respondRedirect("/login")
-            }
-        }
     }
 
     routing {
@@ -65,16 +48,12 @@ fun Application.module(testing: Boolean = false) {
             call.respond(HttpStatusCode.OK, role)
         }
 
-        authenticate {
-            withRole("admin") {
-                registerStoragesRoutes()
-                registerUsersRoutes()
-                registerBankHistoryRoutes()
-                registerItemLocationRoutes()
-                registerItemsRoutes()
-                registerRentsRoutes()
-            }
-        }
+        registerStoragesRoutes()
+        registerUsersRoutes()
+        registerBankHistoryRoutes()
+        registerItemLocationRoutes()
+        registerItemsRoutes()
+        registerRentsRoutes()
 
         static("/static") {
             resources()
@@ -92,10 +71,3 @@ fun HTML.index() {
     }
 
 }
-
-//data class UserSession(
-//    val name: String,
-//    val role: String
-//) : Principal
-data class UserSession(val name: String, val roles: Set<String> = emptySet()) : Principal
-data class OriginalRequestURI(val uri: String)
