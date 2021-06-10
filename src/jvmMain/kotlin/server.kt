@@ -24,7 +24,6 @@ fun Application.module(testing: Boolean = false) {
     }
 
     routing {
-
         get("/") {
             call.respondHtml(HttpStatusCode.OK, HTML::index)
         }

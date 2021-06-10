@@ -13,6 +13,10 @@ import kotlinx.serialization.json.Json
 fun Route.bankHistoryRouting() {
     route("/bankHistory") {
         get {
+            if (call.request.cookies["role"] != "admin") return@get call.respondText(
+                "Access is forbidden",
+                status = HttpStatusCode.Forbidden
+            )
             var filter: String
             val parameters = call.request.queryParameters
             if (!parameters.isEmpty()) {
@@ -52,6 +56,10 @@ fun Route.bankHistoryRouting() {
             call.respondText(Json.encodeToString(bankHistory))
         }
         get("{id}") {
+            if (call.request.cookies["role"] != "admin") return@get call.respondText(
+                "Access is forbidden",
+                status = HttpStatusCode.Forbidden
+            )
             val id = call.parameters["id"] ?: return@get call.respondText(
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest
@@ -75,6 +83,10 @@ fun Route.bankHistoryRouting() {
             call.respondText(Json.encodeToString(bankHistory))
         }
         post("/insert") {
+            if (call.request.cookies["role"] != "admin") return@post call.respondText(
+                "Access is forbidden",
+                status = HttpStatusCode.Forbidden
+            )
             val parameters = call.receiveParameters()
             val idItem = parameters["id_item"] ?: return@post call.respondText(
                 "Missing or malformed id_item",
@@ -116,6 +128,10 @@ fun Route.bankHistoryRouting() {
             }
         }
         post("/update/{id}") {
+            if (call.request.cookies["role"] != "admin") return@post call.respondText(
+                "Access is forbidden",
+                status = HttpStatusCode.Forbidden
+            )
             val id = call.parameters["id"] ?: return@post call.respondText(
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest
@@ -148,6 +164,10 @@ fun Route.bankHistoryRouting() {
             call.respond(HttpStatusCode.OK)
         }
         delete("{id}") {
+            if (call.request.cookies["role"] != "admin") return@delete call.respondText(
+                "Access is forbidden",
+                status = HttpStatusCode.Forbidden
+            )
             val id = call.parameters["id"] ?: return@delete call.respondText(
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest
@@ -176,7 +196,7 @@ fun Route.bankHistoryRouting() {
                 )
                 call.respond(HttpStatusCode.OK)
             } catch (e: Exception) {
-                call.respond(HttpStatusCode.BadRequest, e.message?:"Unknown error")
+                call.respond(HttpStatusCode.BadRequest, e.message ?: "Unknown error")
             }
         }
     }

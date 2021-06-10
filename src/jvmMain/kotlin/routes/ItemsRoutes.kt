@@ -13,6 +13,10 @@ import kotlinx.serialization.json.Json
 fun Route.itemsRouting() {
     route("/items") {
         get {
+            if (call.request.cookies["role"] != "admin" || call.request.cookies["role"] != "user") return@get call.respondText(
+                "Access is forbidden",
+                status = HttpStatusCode.Forbidden
+            )
             var filter: String
             val parameters = call.request.queryParameters
             if (parameters.entries().size > 1) {
@@ -61,6 +65,10 @@ fun Route.itemsRouting() {
             call.respondText(Json.encodeToString(items))
         }
         get("{id}") {
+            if (call.request.cookies["role"] != "admin" || call.request.cookies["role"] != "user") return@get call.respondText(
+                "Access is forbidden",
+                status = HttpStatusCode.Forbidden
+            )
             val id = call.parameters["id"] ?: return@get call.respondText(
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest
@@ -87,6 +95,10 @@ fun Route.itemsRouting() {
             call.respondText(Json.encodeToString(items))
         }
         post("/insert") {
+            if (call.request.cookies["role"] != "admin") return@post call.respondText(
+                "Access is forbidden",
+                status = HttpStatusCode.Forbidden
+            )
             val parameters = call.receiveParameters()
             val isbn = parameters["isbn"] ?: return@post call.respondText(
                 "Missing or malformed isbn",
@@ -123,6 +135,10 @@ fun Route.itemsRouting() {
             call.respond(HttpStatusCode.OK)
         }
         post("/update/{id}") {
+            if (call.request.cookies["role"] != "admin") return@post call.respondText(
+                "Access is forbidden",
+                status = HttpStatusCode.Forbidden
+            )
             val id = call.parameters["id"] ?: return@post call.respondText(
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest
@@ -161,6 +177,10 @@ fun Route.itemsRouting() {
             call.respond(HttpStatusCode.OK)
         }
         delete("{id}") {
+            if (call.request.cookies["role"] != "admin") return@delete call.respondText(
+                "Access is forbidden",
+                status = HttpStatusCode.Forbidden
+            )
             val id = call.parameters["id"] ?: return@delete call.respondText(
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest

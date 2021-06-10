@@ -13,6 +13,10 @@ import kotlinx.serialization.json.Json
 fun Route.itemLocationRouting() {
     route("/itemLocation") {
         get {
+            if (call.request.cookies["role"] != "admin" || call.request.cookies["role"] != "user") return@get call.respondText(
+                "Access is forbidden",
+                status = HttpStatusCode.Forbidden
+            )
             var filter: String
             val parameters = call.receiveParameters()
             if (!parameters.isEmpty()) {
@@ -48,6 +52,10 @@ fun Route.itemLocationRouting() {
             call.respondText(Json.encodeToString(itemLocations))
         }
         post("/insert") {
+            if (call.request.cookies["role"] != "admin") return@post call.respondText(
+                "Access is forbidden",
+                status = HttpStatusCode.Forbidden
+            )
             val parameters = call.receiveParameters()
             val idItem = parameters["id_item"] ?: return@post call.respondText(
                 "Missing or malformed id_item",
@@ -68,6 +76,10 @@ fun Route.itemLocationRouting() {
             call.respond(HttpStatusCode.OK)
         }
         post("/update/{id}") {
+            if (call.request.cookies["role"] != "admin") return@post call.respondText(
+                "Access is forbidden",
+                status = HttpStatusCode.Forbidden
+            )
             val idItem = call.parameters["id_item"] ?: return@post call.respondText(
                 "Missing or malformed id_item",
                 status = HttpStatusCode.BadRequest
@@ -88,6 +100,10 @@ fun Route.itemLocationRouting() {
             call.respond(HttpStatusCode.OK)
         }
         delete("{id}") {
+            if (call.request.cookies["role"] != "admin") return@delete call.respondText(
+                "Access is forbidden",
+                status = HttpStatusCode.Forbidden
+            )
             val idItem = call.parameters["id_item"] ?: return@delete call.respondText(
                 "Missing or malformed id_item",
                 status = HttpStatusCode.BadRequest
