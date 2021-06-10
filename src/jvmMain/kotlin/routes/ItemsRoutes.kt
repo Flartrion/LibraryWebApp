@@ -13,10 +13,6 @@ import kotlinx.serialization.json.Json
 fun Route.itemsRouting() {
     route("/items") {
         get {
-            if (call.request.cookies["role"] != "admin" || call.request.cookies["role"] != "user") return@get call.respondText(
-                "Access is forbidden",
-                status = HttpStatusCode.Forbidden
-            )
             var filter: String
             val parameters = call.request.queryParameters
             if (parameters.entries().size > 1) {
@@ -65,10 +61,6 @@ fun Route.itemsRouting() {
             call.respondText(Json.encodeToString(items))
         }
         get("{id}") {
-            if (call.request.cookies["role"] != "admin" || call.request.cookies["role"] != "user") return@get call.respondText(
-                "Access is forbidden",
-                status = HttpStatusCode.Forbidden
-            )
             val id = call.parameters["id"] ?: return@get call.respondText(
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest
