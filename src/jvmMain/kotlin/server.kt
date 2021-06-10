@@ -22,10 +22,6 @@ fun Application.module(testing: Boolean = false) {
         method(HttpMethod.Delete)
         anyHost()
     }
-    install(Compression) {
-        gzip()
-    }
-
     routing {
         get("/") {
             call.respondHtml(HttpStatusCode.OK, HTML::index)
