@@ -34,6 +34,7 @@ external interface BookSearchState : RState {
 
     var bookList: List<Items>
     var listLoaded: Boolean
+    var storagesLoaded: Boolean
 
     var editing: Int
     var renting: Int
@@ -73,13 +74,13 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
     }
 
     override fun componentDidUpdate(prevProps: BookSearchProps, prevState: BookSearchState, snapshot: Any) {
-        if (props.withRole) {
+        if (props.withRole && !state.storagesLoaded) {
             val getStoragesRequest = XMLHttpRequest()
             getStoragesRequest.open("get", "/storages")
             getStoragesRequest.onload = {
                 props.storages = Json.decodeFromString(getStoragesRequest.responseText)
-                if (props.storages.isEmpty()) {
-
+                setState {
+                    storagesLoaded = true
                 }
             }
             getStoragesRequest.send()

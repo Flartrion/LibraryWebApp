@@ -117,13 +117,13 @@ fun Route.rentsRouting() {
             )
             try {
                 statement.executeUpdate(
+                    "INSERT INTO \"Inventory\".\"Rents\" (id_user, id_item, from_date, until_date, id_storage)" +
+                            " VALUES ('$idUser', '$idItem', '$fromDate', '$untilDate', '$idStorage')"
+                )
+                statement.executeUpdate(
                     "UPDATE \"Inventory\".\"ItemLocation\"" +
                             " SET amount = amount - 1" +
                             " WHERE id_item = '$idItem' AND id_storage = '$idStorage'"
-                )
-                statement.executeUpdate(
-                    "INSERT INTO \"Inventory\".\"Rents\" (id_user, id_item, from_date, until_date, id_storage)" +
-                            " VALUES ('$idUser', '$idItem', '$fromDate', '$untilDate', '$idStorage')"
                 )
                 call.respond(HttpStatusCode.OK)
             } catch (e: SQLException) {

@@ -147,6 +147,9 @@ class ItemListElement : RComponent<ItemListElementProps, ItemListElementState>()
                                 it.preventDefault()
                                 props.changeInProcess(true)
                                 props.changeRenting(false)
+                                setState {
+                                    availabilityLoaded = false
+                                }
                                 val xmlHttpRequest = XMLHttpRequest()
                                 xmlHttpRequest.open("post", "/rents/insert")
                                 xmlHttpRequest.onload = {
