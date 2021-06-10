@@ -95,7 +95,7 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
                         }
                     }
                 }
-                +"Search"
+                +"Поиск"
             }
 
             styledForm {
@@ -340,9 +340,7 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
                                     type = InputType.submit
                                 }
                                 css {
-                                    borderRadius = 0.px
                                     fontFamily = "Arial"
-                                    borderStyle = BorderStyle.none
                                     backgroundColor = Color("#999999")
                                     color = Color.white
                                     hover {

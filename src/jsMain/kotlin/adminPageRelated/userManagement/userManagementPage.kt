@@ -66,18 +66,6 @@ class UserManagementPage : RComponent<UserManagementPageProps, UserManagementPag
                     width = LinearDimension.fillAvailable
                     height = 50.px
                     fontSize = 17.pt
-                    borderRadius = 0.px
-                    borderStyle = BorderStyle.none
-                    color = Color.white
-                    backgroundColor = Color("#999999")
-                    hover {
-                        backgroundColor = Color("#aaaaaa")
-                        color = Color.darkRed
-                    }
-                    disabled {
-                        backgroundColor = Color("#aaaaaa")
-                        color = Color.white
-                    }
                 }
             }
 

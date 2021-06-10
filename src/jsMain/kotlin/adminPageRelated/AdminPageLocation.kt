@@ -2,8 +2,9 @@ package adminPageRelated
 
 enum class AdminPageLocation {
     MainMenu,
-    ManageStorages,
+    Storages,
     AddItem,
-    ManageUsers,
-    ManageBalance
+    Users,
+    Balance,
+    Rents
 }

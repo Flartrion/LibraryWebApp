@@ -64,18 +64,6 @@ class ItemListElement : RComponent<ItemListElementProps, ItemListElementState>()
                 button {
                     width = 100.px
                     height = 50.px
-                    borderRadius = 0.px
-                    borderStyle = BorderStyle.none
-                    color = Color.white
-                    backgroundColor = Color("#999999")
-                    hover {
-                        backgroundColor = Color("#aaaaaa")
-                        color = Color.darkRed
-                    }
-                    disabled {
-                        backgroundColor = Color("#aaaaaa")
-                        color = Color.white
-                    }
                 }
             }
             if (!props.editing) {
