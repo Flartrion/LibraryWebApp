@@ -86,7 +86,7 @@ fun Route.rentsRouting() {
             call.respondText(Json.encodeToString(rents))
         }
         post("/insert") {
-            if (call.request.cookies["role"] != "admin" || call.request.cookies["role"] != "user") return@post call.respondText(
+            if (!(call.request.cookies["role"] == "admin" || call.request.cookies["role"] == "user")) return@post call.respondText(
                 "Access is forbidden",
                 status = HttpStatusCode.Forbidden
             )

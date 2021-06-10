@@ -13,7 +13,7 @@ import kotlinx.serialization.json.Json
 fun Route.itemLocationRouting() {
     route("/itemLocation") {
         get {
-            if (call.request.cookies["role"] != "admin" || call.request.cookies["role"] != "user") return@get call.respondText(
+            if (!(call.request.cookies["role"] == "admin" || call.request.cookies["role"] == "user")) return@get call.respondText(
                 "Access is forbidden",
                 status = HttpStatusCode.Forbidden
             )

@@ -13,7 +13,7 @@ import kotlinx.serialization.json.Json
 fun Route.storagesRouting() {
     route("/storages") {
         get {
-            if (call.request.cookies["role"] != "admin" || call.request.cookies["role"] != "user") return@get call.respondText(
+            if (!(call.request.cookies["role"] == "admin" || call.request.cookies["role"] == "user")) return@get call.respondText(
                 "Access is forbidden",
                 status = HttpStatusCode.Forbidden
             )
@@ -30,7 +30,7 @@ fun Route.storagesRouting() {
             call.respondText(Json.encodeToString(storages))
         }
         get("{id}") {
-            if (call.request.cookies["role"] != "admin" || call.request.cookies["role"] != "user") return@get call.respondText(
+            if (!(call.request.cookies["role"] == "admin" || call.request.cookies["role"] == "user")) return@get call.respondText(
                 "Access is forbidden",
                 status = HttpStatusCode.Forbidden
             )
