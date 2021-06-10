@@ -28,6 +28,27 @@ class MainPage : RComponent<MainPageProps, MainPageState>() {
 
     override fun RBuilder.render() {
         styledDiv {
+            css {
+                input {
+                    borderRadius = 0.px
+                    borderStyle = BorderStyle.none
+                }
+                button {
+                    borderRadius = 0.px
+                    borderStyle = BorderStyle.none
+                    color = Color.white
+                    backgroundColor = Color("#999999")
+                    hover {
+                        backgroundColor = Color("#aaaaaa")
+                        color = Color.darkRed
+                    }
+                    disabled {
+                        backgroundColor = Color("#aaaaaa")
+                        color = Color.white
+                    }
+                }
+            }
+
             header {
                 onChangeLocation = {
                     setState { location = it }
@@ -42,6 +63,9 @@ class MainPage : RComponent<MainPageProps, MainPageState>() {
                 loginMenu {
                     onLogin = {
                         setState { loggedRole = document.cookie }
+                    }
+                    onExit = {
+                        setState { location = if (SiteLocation.AdminPanel == location) SiteLocation.Main else location }
                     }
                 }
 

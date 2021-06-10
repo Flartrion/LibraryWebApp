@@ -9,6 +9,8 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.sql.SQLDataException
+import java.sql.SQLException
 
 fun Route.rentsRouting() {
     route("/rents") {
@@ -18,7 +20,7 @@ fun Route.rentsRouting() {
                 status = HttpStatusCode.Forbidden
             )
             var filter: String
-            val parameters = call.receiveParameters()
+            val parameters = call.request.queryParameters
             if (!parameters.isEmpty()) {
                 filter = " WHERE "
                 val filterConditions = ArrayList<String>()
@@ -111,11 +113,15 @@ fun Route.rentsRouting() {
                 "Missing or malformed id_storage",
                 status = HttpStatusCode.BadRequest
             )
-            statement.executeUpdate(
-                "INSERT INTO \"Inventory\".\"Rents\" (id_user, id_item, from_date, until_date, id_storage)" +
-                        " VALUES ('$idUser', '$idItem', '$fromDate', '$untilDate', '$idStorage')"
-            )
-            call.respond(HttpStatusCode.OK)
+            try {
+                statement.executeUpdate(
+                    "INSERT INTO \"Inventory\".\"Rents\" (id_user, id_item, from_date, until_date, id_storage)" +
+                            " VALUES ('$idUser', '$idItem', '$fromDate', '$untilDate', '$idStorage')"
+                )
+                call.respond(HttpStatusCode.OK)
+            } catch (e: SQLException) {
+                call.respondText(e.message ?: "Unrecognized error", status = HttpStatusCode.BadRequest)
+            }
         }
         post("/update/{id}") {
             if (call.request.cookies["role"] != "admin") return@post call.respondText(

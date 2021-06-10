@@ -1,6 +1,7 @@
 package adminPageRelated
 
 import adminPageRelated.balanceManagement.BalanceManagementPage
+import adminPageRelated.rentManagement.RentManagementPage
 import adminPageRelated.storageManagement.StorageManagementPage
 import adminPageRelated.userManagement.UserManagementPage
 import kotlinx.browser.document
@@ -32,23 +33,15 @@ class AdminPage : RComponent<RProps, AdminPageState>() {
                 display = Display.inlineBlock
                 fontFamily = "Arial"
                 button {
-                    fontSize = 30.px
+                    fontSize = 24.px
                     height = 100.px
                     width = 400.px
-                    borderStyle = BorderStyle.none
-                    borderRadius = 0.px
-                    backgroundColor = Color("#999999")
-                    color = Color.white
-                    hover {
-                        backgroundColor = Color("#bbbbbb")
-                        color = Color.darkRed
-                    }
                 }
             }
             if (state.curLocation == AdminPageLocation.MainMenu) {
                 styledButton {
                     attrs {
-                        onClickFunction = { setState { curLocation = AdminPageLocation.ManageStorages } }
+                        onClickFunction = { setState { curLocation = AdminPageLocation.Storages } }
                     }
                     +"Хранилища"
                 }
@@ -61,15 +54,22 @@ class AdminPage : RComponent<RProps, AdminPageState>() {
                 br { }
                 styledButton {
                     attrs {
-                        onClickFunction = { setState { curLocation = AdminPageLocation.ManageUsers } }
+                        onClickFunction = { setState { curLocation = AdminPageLocation.Users } }
                     }
                     +"Пользователи"
                 }
                 styledButton {
                     attrs {
-                        onClickFunction = { setState { curLocation = AdminPageLocation.ManageBalance } }
+                        onClickFunction = { setState { curLocation = AdminPageLocation.Balance } }
                     }
                     +"Баланс"
+                }
+                br { }
+                styledButton {
+                    attrs {
+                        onClickFunction = { setState { curLocation = AdminPageLocation.Rents } }
+                    }
+                    +"Аренды"
                 }
             } else {
                 css {
@@ -95,7 +95,7 @@ class AdminPage : RComponent<RProps, AdminPageState>() {
                 }
                 styledDiv {
                     when (state.curLocation) {
-                        AdminPageLocation.ManageStorages -> child(StorageManagementPage::class) {
+                        AdminPageLocation.Storages -> child(StorageManagementPage::class) {
 
                         }
                         AdminPageLocation.AddItem -> child(AddItemPage::class) {
@@ -103,10 +103,11 @@ class AdminPage : RComponent<RProps, AdminPageState>() {
                                 onCompleteFunction = { setState { curLocation = AdminPageLocation.MainMenu } }
                             }
                         }
-                        AdminPageLocation.ManageUsers -> child(UserManagementPage::class) {
+                        AdminPageLocation.Users -> child(UserManagementPage::class) {
                         }
-                        AdminPageLocation.ManageBalance -> child(BalanceManagementPage::class) {
-//                            TODO("Insert balance page")
+                        AdminPageLocation.Balance -> child(BalanceManagementPage::class) {
+                        }
+                        AdminPageLocation.Rents -> child(RentManagementPage::class) {
                         }
                         else -> {
                         }

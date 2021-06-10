@@ -224,9 +224,7 @@ class AddItemPage : RComponent<AddItemPageProps, AddItemPageState>() {
                             }
                         }
                         css {
-                            borderRadius = 0.px
                             fontFamily = "Arial"
-                            borderStyle = BorderStyle.none
                             backgroundColor = Color("#999999")
                             color = Color.white
                             hover {

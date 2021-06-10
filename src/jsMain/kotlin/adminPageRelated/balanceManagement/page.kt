@@ -17,17 +17,16 @@ import react.*
 import styled.*
 import kotlin.js.Date
 
-data class BalanceManagementPageState(
-    var entriesLoaded: Boolean,
-    var storagesLoaded: Boolean,
-    var inProcess: Boolean,
-    var editing: Int = -1,
+external interface BalanceManagementPageState : RState {
+    var entriesLoaded: Boolean
+    var storagesLoaded: Boolean
+    var inProcess: Boolean
 
-    var storageInput: String,
-    var idItemInput: String,
-    var amountInput: String,
+    var storageInput: String
+    var idItemInput: String
+    var amountInput: String
     var dateInput: Date?
-) : RState
+}
 
 external interface BalanceManagementPageProps : RProps {
     var entries: List<BankHistory>
@@ -53,19 +52,20 @@ class BalanceManagementPage : RComponent<BalanceManagementPageProps, BalanceMana
                 setState {
                     storagesLoaded = true
                 }
+
+            val getEntriesRequest = XMLHttpRequest()
+            getEntriesRequest.open("get", "/bankHistory")
+            getEntriesRequest.onload = {
+                props.entries = Json.decodeFromString(getEntriesRequest.responseText)
+                if (props.entries.isNotEmpty())
+                    setState {
+                        entriesLoaded = true
+                    }
+            }
+            getEntriesRequest.send()
         }
         getStoragesRequest.send()
 
-        val getEntriesRequest = XMLHttpRequest()
-        getEntriesRequest.open("get", "/bankHistory")
-        getEntriesRequest.onload = {
-            props.entries = Json.decodeFromString(getEntriesRequest.responseText)
-            if (props.entries.isNotEmpty())
-                setState {
-                    entriesLoaded = true
-                }
-        }
-        getEntriesRequest.send()
     }
 
     override fun RBuilder.render() {
@@ -76,18 +76,6 @@ class BalanceManagementPage : RComponent<BalanceManagementPageProps, BalanceMana
                 button {
                     width = LinearDimension.fillAvailable
                     height = 30.px
-                    borderRadius = 0.px
-                    borderStyle = BorderStyle.none
-                    color = Color.white
-                    backgroundColor = Color("#999999")
-                    hover {
-                        backgroundColor = Color("#aaaaaa")
-                        color = Color.darkRed
-                    }
-                    disabled {
-                        backgroundColor = Color("#aaaaaa")
-                        color = Color.white
-                    }
                 }
             }
 

@@ -15,6 +15,7 @@ external interface LoginMenuProps : RProps {
     var loginInput: String
     var passwordInput: String
     var onLogin: () -> Unit
+    var onExit: () -> Unit
 }
 
 @JsExport
@@ -126,19 +127,12 @@ class LoginMenu : RComponent<LoginMenuProps, RState>() {
                         styledButton {
                             css {
                                 width = LinearDimension.fillAvailable
-                                borderRadius = 0.px
-                                borderStyle = BorderStyle.none
-                                backgroundColor = Color("#999999")
-                                color = Color.white
-                                hover {
-                                    color = Color("#aa0000")
-                                    backgroundColor = Color("#aaaaaa")
-                                }
                             }
                             attrs {
                                 onClickFunction = {
                                     document.cookie = "role=; expires = Thu, 01 Jan 1970 00:00:00 UTC"
                                     props.onLogin()
+                                    props.onExit()
                                 }
                             }
                             +"Выход"
