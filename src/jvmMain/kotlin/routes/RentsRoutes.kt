@@ -15,6 +15,10 @@ import java.sql.SQLException
 fun Route.rentsRouting() {
     route("/rents") {
         get {
+            if (call.request.cookies["role"] != "admin") return@get call.respondText(
+                "Access is forbidden",
+                status = HttpStatusCode.Forbidden
+            )
             var filter: String
             val parameters = call.request.queryParameters
             if (!parameters.isEmpty()) {
@@ -56,6 +60,10 @@ fun Route.rentsRouting() {
             call.respondText(Json.encodeToString(rents))
         }
         get("{id}") {
+            if (call.request.cookies["role"] != "admin") return@get call.respondText(
+                "Access is forbidden",
+                status = HttpStatusCode.Forbidden
+            )
             val id = call.parameters["id"] ?: return@get call.respondText(
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest
@@ -80,6 +88,10 @@ fun Route.rentsRouting() {
             call.respondText(Json.encodeToString(rents))
         }
         post("/insert") {
+            if (call.request.cookies["role"] != "admin" || call.request.cookies["role"] != "user") return@post call.respondText(
+                "Access is forbidden",
+                status = HttpStatusCode.Forbidden
+            )
             val parameters = call.receiveParameters()
             val idUser = parameters["id_user"] ?: return@post call.respondText(
                 "Missing or malformed id_user",
@@ -112,6 +124,10 @@ fun Route.rentsRouting() {
             }
         }
         post("/update/{id}") {
+            if (call.request.cookies["role"] != "admin") return@post call.respondText(
+                "Access is forbidden",
+                status = HttpStatusCode.Forbidden
+            )
             val id = call.parameters["id"] ?: return@post call.respondText(
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest
@@ -146,6 +162,10 @@ fun Route.rentsRouting() {
             call.respond(HttpStatusCode.OK)
         }
         delete("{id}") {
+            if (call.request.cookies["role"] != "admin") return@delete call.respondText(
+                "Access is forbidden",
+                status = HttpStatusCode.Forbidden
+            )
             val id = call.parameters["id"] ?: return@delete call.respondText(
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest
