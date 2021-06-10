@@ -71,7 +71,7 @@ class Header : RComponent<HeaderProps, RState>() {
                 }
                 +"Контакты"
             }
-            if (document.cookie == "role=admin") {
+            if (document.cookie.contains("role=admin")) {
                 styledB {
                     attrs {
                         onClickFunction = {

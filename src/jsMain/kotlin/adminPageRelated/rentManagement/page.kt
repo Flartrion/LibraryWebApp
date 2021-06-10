@@ -310,7 +310,7 @@ class RentManagementPage : RComponent<RentManagementPageProps, RentManagementPag
                 }
 
                 styledTr {
-                    styledTh { +"Номер билета" }
+                    styledTh { +"id пользователя" }
                     styledTh { +"id книги" }
                     styledTh { +"id хранилища" }
                     styledTh { +"Дата аренды" }
@@ -362,7 +362,7 @@ class RentManagementPage : RComponent<RentManagementPageProps, RentManagementPag
                             }
                             update = {
                                 val getEntriesRequest = XMLHttpRequest()
-                                getEntriesRequest.open("get", "/bankHistory")
+                                getEntriesRequest.open("get", "/rents")
                                 getEntriesRequest.onload = {
                                     props.entries = Json.decodeFromString(getEntriesRequest.responseText)
                                     if (props.entries.isNotEmpty())

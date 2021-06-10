@@ -22,7 +22,16 @@ class MainPage : RComponent<MainPageProps, MainPageState>() {
     override fun componentWillMount() {
         setState {
             location = SiteLocation.Main
-            loggedRole = ""
+        }
+    }
+
+    override fun componentDidMount() {
+        setState {
+            val role = document.cookie.substringAfter("role=", "").substringBefore(";")
+            loggedRole = if (role != undefined)
+                ""
+            else
+                role
         }
     }
 
@@ -62,7 +71,7 @@ class MainPage : RComponent<MainPageProps, MainPageState>() {
                 }
                 loginMenu {
                     onLogin = {
-                        setState { loggedRole = document.cookie }
+                        setState { loggedRole = document.cookie.substringAfter("role=").substringBefore(";") }
                     }
                     onExit = {
                         setState { location = if (SiteLocation.AdminPanel == location) SiteLocation.Main else location }
@@ -72,7 +81,9 @@ class MainPage : RComponent<MainPageProps, MainPageState>() {
 
                 when (state.location) {
                     SiteLocation.Main -> {
-                        bookSearch()
+                        bookSearch {
+                            withRole = state.loggedRole != undefined
+                        }
                         document.title = "Библиотека книг"
                     }
                     SiteLocation.Contacts -> {

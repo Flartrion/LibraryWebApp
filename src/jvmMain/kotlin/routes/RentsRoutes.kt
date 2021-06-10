@@ -43,7 +43,9 @@ fun Route.rentsRouting() {
                 filter = String()
             val resultSet = statement
                 .executeQuery(
-                    "SELECT * FROM \"Inventory\".\"Rents\"$filter"
+                    "SELECT * FROM \"Inventory\".\"Rents\"$filter" +
+                            " ORDER BY from_date DESC," +
+                            " until_date DESC"
                 )
             val rents = ArrayList<Rents>()
             while (resultSet.next())
@@ -88,7 +90,7 @@ fun Route.rentsRouting() {
             call.respondText(Json.encodeToString(rents))
         }
         post("/insert") {
-            if (!(call.request.cookies["role"] == "admin" || call.request.cookies["role"] == "user")) return@post call.respondText(
+            if (call.request.cookies["role"] != "admin" && call.request.cookies["role"] != "user") return@post call.respondText(
                 "Access is forbidden",
                 status = HttpStatusCode.Forbidden
             )
@@ -114,6 +116,11 @@ fun Route.rentsRouting() {
                 status = HttpStatusCode.BadRequest
             )
             try {
+                statement.executeUpdate(
+                    "UPDATE \"Inventory\".\"ItemLocation\"" +
+                            " SET amount = amount - 1" +
+                            " WHERE id_item = '$idItem' AND id_storage = '$idStorage'"
+                )
                 statement.executeUpdate(
                     "INSERT INTO \"Inventory\".\"Rents\" (id_user, id_item, from_date, until_date, id_storage)" +
                             " VALUES ('$idUser', '$idItem', '$fromDate', '$untilDate', '$idStorage')"
@@ -170,11 +177,25 @@ fun Route.rentsRouting() {
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest
             )
-            statement.executeUpdate(
-                "DELETE FROM \"Inventory\".\"Rents\"" +
-                        " WHERE id_rent = '$id'"
-            )
-            call.respond(HttpStatusCode.OK)
+            try {
+                val result = statement.executeQuery(
+                    "SELECT id_item, id_storage FROM \"Inventory\".\"Rents\"" +
+                            " WHERE id_rent = '$id'"
+                )
+                result.next()
+                statement.executeUpdate(
+                    "UPDATE \"Inventory\".\"ItemLocation\"" +
+                            " SET amount = amount + 1" +
+                            " WHERE id_item = '${result.getString(1)}' AND id_storage = '${result.getString(2)}'"
+                )
+                statement.executeUpdate(
+                    "DELETE FROM \"Inventory\".\"Rents\"" +
+                            " WHERE id_rent = '$id'"
+                )
+                call.respond(HttpStatusCode.OK)
+            } catch (e: SQLException) {
+                call.respond(HttpStatusCode.BadRequest, e.message ?: "Unrecognized error")
+            }
         }
     }
 }

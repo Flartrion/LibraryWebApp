@@ -104,28 +104,25 @@ fun Route.bankHistoryRouting() {
                 "Missing or malformed id_storage",
                 status = HttpStatusCode.BadRequest
             )
-            try {
+
+            statement.executeUpdate(
+                "INSERT INTO \"Inventory\".\"BankHistory\" (id_item, change, date, id_storage)" +
+                        " VALUES ('$idItem', '$change', '$date', '$idStorage')"
+            )
+            if (
                 statement.executeUpdate(
-                    "INSERT INTO \"Inventory\".\"BankHistory\" (id_item, change, date, id_storage)" +
-                            " VALUES ('$idItem', '$change', '$date', '$idStorage')"
+                    "UPDATE \"Inventory\".\"ItemLocation\"" +
+                            " SET amount = amount + $change" +
+                            " WHERE id_storage = '$idStorage' AND id_item = '$idItem'"
+                ) == 0
+            ) {
+                statement.executeUpdate(
+                    "INSERT INTO \"Inventory\".\"ItemLocation\"" +
+                            " (id_item, id_storage, amount) VALUES" +
+                            " ('$idItem', '$idStorage', '$change')"
                 )
-                try {
-                    statement.executeUpdate(
-                        "UPDATE \"Inventory\".\"ItemLocation\"" +
-                                " SET amount = amount + $change" +
-                                " WHERE id_storage = '$idStorage' AND id_item = '$idItem'"
-                    )
-                } catch (e: Exception) {
-                    statement.executeUpdate(
-                        "INSERT INTO \"Inventory\".\"ItemLocation\"" +
-                                " (id_item, id_storage, amount) VALUES" +
-                                " ('$idItem', '$idStorage', '$change')"
-                    )
-                }
-                call.respond(HttpStatusCode.OK)
-            } catch (e: Exception) {
-                call.respond(HttpStatusCode.BadRequest, e.message ?: "Unknown error")
             }
+            call.respond(HttpStatusCode.OK)
         }
         post("/update/{id}") {
             if (call.request.cookies["role"] != "admin") return@post call.respondText(
@@ -187,8 +184,8 @@ fun Route.bankHistoryRouting() {
             try {
                 statement.executeUpdate(
                     "UPDATE \"Inventory\".\"ItemLocation\"" +
-                            " SET amount = amount - '${entry.change}'" +
-                            " WHERE id_storage = '${entry.id_storage}' AND id_item = '${entry.id_item}'"
+                            " SET amount = amount - ${entry.change}" +
+                            " WHERE id_storage = ${entry.id_storage} AND id_item = ${entry.id_item}"
                 )
                 statement.executeUpdate(
                     "DELETE FROM \"Inventory\".\"BankHistory\"" +

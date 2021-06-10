@@ -1,6 +1,8 @@
 package itemRelated
 
 import Items
+import Storages
+import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.css.*
 import kotlinx.html.FormMethod
@@ -21,6 +23,7 @@ import styled.*
 
 external interface BookSearchState : RState {
     var isSearchVisible: Boolean
+
     var titleInput: String
     var authorsInput: String
     var typeInput: String
@@ -28,13 +31,19 @@ external interface BookSearchState : RState {
     var rlbcInput: String
     var ascDesc: Boolean
     var sorting: String
+
     var bookList: List<Items>
     var listLoaded: Boolean
+
     var editing: Int
+    var renting: Int
     var inProcess: Boolean
 }
 
-external interface BookSearchProps : RProps
+external interface BookSearchProps : RProps {
+    var withRole: Boolean
+    var storages: List<Storages>
+}
 
 @JsExport
 class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
@@ -46,11 +55,8 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
             typeInput = ""
             isbnInput = ""
             rlbcInput = ""
-            ascDesc = false
-            listLoaded = false
-            inProcess = false
-            isSearchVisible = false
             editing = -1
+            renting = -1
             sorting = "Alphabetic"
         }
         val getRequest = XMLHttpRequest()
@@ -64,6 +70,20 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
             }
         }
         getRequest.send()
+    }
+
+    override fun componentDidUpdate(prevProps: BookSearchProps, prevState: BookSearchState, snapshot: Any) {
+        if (props.withRole) {
+            val getStoragesRequest = XMLHttpRequest()
+            getStoragesRequest.open("get", "/storages")
+            getStoragesRequest.onload = {
+                props.storages = Json.decodeFromString(getStoragesRequest.responseText)
+                if (props.storages.isEmpty()) {
+
+                }
+            }
+            getStoragesRequest.send()
+        }
     }
 
     override fun RBuilder.render() {
@@ -359,6 +379,7 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
                     itemListElement {
                         item = state.bookList[i]
                         editing = (state.editing == i)
+                        renting = (state.renting == i)
                         inProcess = state.inProcess
                         changeInProcess = {
                             setState { inProcess = it }
@@ -366,7 +387,18 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
                         changeEditing = {
                             setState { editing = if (it) i else -1 }
                         }
+                        changeRenting = {
+                            setState { renting = if (it) i else -1 }
+                        }
+                        fetchAddress = { id ->
+                            props.storages.find {
+                                it.id_storage == id
+                            }?.address
+                        }
                         update = {
+                            setState {
+                                listLoaded = false
+                            }
                             val getRequest = XMLHttpRequest()
                             var queryString = "/items?ascDesc=${if (state.ascDesc) "ASC" else "DESC"}"
                             if (!state.titleInput.isBlank())
@@ -400,8 +432,8 @@ class BookSearch : RComponent<BookSearchProps, BookSearchState>() {
 }
 
 
-fun RBuilder.bookSearch(): ReactElement {
+fun RBuilder.bookSearch(handler: BookSearchProps.() -> Unit): ReactElement {
     return child(BookSearch::class) {
-
+        attrs.handler()
     }
 }

@@ -5,6 +5,8 @@ import kotlinx.html.*
 import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.onSubmitFunction
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 import org.w3c.dom.HTMLInputElement
 import org.w3c.xhr.FormData
 import org.w3c.xhr.XMLHttpRequest
@@ -60,8 +62,12 @@ class LoginMenu : RComponent<LoginMenuProps, RState>() {
                         loginRequest.open("post", "/login")
                         loginRequest.onload = {
                             if (loginRequest.status == 200.toShort()) {
-                                document.cookie = "role=${loginRequest.responseText}"
+                                val user: Users = Json.decodeFromString(loginRequest.responseText)
+                                document.cookie = "role=${user.role}"
+                                document.cookie = "id=${user.id_user}"
                                 props.onLogin()
+                            } else {
+                                window.alert("${loginRequest.statusText}: ${loginRequest.responseText}")
                             }
                         }
                         val data = FormData()
@@ -131,6 +137,7 @@ class LoginMenu : RComponent<LoginMenuProps, RState>() {
                             attrs {
                                 onClickFunction = {
                                     document.cookie = "role=; expires = Thu, 01 Jan 1970 00:00:00 UTC"
+                                    document.cookie = "id=; expires = Thu, 01 Jan 1970 00:00:00 UTC"
                                     props.onLogin()
                                     props.onExit()
                                 }

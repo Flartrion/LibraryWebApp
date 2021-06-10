@@ -36,7 +36,7 @@ class ContactsPage : RComponent<RProps, ContactsPageState>() {
 
     override fun componentDidMount() {
         val xml = XMLHttpRequest()
-        xml.open("post", "/storages")
+        xml.open("get", "/storages")
         xml.onload = {
             setState(ContactsPageState(xml.responseText))
         }
