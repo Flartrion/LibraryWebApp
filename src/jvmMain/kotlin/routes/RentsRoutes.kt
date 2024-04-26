@@ -2,15 +2,15 @@ package routes
 
 import DataBase.statement
 import Rents
-import io.ktor.application.*
 import io.ktor.http.*
-import io.ktor.request.*
-import io.ktor.response.*
-import io.ktor.routing.*
+import io.ktor.server.application.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import java.sql.SQLDataException
 import java.sql.SQLException
+import kotlin.text.get
 
 fun Route.rentsRouting() {
     route("/rents") {
@@ -200,8 +200,3 @@ fun Route.rentsRouting() {
     }
 }
 
-fun Application.registerRentsRoutes() {
-    routing {
-        rentsRouting()
-    }
-}

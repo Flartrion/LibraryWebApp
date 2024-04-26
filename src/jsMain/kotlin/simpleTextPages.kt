@@ -1,25 +1,21 @@
-import kotlinx.browser.document
-import kotlinx.browser.window
-import kotlinx.css.*
-import kotlinx.html.js.onClickFunction
-import org.w3c.xhr.XMLHttpRequest
-import react.*
-import styled.css
-import styled.styledB
-import styled.styledButton
-import styled.styledDiv
+import react.Component
+import react.Props
+import react.ReactNode
+import react.State
+import react.dom.html.ReactHTML.div
+
 
 @JsExport
-class AboutPage : RComponent<RProps, RState>() {
-    override fun RBuilder.render() {
-        styledDiv {
+class AboutPage : Component<Props, State>() {
+    override fun render(): ReactNode? {
+        div {
             css {
                 textAlign = TextAlign.center
                 width = LinearDimension.fillAvailable
                 minHeight = (window.outerHeight - 200).px
                 height = LinearDimension.maxContent
 
-                padding(30.px)
+                padding = Padding(30.px)
                 backgroundColor = Color("#aaaaaa")
                 display = Display.inlineBlock
                 fontFamily = "Arial"
@@ -29,10 +25,10 @@ class AboutPage : RComponent<RProps, RState>() {
     }
 }
 
-data class ContactsPageState(val storages: String) : RState
+data class ContactsPageState(val storages: String) : State
 
 @JsExport
-class ContactsPage : RComponent<RProps, ContactsPageState>() {
+class ContactsPage : Component<Props, ContactsPageState>() {
 
     override fun componentDidMount() {
         val xml = XMLHttpRequest()
@@ -43,15 +39,15 @@ class ContactsPage : RComponent<RProps, ContactsPageState>() {
         xml.send()
     }
 
-    override fun RBuilder.render() {
-        styledDiv {
+    override fun render(): ReactNode? {
+        div {
             css {
                 textAlign = TextAlign.center
                 width = LinearDimension.fillAvailable
                 minHeight = (window.outerHeight - 200).px
                 height = LinearDimension.maxContent
 
-                padding(30.px)
+                padding = Padding(30.px)
                 backgroundColor = Color("#aaaaaa")
                 display = Display.inlineBlock
                 fontFamily = "Arial"
@@ -80,16 +76,16 @@ class ContactsPage : RComponent<RProps, ContactsPageState>() {
                 css {
                     borderRadius = 0.px
                 }
-                attrs {
-                    onClickFunction = {
-                        val xml = XMLHttpRequest()
-                        xml.addEventListener("load", {
-                            console.log(xml.responseText)
-                        })
-                        xml.open("post", document.URL + "/post")
-                        xml.send()
-                    }
+
+                onClick = {
+                    val xml = XMLHttpRequest()
+                    xml.addEventListener("load", {
+                        console.log(xml.responseText)
+                    })
+                    xml.open("post", document.URL + "/post")
+                    xml.send()
                 }
+
                 +"Button"
             }
         }
@@ -97,7 +93,7 @@ class ContactsPage : RComponent<RProps, ContactsPageState>() {
 }
 
 @JsExport
-class SchedulePage : RComponent<RProps, RState>() {
+class SchedulePage : RComponent<Props, State>() {
     override fun RBuilder.render() {
         styledDiv {
             css {
@@ -106,7 +102,7 @@ class SchedulePage : RComponent<RProps, RState>() {
                 minHeight = (window.outerHeight - 200).px
                 height = LinearDimension.maxContent
 
-                padding(30.px)
+                padding = Padding(30.px)
                 backgroundColor = Color("#aaaaaa")
                 display = Display.inlineBlock
                 fontFamily = "Arial"
@@ -116,19 +112,19 @@ class SchedulePage : RComponent<RProps, RState>() {
     }
 }
 
-fun RBuilder.aboutPage(): ReactElement {
+fun RBuilder.aboutPage(): ReactElement<Props> {
     return child(AboutPage::class) {
 
     }
 }
 
-fun RBuilder.schedulePage(): ReactElement {
+fun RBuilder.schedulePage(): ReactElement<Props> {
     return child(SchedulePage::class) {
 
     }
 }
 
-fun RBuilder.contactsPage(): ReactElement {
+fun RBuilder.contactsPage(): ReactElement<Props> {
     return child(ContactsPage::class) {
 
     }

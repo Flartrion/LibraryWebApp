@@ -2,13 +2,14 @@ package routes
 
 import DataBase.statement
 import Items
-import io.ktor.application.*
 import io.ktor.http.*
-import io.ktor.request.*
-import io.ktor.response.*
-import io.ktor.routing.*
+import io.ktor.server.application.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlin.text.get
 
 fun Route.itemsRouting() {
     route("/items") {
@@ -183,11 +184,5 @@ fun Route.itemsRouting() {
             )
             call.respond(HttpStatusCode.OK)
         }
-    }
-}
-
-fun Application.registerItemsRoutes() {
-    routing {
-        itemsRouting()
     }
 }

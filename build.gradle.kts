@@ -1,16 +1,15 @@
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 
 plugins {
-    kotlin("multiplatform") version "1.5.0"
-    kotlin("plugin.serialization") version "1.5.0"
+    kotlin("multiplatform") version "1.9.23"
     application
 }
 
 group = "me.user"
-version = "1.0-SNAPSHOT"
+version = "1.1-SNAPSHOT"
 
 repositories {
-    jcenter()
+//    jcenter()
     mavenCentral()
     maven { url = uri("https://maven.pkg.jetbrains.space/public/p/kotlin/p/kotlin/kotlin-js-wrappers") }
 }
@@ -25,39 +24,55 @@ kotlin {
         }
         withJava()
     }
-    js(LEGACY) {
+
+    js(IR) {
         binaries.executable()
         browser {
             commonWebpackConfig {
-                cssSupport.enabled = true
+
             }
         }
     }
+    val ktor_version: String by project
+    val exposed_version: String by project
+    val h2_version: String by project
+    val java_websocket_version: String by project
+    val kotlin_react_wrappers_version: String by project
+
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
             }
         }
         val jvmMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-serialization:1.5.4")
-                implementation("io.ktor:ktor-server-core:1.5.4")
-                implementation("io.ktor:ktor-server-netty:1.5.4")
-                implementation("io.ktor:ktor-html-builder:1.5.4")
-                implementation("ch.qos.logback:logback-classic:1.2.3")
-                implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
-                implementation("org.postgresql:postgresql:42.2.20")
+                implementation("io.ktor:ktor-server-core:$ktor_version")
+                implementation("io.ktor:ktor-server-netty:$ktor_version")
+                implementation("io.ktor:ktor-server-html-builder:$ktor_version")
+                implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
+                implementation("io.ktor:ktor-server-content-negotiation:$ktor_version")
+                implementation("io.ktor:ktor-server-locations:$ktor_version")
+                implementation("io.ktor:ktor-server-config-yaml:$ktor_version")
+                implementation("io.ktor:ktor-server-auth:$ktor_version")
+                implementation("ch.qos.logback:logback-classic")
+                implementation("org.java-websocket:Java-WebSocket:$java_websocket_version")
+                implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
+                implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
+                implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
+                implementation("com.h2database:h2:$h2_version")
             }
         }
         val jsMain by getting {
             dependencies {
                 implementation(kotlin("stdlib"))
-                implementation("org.jetbrains:kotlin-react:17.0.1-pre.148-kotlin-1.4.30")
-                implementation("org.jetbrains:kotlin-react-dom:17.0.1-pre.148-kotlin-1.4.30")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-core:$kotlin_react_wrappers_version")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-react:$kotlin_react_wrappers_version")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:$kotlin_react_wrappers_version")
+                implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion:11.11.4-pre.733")
+
                 implementation(npm("react", "17.0.2"))
                 implementation(npm("react-dom", "17.0.2"))
-                implementation("org.jetbrains:kotlin-styled:5.2.1-pre.148-kotlin-1.4.30")
                 implementation(npm("styled-components", "~5.3.0"))
             }
         }
@@ -65,17 +80,20 @@ kotlin {
 }
 
 application {
-    mainClass.set("io.ktor.server.netty.EngineMain")
+//    mainClass.set("io.ktor.server.netty.EngineMain")
+    application {
+        mainClass.set("$group.ServerKt")
+    }
 }
 
 tasks.getByName<KotlinWebpack>("jsBrowserProductionWebpack") {
-    outputFileName = "js.js"
+    mainOutputFileName = "js.js"
 }
 
 tasks.getByName<Jar>("jvmJar") {
     dependsOn(tasks.getByName("jsBrowserProductionWebpack"))
     val jsBrowserProductionWebpack = tasks.getByName<KotlinWebpack>("jsBrowserProductionWebpack")
-    from(File(jsBrowserProductionWebpack.destinationDirectory, jsBrowserProductionWebpack.outputFileName))
+    from(jsBrowserProductionWebpack.outputDirectory, jsBrowserProductionWebpack.mainOutputFileName)
 }
 
 tasks.getByName<JavaExec>("run") {

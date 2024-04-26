@@ -2,11 +2,11 @@ package routes
 
 import BankHistory
 import DataBase.statement
-import io.ktor.application.*
 import io.ktor.http.*
-import io.ktor.request.*
-import io.ktor.response.*
-import io.ktor.routing.*
+import io.ktor.server.application.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -196,12 +196,6 @@ fun Route.bankHistoryRouting() {
                 call.respond(HttpStatusCode.BadRequest, e.message ?: "Unknown error")
             }
         }
-    }
-}
-
-fun Application.registerBankHistoryRoutes() {
-    routing {
-        bankHistoryRouting()
     }
 }
 

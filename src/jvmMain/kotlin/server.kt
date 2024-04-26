@@ -1,27 +1,21 @@
 import DataBase.statement
-import io.ktor.application.*
-import io.ktor.features.*
-import io.ktor.html.*
 import io.ktor.http.*
-import io.ktor.http.content.*
-import io.ktor.request.*
-import io.ktor.response.*
-import io.ktor.routing.*
+import io.ktor.server.application.*
+import io.ktor.server.html.*
+import io.ktor.server.http.content.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import kotlinx.html.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import routes.*
 import java.sql.SQLException
 
-fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
+
+fun main(args: Array<String>) = io.ktor.server.netty.EngineMain.main(args)
 
 fun Application.module(testing: Boolean = false) {
-    install(CORS) {
-        method(HttpMethod.Get)
-        method(HttpMethod.Post)
-        method(HttpMethod.Delete)
-        anyHost()
-    }
     routing {
         get("/") {
             call.respondHtml(HttpStatusCode.OK, HTML::index)
@@ -43,6 +37,7 @@ fun Application.module(testing: Boolean = false) {
                             "WHERE email = '$username' AND card_num = '$password'"
                 )
             try {
+                TODO("This is baaaaaad")
                 resultSet.next()
                 val users = Users(
                     resultSet.getString(1),
@@ -59,15 +54,14 @@ fun Application.module(testing: Boolean = false) {
             }
         }
 
-        registerStoragesRoutes()
-        registerUsersRoutes()
-        registerBankHistoryRoutes()
-        registerItemLocationRoutes()
-        registerItemsRoutes()
-        registerRentsRoutes()
+        storagesRouting()
+        itemLocationRouting()
+        bankHistoryRouting()
+        itemLocationRouting()
+        itemsRouting()
+        rentsRouting()
 
-        static("/static") {
-            resources()
+        staticResources("/resources", basePackage = "") {
         }
     }
 }
