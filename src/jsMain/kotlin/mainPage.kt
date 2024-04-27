@@ -1,15 +1,19 @@
-import adminPageRelated.adminPage
-import itemRelated.bookSearch
+import com.flartrion.libapp.adminPageRelated.adminPage
+import emotion.react.css
+import item.bookSearch
 import kotlinx.browser.document
 import react.FC
 import react.Props
+import react.dom.html.ReactHTML.button
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.h1
+import react.dom.html.ReactHTML.input
 import react.useEffect
 import react.useState
+import web.cssom.*
 
 
-fun MainPage = FC<Props> {
+fun MainPage() = FC<Props> {
     var location: SiteLocation? by useState(SiteLocation.Main)
     var loggedRole: String? by useState()
 
@@ -21,26 +25,26 @@ fun MainPage = FC<Props> {
             role
     }
     div {
-//        css {
-//            input {
-//                borderRadius = 0.px
-//                borderStyle = BorderStyle.none
-//            }
-//            button {
-//                borderRadius = 0.px
-//                borderStyle = BorderStyle.none
-//                color = Color.white
-//                backgroundColor = Color("#999999")
-//                hover {
-//                    backgroundColor = Color("#aaaaaa")
-//                    color = Color.darkRed
-//                }
-//                disabled {
-//                    backgroundColor = Color("#aaaaaa")
-//                    color = Color.white
-//                }
-//            }
-//        }
+        css {
+            input {
+                borderRadius = 0.px
+                border = Border(0.px, LineStyle.hidden)
+            }
+            button {
+                borderRadius = 0.px
+                border = Border(0.px, LineStyle.hidden)
+                color = Color.white
+                backgroundColor = Color("#999999")
+                hover {
+                    backgroundColor = Color("#aaaaaa")
+                    color = Color.darkRed
+                }
+                disabled {
+                    backgroundColor = Color("#aaaaaa")
+                    color = Color.white
+                }
+            }
+        }
 
         header {
             onChangeLocation = {

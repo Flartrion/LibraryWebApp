@@ -1,67 +1,39 @@
-import DataBase.statement
+import db.DatabaseSingleton
 import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.html.*
 import io.ktor.server.http.content.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
+import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.routing.*
 import kotlinx.html.*
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import routes.*
-import java.sql.SQLException
+import routes.api.*
+import routes.api.items.itemRoutes
+import routes.loginRouting
 
 
 fun main(args: Array<String>) = io.ktor.server.netty.EngineMain.main(args)
 
 fun Application.module(testing: Boolean = false) {
+    install(ContentNegotiation) {
+        json()
+    }
+    DatabaseSingleton.init(config = this.environment.config)
     routing {
         get("/") {
             call.respondHtml(HttpStatusCode.OK, HTML::index)
         }
 
-        post("/login") {
-            val parameters = call.receiveParameters()
-            val username = parameters["username"] ?: return@post call.respondText(
-                "Missing or malformed role",
-                status = HttpStatusCode.BadRequest
-            )
-            val password = parameters["password"] ?: return@post call.respondText(
-                "Missing or malformed role",
-                status = HttpStatusCode.BadRequest
-            )
-            val resultSet = statement
-                .executeQuery(
-                    "SELECT * FROM \"HumanResources\".\"Users\"" +
-                            "WHERE email = '$username' AND card_num = '$password'"
-                )
-            try {
-                TODO("This is baaaaaad")
-                resultSet.next()
-                val users = Users(
-                    resultSet.getString(1),
-                    resultSet.getString(2),
-                    resultSet.getString(3),
-                    resultSet.getString(4),
-                    resultSet.getString(5),
-                    resultSet.getString(6),
-                    resultSet.getString(7)
-                )
-                call.respondText(Json.encodeToString(users))
-            } catch (e: SQLException) {
-                call.respondText("Login failed!", status = HttpStatusCode.BadRequest)
-            }
-        }
+        loginRouting()
 
         storagesRouting()
         itemLocationRouting()
         bankHistoryRouting()
         itemLocationRouting()
-        itemsRouting()
+        itemRoutes()
         rentsRouting()
 
-        staticResources("/resources", basePackage = "") {
+        staticResources("/static", basePackage = "") {
         }
     }
 }
@@ -72,7 +44,7 @@ fun HTML.index() {
     }
     body {
         id = "root"
-        script(src = "/static/js.js") {}
+        script(src = "/static/user.js") {}
     }
 
 }

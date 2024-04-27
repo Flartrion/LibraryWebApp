@@ -62,7 +62,7 @@ class LoginMenu : RComponent<LoginMenuProps, RState>() {
                         loginRequest.open("post", "/login")
                         loginRequest.onload = {
                             if (loginRequest.status == 200.toShort()) {
-                                val user: Users = Json.decodeFromString(loginRequest.responseText)
+                                val user: User = Json.decodeFromString(loginRequest.responseText)
                                 document.cookie = "role=${user.role}"
                                 document.cookie = "id=${user.id_user}"
                                 props.onLogin()

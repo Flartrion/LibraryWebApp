@@ -1,17 +1,24 @@
+import com.moowork.gradle.node.task.NodeTask
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
+
+repositories {
+    mavenCentral()
+}
+
+group = "com.flartrion.librapp"
+version = "1.1-SNAPSHOT"
 
 plugins {
     kotlin("multiplatform") version "1.9.23"
+    kotlin("plugin.serialization") version "1.9.23"
+    id("io.ktor.plugin") version "2.3.10"
+    id("com.moowork.node") version "1.3.1"
     application
 }
 
-group = "me.user"
-version = "1.1-SNAPSHOT"
-
-repositories {
-//    jcenter()
-    mavenCentral()
-    maven { url = uri("https://maven.pkg.jetbrains.space/public/p/kotlin/p/kotlin/kotlin-js-wrappers") }
+node {
+    version = "10.15.0"
+    download = true
 }
 
 kotlin {
@@ -25,28 +32,35 @@ kotlin {
         withJava()
     }
 
-    js(IR) {
+    js {
         binaries.executable()
         browser {
             commonWebpackConfig {
-
+                cssSupport {
+                    enabled.set(true)
+                    mode.set("extract")
+                }
             }
         }
     }
+
     val ktor_version: String by project
     val exposed_version: String by project
-    val h2_version: String by project
+//    val h2_version: String by project
     val java_websocket_version: String by project
     val kotlin_react_wrappers_version: String by project
+    val hikaricp_version: String by project
+    val ehcache_version: String by project
 
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
             }
         }
         val jvmMain by getting {
             dependencies {
+                runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
                 implementation("io.ktor:ktor-server-core:$ktor_version")
                 implementation("io.ktor:ktor-server-netty:$ktor_version")
                 implementation("io.ktor:ktor-server-html-builder:$ktor_version")
@@ -55,12 +69,17 @@ kotlin {
                 implementation("io.ktor:ktor-server-locations:$ktor_version")
                 implementation("io.ktor:ktor-server-config-yaml:$ktor_version")
                 implementation("io.ktor:ktor-server-auth:$ktor_version")
-                implementation("ch.qos.logback:logback-classic")
-                implementation("org.java-websocket:Java-WebSocket:$java_websocket_version")
+
+                implementation("org.postgresql:postgresql:42.7.3")
                 implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
                 implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
                 implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
-                implementation("com.h2database:h2:$h2_version")
+                implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposed_version")
+
+                implementation("com.zaxxer:HikariCP:$hikaricp_version")
+                implementation("org.ehcache:ehcache:$ehcache_version")
+
+//                implementation("com.h2database:h2:$h2_version")
             }
         }
         val jsMain by getting {
@@ -80,20 +99,30 @@ kotlin {
 }
 
 application {
-//    mainClass.set("io.ktor.server.netty.EngineMain")
-    application {
-        mainClass.set("$group.ServerKt")
-    }
+    mainClass.set("$group.ServerKt")
 }
 
-tasks.getByName<KotlinWebpack>("jsBrowserProductionWebpack") {
-    mainOutputFileName = "js.js"
+
+task<NodeTask>("buildReactApp") {
+    dependsOn(tasks.getByName("npmInstall"))
+    setScript(project.file("node_modules/webpack/bin/webpack.js"))
+    setArgs(
+        listOf(
+            "--mode", "development",
+            "--entry", "jsMain/js/main.jsx",
+            "-o", "/static/"
+        )
+    )
 }
+
+//tasks.getByName<KotlinWebpack>("jsBrowserProductionWebpack") {
+//    mainOutputFileName = "user.js"
+//}
 
 tasks.getByName<Jar>("jvmJar") {
-    dependsOn(tasks.getByName("jsBrowserProductionWebpack"))
-    val jsBrowserProductionWebpack = tasks.getByName<KotlinWebpack>("jsBrowserProductionWebpack")
-    from(jsBrowserProductionWebpack.outputDirectory, jsBrowserProductionWebpack.mainOutputFileName)
+//    dependsOn(tasks.getByName("jsBrowserProductionWebpack"))
+//    val jsBrowserProductionWebpack = tasks.getByName<KotlinWebpack>("jsBrowserProductionWebpack")
+//    from(jsBrowserProductionWebpack.outputDirectory, jsBrowserProductionWebpack.mainOutputFileName)
 }
 
 tasks.getByName<JavaExec>("run") {
