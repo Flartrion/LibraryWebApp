@@ -1,7 +1,6 @@
-package routes.api
+package routes
 
-import db.DatabaseSingleton.statement
-import ItemLocation
+import dataType.ItemLocation
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -12,6 +11,7 @@ import kotlinx.serialization.json.Json
 
 fun Route.itemLocationRouting() {
     route("/itemLocation") {
+        TODO("Pending redesign")
         get {
             if (call.request.cookies["role"] != "admin" && call.request.cookies["role"] != "user") return@get call.respondText(
                 "Access is forbidden",
@@ -35,20 +35,20 @@ fun Route.itemLocationRouting() {
                 }
             } else
                 filter = String()
-            val resultSet = statement
-                .executeQuery(
-                    "SELECT * FROM \"Inventory\".\"ItemLocation\"$filter" +
-                            "ORDER BY id_storage ASC"
-                )
+//            val resultSet = statement
+//                .executeQuery(
+//                    "SELECT * FROM \"Inventory\".\"dataType.ItemLocation\"$filter" +
+//                            "ORDER BY id_storage ASC"
+//                )
             val itemLocations = ArrayList<ItemLocation>()
-            while (resultSet.next())
-                itemLocations.add(
-                    ItemLocation(
-                        resultSet.getString(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3)
-                    )
-                )
+//            while (resultSet.next())
+//                itemLocations.add(
+//                    ItemLocation(
+//                        resultSet.getString(1),
+//                        resultSet.getString(2),
+//                        resultSet.getString(3)
+//                    )
+//                )
             call.respondText(Json.encodeToString(itemLocations))
         }
         post("/insert") {
@@ -69,10 +69,10 @@ fun Route.itemLocationRouting() {
                 "Missing or malformed amount",
                 status = HttpStatusCode.BadRequest
             )
-            statement.executeUpdate(
-                "INSERT INTO \"Inventory\".\"ItemLocation\" (id_item, id_storage, amount)" +
-                        " VALUES ('$idItem', '$idStorage', '$amount')"
-            )
+//            statement.executeUpdate(
+//                "INSERT INTO \"Inventory\".\"dataType.ItemLocation\" (id_item, id_storage, amount)" +
+//                        " VALUES ('$idItem', '$idStorage', '$amount')"
+//            )
             call.respond(HttpStatusCode.OK)
         }
         post("/update/{id}") {
@@ -92,11 +92,11 @@ fun Route.itemLocationRouting() {
                 "Missing or malformed parameters",
                 status = HttpStatusCode.BadRequest
             )
-            statement.executeUpdate(
-                "UPDATE \"Inventory\".\"ItemLocation\"" +
-                        " SET amount = '$amount'" +
-                        " WHERE id_item = '$idItem' AND id_storage = '$idStorage'"
-            )
+//            statement.executeUpdate(
+//                "UPDATE \"Inventory\".\"dataType.ItemLocation\"" +
+//                        " SET amount = '$amount'" +
+//                        " WHERE id_item = '$idItem' AND id_storage = '$idStorage'"
+//            )
             call.respond(HttpStatusCode.OK)
         }
         delete("{id}") {
@@ -112,10 +112,10 @@ fun Route.itemLocationRouting() {
                 "Missing or malformed id_storage",
                 status = HttpStatusCode.BadRequest
             )
-            statement.executeUpdate(
-                "DELETE FROM \"Inventory\".\"ItemLocation\"" +
-                        " WHERE id_item = '$idItem' AND id_storage = '$idStorage'"
-            )
+//            statement.executeUpdate(
+//                "DELETE FROM \"Inventory\".\"dataType.ItemLocation\"" +
+//                        " WHERE id_item = '$idItem' AND id_storage = '$idStorage'"
+//            )
             call.respond(HttpStatusCode.OK)
         }
     }

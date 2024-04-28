@@ -1,0 +1,42 @@
+package routes.api.users
+
+import dataType.User
+import db.DatabaseSingleton.dbQuery
+import db.entity.UserEntity
+import db.model.Users
+import io.ktor.http.*
+import io.ktor.server.application.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
+import kotlinx.datetime.toLocalDate
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+
+fun Route.userGetFiltered() {
+    get {
+        if (call.request.cookies["role"] != "admin") return@get call.respondText(
+            "Access is forbidden",
+            status = HttpStatusCode.Forbidden
+        )
+
+        val search = call.receive<User>()
+        val resultSet = dbQuery {
+            UserEntity.find {
+                Users.role eq search.role
+                Users.fullName like search.full_name
+                Users.email like search.email
+                Users.phoneNumber like search.phone_number
+                Users.dob eq search.date_of_birth.toLocalDate()
+            }.sortedBy { Users.fullName }
+        }
+
+        if (resultSet.isNotEmpty())
+            call.respondText(
+                Json.encodeToString(resultSet.map { it.entityToUser() }),
+                ContentType.Application.Json,
+                HttpStatusCode.OK
+            ) else
+            call.respond(HttpStatusCode.NotFound)
+    }
+}

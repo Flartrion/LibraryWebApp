@@ -1,14 +1,14 @@
-package routes.api.items
+package routes.api.users
 
 import db.DatabaseSingleton.dbQuery
-import db.entity.ItemEntity
+import db.entity.UserEntity
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import java.util.*
 
-fun Route.itemDelete() {
+fun Route.userDelete() {
     delete("{id}") {
         if (call.request.cookies["role"] != "admin") return@delete call.respondText(
             "Access is forbidden",
@@ -18,12 +18,14 @@ fun Route.itemDelete() {
             "Missing or malformed id",
             status = HttpStatusCode.BadRequest
         )
+
         val success = dbQuery {
-            ItemEntity.findById(UUID.fromString(id))?.delete()
+            UserEntity.findById(UUID.fromString(id))?.delete()
         }
+
         if (success != null)
             call.respond(HttpStatusCode.OK)
         else
-            call.respond(HttpStatusCode.BadRequest)
+            call.respond(HttpStatusCode.NotFound)
     }
 }

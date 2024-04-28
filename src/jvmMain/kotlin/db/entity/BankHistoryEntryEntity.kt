@@ -9,6 +9,8 @@ import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import java.util.*
 
+// TODO: Think again about the app structure. What point is there sending sad single
+//       entries when DAO opens up ability to find and transfer entire maps of values?
 class BankHistoryEntryEntity(id: EntityID<UUID>) : Entity<UUID>(id) {
     companion object : EntityClass<UUID, BankHistoryEntryEntity>(BankHistory)
 

@@ -6,8 +6,10 @@ ktor:
     requestQueueLimit: 16
     responseWriteTimeoutSeconds: 10
   application:
-    - ServerKt.module
+    modules:
+      - ServerKt.module
 database:
+  init: "$DBINIT:true"
   driverName: "$DBDRIVER:org.postgresql.Driver"
   hostname: "$DBHOSTNAME://localhost"
   jdbcURL: "$JDBCURL:jdbc:postgresql"

@@ -1,6 +1,6 @@
-package routes.api
+package routes
 
-import BankHistoryEntry
+import dataType.BankHistoryEntry
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -11,6 +11,7 @@ import kotlinx.serialization.json.Json
 
 fun Route.bankHistoryRouting() {
     route("/bankHistory") {
+        TODO("Pending redesign. Careful here, since it's 2 entities that get updated on creation and deletion")
         get {
             if (call.request.cookies["role"] != "admin") return@get call.respondText(
                 "Access is forbidden",
@@ -36,22 +37,22 @@ fun Route.bankHistoryRouting() {
                 }
             } else
                 filter = String()
-            val resultSet = statement
-                .executeQuery(
-                    "SELECT * FROM \"Inventory\".\"BankHistory\"$filter" +
-                            " ORDER BY date DESC"
-                )
+//            val resultSet = statement
+//                .executeQuery(
+//                    "SELECT * FROM \"Inventory\".\"BankHistory\"$filter" +
+//                            " ORDER BY date DESC"
+//                )
             val bankHistoryEntry = ArrayList<BankHistoryEntry>()
-            while (resultSet.next())
-                bankHistoryEntry.add(
-                    BankHistoryEntry(
-                        resultSet.getString(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        resultSet.getString(4),
-                        resultSet.getString(5)
-                    )
-                )
+//            while (resultSet.next())
+//                bankHistoryEntry.add(
+//                    BankHistoryEntry(
+//                        resultSet.getString(1),
+//                        resultSet.getString(2),
+//                        resultSet.getString(3),
+//                        resultSet.getString(4),
+//                        resultSet.getString(5)
+//                    )
+//                )
             call.respondText(Json.encodeToString(bankHistoryEntry))
         }
         get("{id}") {
@@ -63,22 +64,22 @@ fun Route.bankHistoryRouting() {
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest
             )
-            val resultSet = statement
-                .executeQuery(
-                    "SELECT * FROM \"Inventory\".\"BankHistory\"" +
-                            " WHERE id_entry = '$id'"
-                )
+//            val resultSet = statement
+//                .executeQuery(
+//                    "SELECT * FROM \"Inventory\".\"BankHistory\"" +
+//                            " WHERE id_entry = '$id'"
+//                )
             val bankHistoryEntry = ArrayList<BankHistoryEntry>()
-            while (resultSet.next())
-                bankHistoryEntry.add(
-                    BankHistoryEntry(
-                        resultSet.getString(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        resultSet.getString(4),
-                        resultSet.getString(5)
-                    )
-                )
+//            while (resultSet.next())
+//                bankHistoryEntry.add(
+//                    BankHistoryEntry(
+//                        resultSet.getString(1),
+//                        resultSet.getString(2),
+//                        resultSet.getString(3),
+//                        resultSet.getString(4),
+//                        resultSet.getString(5)
+//                    )
+//                )
             call.respondText(Json.encodeToString(bankHistoryEntry))
         }
         post("/insert") {
@@ -104,23 +105,23 @@ fun Route.bankHistoryRouting() {
                 status = HttpStatusCode.BadRequest
             )
 
-            statement.executeUpdate(
-                "INSERT INTO \"Inventory\".\"BankHistory\" (id_item, change, date, id_storage)" +
-                        " VALUES ('$idItem', '$change', '$date', '$idStorage')"
-            )
-            if (
-                statement.executeUpdate(
-                    "UPDATE \"Inventory\".\"ItemLocation\"" +
-                            " SET amount = amount + $change" +
-                            " WHERE id_storage = '$idStorage' AND id_item = '$idItem'"
-                ) == 0
-            ) {
-                statement.executeUpdate(
-                    "INSERT INTO \"Inventory\".\"ItemLocation\"" +
-                            " (id_item, id_storage, amount) VALUES" +
-                            " ('$idItem', '$idStorage', '$change')"
-                )
-            }
+//            statement.executeUpdate(
+//                "INSERT INTO \"Inventory\".\"BankHistory\" (id_item, change, date, id_storage)" +
+//                        " VALUES ('$idItem', '$change', '$date', '$idStorage')"
+//            )
+//            if (
+//                statement.executeUpdate(
+//                    "UPDATE \"Inventory\".\"dataType.ItemLocation\"" +
+//                            " SET amount = amount + $change" +
+//                            " WHERE id_storage = '$idStorage' AND id_item = '$idItem'"
+//                ) == 0
+//            ) {
+//                statement.executeUpdate(
+//                    "INSERT INTO \"Inventory\".\"dataType.ItemLocation\"" +
+//                            " (id_item, id_storage, amount) VALUES" +
+//                            " ('$idItem', '$idStorage', '$change')"
+//                )
+//            }
             call.respond(HttpStatusCode.OK)
         }
         post("/update/{id}") {
@@ -152,11 +153,11 @@ fun Route.bankHistoryRouting() {
                 }
             } else
                 return@post call.respondText("Missing or malformed parameters", status = HttpStatusCode.BadRequest)
-            statement.executeUpdate(
-                "UPDATE \"Inventory\".\"BankHistory\"" +
-                        setExpression +
-                        " WHERE id_entry = '$id'"
-            )
+//            statement.executeUpdate(
+//                "UPDATE \"Inventory\".\"BankHistory\"" +
+//                        setExpression +
+//                        " WHERE id_entry = '$id'"
+//            )
             call.respond(HttpStatusCode.OK)
         }
         delete("{id}") {
@@ -168,32 +169,32 @@ fun Route.bankHistoryRouting() {
                 "Missing or malformed id",
                 status = HttpStatusCode.BadRequest
             )
-            val data = statement.executeQuery(
-                "SELECT * FROM \"Inventory\".\"BankHistory\"" +
-                        " WHERE id_entry = '$id'"
-            )
-            data.next()
-            val entry = BankHistoryEntry(
-                data.getString(1),
-                data.getString(2),
-                data.getString(3),
-                data.getString(4),
-                data.getString(5)
-            )
-            try {
-                statement.executeUpdate(
-                    "UPDATE \"Inventory\".\"ItemLocation\"" +
-                            " SET amount = amount - ${entry.change}" +
-                            " WHERE id_storage = ${entry.id_storage} AND id_item = ${entry.id_item}"
-                )
-                statement.executeUpdate(
-                    "DELETE FROM \"Inventory\".\"BankHistory\"" +
-                            " WHERE id_entry = '$id'"
-                )
-                call.respond(HttpStatusCode.OK)
-            } catch (e: Exception) {
-                call.respond(HttpStatusCode.BadRequest, e.message ?: "Unknown error")
-            }
+//            val data = statement.executeQuery(
+//                "SELECT * FROM \"Inventory\".\"BankHistory\"" +
+//                        " WHERE id_entry = '$id'"
+//            )
+//            data.next()
+//            val entry = BankHistoryEntry(
+//                data.getString(1),
+//                data.getString(2),
+//                data.getString(3),
+//                data.getString(4),
+//                data.getString(5)
+//            )
+//            try {
+//                statement.executeUpdate(
+//                    "UPDATE \"Inventory\".\"dataType.ItemLocation\"" +
+//                            " SET amount = amount - ${entry.change}" +
+//                            " WHERE id_storage = ${entry.id_storage} AND id_item = ${entry.id_item}"
+//                )
+//                statement.executeUpdate(
+//                    "DELETE FROM \"Inventory\".\"BankHistory\"" +
+//                            " WHERE id_entry = '$id'"
+//                )
+//                call.respond(HttpStatusCode.OK)
+//            } catch (e: Exception) {
+//                call.respond(HttpStatusCode.BadRequest, e.message ?: "Unknown error")
+//            }
         }
     }
 }

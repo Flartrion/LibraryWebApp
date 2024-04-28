@@ -4,7 +4,7 @@ import io.ktor.server.routing.*
 
 fun Route.itemRoutes() {
     route("items") {
-        itemGetAll()
+        itemGetFiltered()
         itemGet()
         itemCreate()
         itemUpdate()

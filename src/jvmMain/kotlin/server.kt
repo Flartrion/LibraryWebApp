@@ -9,12 +9,17 @@ import io.ktor.server.routing.*
 import kotlinx.html.*
 import routes.api.*
 import routes.api.items.itemRoutes
+import routes.api.storages.storagesRouting
+import routes.api.users.userRoutes
+import routes.bankHistoryRouting
+import routes.itemLocationRouting
 import routes.loginRouting
+import routes.rentsRouting
 
 
 fun main(args: Array<String>) = io.ktor.server.netty.EngineMain.main(args)
 
-fun Application.module(testing: Boolean = false) {
+fun Application.module() {
     install(ContentNegotiation) {
         json()
     }
@@ -27,11 +32,11 @@ fun Application.module(testing: Boolean = false) {
         loginRouting()
 
         storagesRouting()
-        itemLocationRouting()
-        bankHistoryRouting()
-        itemLocationRouting()
         itemRoutes()
-        rentsRouting()
+        userRoutes()
+//        rentsRouting()
+//        itemLocationRouting()
+//        bankHistoryRouting()
 
         staticResources("/static", basePackage = "") {
         }

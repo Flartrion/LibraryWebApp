@@ -1,6 +1,7 @@
 package routes.api.items
 
-import db.dao.daoItems
+import db.DatabaseSingleton.dbQuery
+import db.entity.ItemEntity
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
@@ -15,7 +16,8 @@ fun Route.itemGet() {
             "Missing or malformed id",
             status = HttpStatusCode.BadRequest
         )
-        val items = daoItems.get(UUID.fromString(id))
-        call.respondText(Json.encodeToString(items))
+        val items = dbQuery { ItemEntity.findById(UUID.fromString(id)) }
+        if (items != null)
+        call.respondText(Json.encodeToString(items.entityToItem()), ContentType.Application.Json, HttpStatusCode.OK)
     }
 }

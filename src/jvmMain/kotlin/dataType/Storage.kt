@@ -1,3 +1,5 @@
+package dataType
+
 import kotlinx.serialization.Serializable
 
 @Serializable

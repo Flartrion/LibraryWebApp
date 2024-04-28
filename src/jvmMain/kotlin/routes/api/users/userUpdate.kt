@@ -1,18 +1,18 @@
-package routes.api.items
+package routes.api.users
 
-import dataType.Item
+import dataType.User
 import db.DatabaseSingleton.dbQuery
-import db.entity.ItemEntity
+import db.entity.UserEntity
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import java.util.UUID
+import kotlinx.datetime.toLocalDate
+import java.util.*
 
-fun Route.itemUpdate() {
+fun Route.userUpdate() {
     post("/update/{id}") {
-
         if (call.request.cookies["role"] != "admin") return@post call.respondText(
             "Access is forbidden",
             status = HttpStatusCode.Forbidden
@@ -21,23 +21,20 @@ fun Route.itemUpdate() {
             "Missing or malformed id",
             status = HttpStatusCode.BadRequest
         )
-
-        val updEntity = call.receive<Item>()
+        val updEntity = call.receive<User>()
         val success = dbQuery {
-            ItemEntity.findById(UUID.fromString(id))?.apply {
-                isbn = updEntity.isbn
-                rlbc = updEntity.rlbc
-                type = updEntity.type
-                title = updEntity.title
-                authors = updEntity.authors
-                language = updEntity.language
-                details = updEntity.details
-
+            UserEntity.findById(UUID.fromString(id))?.apply {
+                fullName = updEntity.full_name
+                role = updEntity.role
+                phoneNumber = updEntity.phone_number
+                dob = updEntity.date_of_birth.toLocalDate()
+                email = updEntity.email
             }
         }
+
         if (success != null)
             call.respond(HttpStatusCode.OK)
         else
-            call.respond(HttpStatusCode.BadRequest)
+            call.respond(HttpStatusCode.NotFound)
     }
 }

@@ -16,11 +16,6 @@ plugins {
     application
 }
 
-node {
-    version = "10.15.0"
-    download = true
-}
-
 kotlin {
     jvm {
         compilations.all {
@@ -32,21 +27,20 @@ kotlin {
         withJava()
     }
 
-    js {
-        binaries.executable()
-        browser {
-            commonWebpackConfig {
-                cssSupport {
-                    enabled.set(true)
-                    mode.set("extract")
-                }
-            }
-        }
-    }
+//    js {
+//        binaries.executable()
+//        browser {
+//            commonWebpackConfig {
+//                cssSupport {
+//                    enabled.set(true)
+//                    mode.set("extract")
+//                }
+//            }
+//        }
+//    }
 
     val ktor_version: String by project
     val exposed_version: String by project
-//    val h2_version: String by project
     val java_websocket_version: String by project
     val kotlin_react_wrappers_version: String by project
     val hikaricp_version: String by project
@@ -55,20 +49,25 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+
             }
         }
         val jvmMain by getting {
             dependencies {
                 runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
                 implementation("io.ktor:ktor-server-core:$ktor_version")
                 implementation("io.ktor:ktor-server-netty:$ktor_version")
                 implementation("io.ktor:ktor-server-html-builder:$ktor_version")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
                 implementation("io.ktor:ktor-server-content-negotiation:$ktor_version")
-                implementation("io.ktor:ktor-server-locations:$ktor_version")
+                implementation("io.ktor:ktor-server-resources:$ktor_version")
                 implementation("io.ktor:ktor-server-config-yaml:$ktor_version")
                 implementation("io.ktor:ktor-server-auth:$ktor_version")
+                implementation("io.ktor:ktor-server-sessions:$ktor_version")
+//                implementation("ch.qos.logback:logback-classic")
+//                implementation("org.apache.logging.log4j:log4j-core")
+//                implementation("org.apache.logging.log4j:log4j-slf4j-impl")
 
                 implementation("org.postgresql:postgresql:42.7.3")
                 implementation("org.jetbrains.exposed:exposed-core:$exposed_version")
@@ -78,42 +77,47 @@ kotlin {
 
                 implementation("com.zaxxer:HikariCP:$hikaricp_version")
                 implementation("org.ehcache:ehcache:$ehcache_version")
-
-//                implementation("com.h2database:h2:$h2_version")
             }
         }
-        val jsMain by getting {
-            dependencies {
-                implementation(kotlin("stdlib"))
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-core:$kotlin_react_wrappers_version")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-react:$kotlin_react_wrappers_version")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:$kotlin_react_wrappers_version")
-                implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion:11.11.4-pre.733")
-
-                implementation(npm("react", "17.0.2"))
-                implementation(npm("react-dom", "17.0.2"))
-                implementation(npm("styled-components", "~5.3.0"))
-            }
-        }
+//        val jsMain by getting {
+//            dependencies {
+//                implementation(kotlin("stdlib"))
+//                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-core:$kotlin_react_wrappers_version")
+//                implementation("org.jetbrains.kotlin-wrappers:kotlin-react:$kotlin_react_wrappers_version")
+//                implementation("org.jetbrains.kotlin-wrappers:kotlin-react-dom:$kotlin_react_wrappers_version")
+//                implementation("org.jetbrains.kotlin-wrappers:kotlin-emotion:11.11.4-pre.733")
+//
+//                implementation(npm("react", "17.0.2"))
+//                implementation(npm("react-dom", "17.0.2"))
+//                implementation(npm("styled-components", "~5.3.0"))
+//            }
+//        }
     }
 }
 
+
 application {
-    mainClass.set("$group.ServerKt")
+//    mainClass.set("$group.ServerKt")
+    mainClass.set("ServerKt")
 }
 
 
-task<NodeTask>("buildReactApp") {
-    dependsOn(tasks.getByName("npmInstall"))
-    setScript(project.file("node_modules/webpack/bin/webpack.js"))
-    setArgs(
-        listOf(
-            "--mode", "development",
-            "--entry", "jsMain/js/main.jsx",
-            "-o", "/static/"
-        )
-    )
-}
+//task<NodeTask>("buildReactApp") {
+//    dependsOn(tasks.getByName("npmInstall"))
+//    setScript(project.file("node_modules/webpack/bin/webpack.js"))
+//    setArgs(
+//        listOf(
+//            "--mode", "development",
+//            "--entry", "jsMain/js/main.jsx",
+//            "-o", "/static/"
+//        )
+//    )
+//}
+//
+//node {
+//    version = "20.12.2"
+//    download = true
+//}
 
 //tasks.getByName<KotlinWebpack>("jsBrowserProductionWebpack") {
 //    mainOutputFileName = "user.js"
@@ -124,7 +128,6 @@ tasks.getByName<Jar>("jvmJar") {
 //    val jsBrowserProductionWebpack = tasks.getByName<KotlinWebpack>("jsBrowserProductionWebpack")
 //    from(jsBrowserProductionWebpack.outputDirectory, jsBrowserProductionWebpack.mainOutputFileName)
 }
-
 tasks.getByName<JavaExec>("run") {
     dependsOn(tasks.getByName<Jar>("jvmJar"))
     classpath(tasks.getByName<Jar>("jvmJar"))

@@ -6,9 +6,9 @@ import java.util.*
 
 object Rents : IdTable<UUID>() {
     override val id = uuid("id_rent").uniqueIndex().entityId()
-    val idUser = uuid("id_user").references(Users.id)
-    val idItem = uuid("id_item").references(Items.id)
-    val idStorage = uuid("id_storage").references(Storages.id)
+    val idUser = reference("id_user", Users.id)
+    val idItem = reference("id_item", Items.id)
+    val idStorage = reference("id_storage", Storages.id)
     val dateFrom = date("date_from")
     val dateUntil = date("date_until")
 }
