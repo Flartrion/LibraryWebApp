@@ -1,0 +1,18 @@
+ktor:
+  deployment:
+    port: "$PORT:8080"
+    tcpKeepAlive: true
+    shareWorkGroup: false
+    requestQueueLimit: 16
+    responseWriteTimeoutSeconds: 10
+  application:
+    modules:
+      - ServerKt.module
+database:
+  init: "$DBINIT:true"
+  driverName: "$DBDRIVER:org.postgresql.Driver"
+  hostname: "$DBHOSTNAME://localhost"
+  jdbcURL: "$JDBCURL:jdbc:postgresql"
+  port: "$DBPORT:5432"
+  username: "$DBCLIENTNAME:postgres"
+  password: "$DBPASSWORD:postgres"
