@@ -1,97 +1,98 @@
-# Описание предметной области
-Таблица «Хранилища» состоит из следующих полей
--	Идентификатор
--	Адрес
+# App description
+Module “Home”
+- Find books using the search bar
+- View book information
+- Go to pages with information about the library and contacts
 
-Таблица «Пользователи» состоит из следующих полей
--	Идентификатор
--	Роль
--	Полное имя
--	Дата рождения
--	Номер телефона
--	Электронная почта
--	Номер читательского билета
+Login module
+- Enter your password and login
+- Gain access to some features, depending on your role
+- Log out of your account
 
-Таблица «История поступлений в хранилище» состоит из следующих полей
--	Идентификатор
--	Идентификатор книги
--	Изменение
--	Дата
--	Идентификатор хранилища
+About Library module
+- View information about the library
+- Go to other available pages
 
-Таблица «Место хранения книги» состоит из следующих полей
--	Идентификатор книги
--	Идентификатор хранилища
--	Количество
+Readers module
+- View information for readers
+- Go to other available pages
 
-Таблица «Книга» состоит из следующих полей
--	Идентификатор
--	ISBN
--	ББК
--	Название
--	Авторы
--	Тип издания
--	Доп. Информация
--	Язык
+Contacts module
+- View contacts of responsible persons
+- Go to other available pages
 
-Таблица «Аренда» состоит из следующих полей
--	Идентификатор
--	Идентификатор пользователя
--	Идентификатор книги
--	Дата начала аренды
--	Дата окончания аренды
-# Техзадание
-Модуль “Главная”
--	Найти книги используя строку поиска
--	Посмотреть информацию о книге
--	Перейти на страницы с информацией о библиотеке и контактах
+Book module
+- View information about the book
+- Depending on the access opens the possibility to book, delete, change information about the book.
 
-Модуль “Логин”
--	Ввести пароль и логин
--	Получить доступ к некоторым возможностям, в зависимости от роли
--	Выйти из аккаунта
+Administrator module
+- Add, edit and delete a storage
+- Add, edit and delete rentals
+- Add, edit and delete users
+- Add, edit and delete books
+- Add, edit and delete book arrivals information
 
-Модуль “О библиотеке”
--	Просмотреть информацию о библиотеке
--	Перейти на другие доступные страницы
+There are two types of users in the application:
+- Regular users
+    - View book data
+    - View library data
+    - Search for books with filtering
+    - Authorization
+    - Make reservations
+- Administrator
+    - Adds / Edits / Deletes book data
+    - Adds / Edits / Deletes user data
+    - Adds / Edits / Deletes storage data
+    - Adds / Edits / Deletes rental data
+    - Adds / Edits / Deletes book supply and disposal data
 
-Модуль “Читателям”
--	Посмотреть информацию для читателей
--	Перейти на другие доступные страницы
+# Architecture
 
-Модуль “Контакты”
--	Просмотреть контакты ответственных лиц
--	Перейти на другие доступные страницы
+![App architecture](pics/architecture.png "App architecture")
 
-Модуль “Книга”
--	Просмотреть информацию о книге
--	В зависимости от доступа открывается возможность бронировать, удалять, изменять информацию о книге.
+# Use-case diagram
 
-Модуль “Администратор”
--	Добавить, редактировать и удалить хранилище
--	Добавить, редактировать и удалить аренды
--	Добавить, редактировать и удалить пользователей
--	Добавить, редактировать и удалить книги
--	Добавить, редактировать и удалить информацию о поступлениях книг
+![Use-case Chart](pics/use-case.png "Use-case Chart")
 
+# Database structure
+The “Stores” table consists of the following fields
+- Identifier
+- Address
 
+The “Users” table consists of the following fields
+- Identifier
+- Role
+- Full name
+- Date of Birth
+- Phone number
+- E-mail
+- Library card number
 
-В приложении есть два типа пользователей: 
--	Обычные пользователи
-    -	Просматривает данные о книгах
-    -  	Просматривает данные о библиотеке
-    - Ищет книги с фильтрацией по параметрам
-    - Авторизация
-    - Бронирует книги
--	Администратор
-    - Добавляет / Редактирует / Удаляет данные о книгах
-    - Добавляет / Редактирует / Удаляет данные о пользователях
-    - Добавляет / Редактирует / Удаляет данные о хранилищах
-    - Добавляет / Редактирует / Удаляет данные об аренде
-    - Добавляет / Редактирует / Удаляет данные о поступлениях
+The table “History of storage receipts” consists of the following fields
+- Identifier
+- Book Identifier
+- Change
+- Date
+- Vault identifier
 
-# Архитектура
-![App architecture](/pics/architecture.png "App architecture")
+The Book Storage Location table consists of the following fields
+- Book identifier
+- Storage identifier
+- Quantity
 
-# Диаграмма применения
-![Use-case Диаграмма](/pics/use-case.png "Use-case Диаграмма")
+Table “Book” consists of the following fields
+- Identifier
+- ISBN
+- LBC
+- Title
+- Authors
+- Type of edition
+- Additional information
+- Language
+
+The table “Rent” consists of the following fields
+- Identifier
+- User ID
+- Book identifier
+- Lease start date
+- Lease end date

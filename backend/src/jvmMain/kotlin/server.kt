@@ -34,6 +34,7 @@ fun Application.module() {
         storagesRouting()
         itemRoutes()
         userRoutes()
+
 //        rentsRouting()
 //        itemLocationRouting()
 //        bankHistoryRouting()

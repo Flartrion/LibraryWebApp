@@ -1,6 +1,7 @@
 ktor:
   deployment:
     port: "$PORT:8080"
+    sslPort: "$SSLPORT:8443"
     tcpKeepAlive: true
     shareWorkGroup: false
     requestQueueLimit: 16
@@ -8,6 +9,12 @@ ktor:
   application:
     modules:
       - ServerKt.module
+  security:
+    ssl:
+      keyStore: "$SSLKEYSTOREPATH:keystore.jks"
+      keyAlias: "$SSLKEYALIAS:testKeys"
+      keyStorePassword: "$SSLKEYSTOREPASS:foobar"
+      privateKeyPassword: "$SSLPKEYPASS:foobar"
 database:
   init: "$DBINIT:true"
   driverName: "$DBDRIVER:org.postgresql.Driver"
