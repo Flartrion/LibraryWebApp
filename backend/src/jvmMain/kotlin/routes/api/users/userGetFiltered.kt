@@ -24,10 +24,10 @@ fun Route.userGetFiltered() {
         val resultSet = dbQuery {
             UserEntity.find {
                 Users.role eq search.role
-                Users.fullName like search.full_name
+                Users.fullName like search.fullName
                 Users.email like search.email
-                Users.phoneNumber like search.phone_number
-                Users.dob eq search.date_of_birth.toLocalDate()
+                Users.phoneNumber like search.phoneNumber
+                Users.dob eq search.dateOfBirth.toLocalDate()
             }.sortedBy { Users.fullName }
         }
 

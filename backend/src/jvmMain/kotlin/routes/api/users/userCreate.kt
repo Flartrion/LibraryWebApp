@@ -20,10 +20,10 @@ fun Route.userCreate() {
 
         val success = dbQuery {
             UserEntity.new {
-                fullName = newEntity.full_name
+                fullName = newEntity.fullName
                 role = newEntity.role
-                phoneNumber = newEntity.phone_number
-                dob = newEntity.date_of_birth.toLocalDate()
+                phoneNumber = newEntity.phoneNumber
+                dob = newEntity.dateOfBirth.toLocalDate()
                 email = newEntity.email
             }
         }

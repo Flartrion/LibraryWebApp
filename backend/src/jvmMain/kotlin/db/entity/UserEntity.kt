@@ -17,11 +17,11 @@ class UserEntity(id: EntityID<UUID>) : Entity<UUID>(id) {
     var email by Users.email
 
     fun entityToUser(): User = User(
-        id_user = id.value.toString(),
+        idUser = id.value.toString(),
         role = role,
-        full_name = fullName,
-        date_of_birth = dob.toString(),
-        phone_number = phoneNumber,
+        fullName = fullName,
+        dateOfBirth = dob.toString(),
+        phoneNumber = phoneNumber,
         email = email
     )
 }

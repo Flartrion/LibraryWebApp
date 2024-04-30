@@ -24,10 +24,10 @@ fun Route.userUpdate() {
         val updEntity = call.receive<User>()
         val success = dbQuery {
             UserEntity.findById(UUID.fromString(id))?.apply {
-                fullName = updEntity.full_name
+                fullName = updEntity.fullName
                 role = updEntity.role
-                phoneNumber = updEntity.phone_number
-                dob = updEntity.date_of_birth.toLocalDate()
+                phoneNumber = updEntity.phoneNumber
+                dob = updEntity.dateOfBirth.toLocalDate()
                 email = updEntity.email
             }
         }

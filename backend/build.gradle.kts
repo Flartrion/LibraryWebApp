@@ -25,15 +25,6 @@ kotlin {
         withJava()
     }
 
-    js {
-        binaries.executable()
-        browser {
-            commonWebpackConfig {
-
-            }
-        }
-    }
-
     val ktor_version: String by project
     val exposed_version: String by project
     val java_websocket_version: String by project
@@ -76,8 +67,13 @@ kotlin {
 
 
 application {
-//    mainClass.set("$group.ServerKt")
     mainClass.set("ServerKt")
+}
+
+ktor {
+    fatJar {
+
+    }
 }
 
 tasks.getByName<Jar>("jvmJar") {
@@ -91,7 +87,7 @@ tasks.register<Copy>("elevateOutputsBack") {
     from(tasks.getByName<Jar>("jvmJar").destinationDirectory)
     into(project.relativeProjectPath("../out"))
     include("*.jar")
-    dependsOn(tasks.getByName<Jar>("jvmJar"))
+    dependsOn(tasks.getByName("buildFatJar"))
 }
 
 tasks.getByName<JavaExec>("run") {
