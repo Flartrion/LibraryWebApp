@@ -4,11 +4,12 @@ import { themes } from "./styles";
 import { SiteHeader } from "./components/header";
 import { SitePageSelector } from "./components/sitePageSelector";
 import { MainPage } from "./components/mainPage";
+import { ThemeChangeObserver } from "./components/ThemeChangeObserver";
 
 const container = document.getElementById("root");
 const root = createRoot(container!);
 root.render(
-  <ThemeProvider theme={themes.abominable}>
+  <ThemeChangeObserver>
     <CssBaseline />
     <Box
       css={{
@@ -27,5 +28,5 @@ root.render(
       <SitePageSelector />
       <MainPage />
     </Box>
-  </ThemeProvider>
+  </ThemeChangeObserver>
 );
