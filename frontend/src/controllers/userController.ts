@@ -5,6 +5,7 @@ export const userController = {
     return fetch("/api/user");
   },
 
+  // TODO()
   getUsers: (filters: User): User[] => {
     let headers = new Headers();
     headers.append("Content-Type", "application/json");

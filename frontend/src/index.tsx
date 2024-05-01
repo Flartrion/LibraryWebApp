@@ -1,13 +1,14 @@
 import { Box, CssBaseline, ThemeProvider } from "@mui/material";
 import { createRoot } from "react-dom/client";
-import { darkTheme } from "./styles";
+import { themes } from "./styles";
 import { SiteHeader } from "./components/header";
 import { SitePageSelector } from "./components/sitePageSelector";
+import { MainPage } from "./components/mainPage";
 
 const container = document.getElementById("root");
 const root = createRoot(container!);
 root.render(
-  <ThemeProvider theme={darkTheme}>
+  <ThemeProvider theme={themes.abominable}>
     <CssBaseline />
     <Box
       css={{
@@ -24,6 +25,7 @@ root.render(
     >
       <SiteHeader siteName={document.title} />
       <SitePageSelector />
+      <MainPage />
     </Box>
   </ThemeProvider>
 );

@@ -19,12 +19,12 @@ node {
 
 tasks.register<NpmTask>("jsStatic") {
     group = "build"
-    args = listOf("run", "build:dev")
+    args = listOf("run", "esbuild")
 }
 
 tasks.register<Copy>("elevateOutputsFront") {
     group = "build"
     dependsOn(tasks.getByName("jsStatic"))
-    from("out/main.js", "out/index.html")
-    into(project.relativeProjectPath("../out"))
+    from("out/esbuild/index.js","out/esbuild/index.html","out/esbuild/index.js.map")
+    into(project.relativeProjectPath("../out/static"))
 }

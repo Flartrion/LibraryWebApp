@@ -1,12 +1,17 @@
 import { Box, Container, Divider, Tab } from "@mui/material";
 import Tabs from "@mui/material/Tabs";
 import { useState } from "react";
+import { pageSelectorController } from "../controllers/pageSelectorController";
 
 export function SitePageSelector({ adminAccess }: any) {
-  let [selection, setSelection] = useState(0);
+  const [selection, setSelection] = useState(0);
   function handleSelection(e: React.SyntheticEvent, newValue: number) {
     setSelection(newValue);
+    pageSelectorController.pageSelection = newValue;
+    pageSelectorController.update(newValue);
   }
+
+
   return (
     <Box>
       <Divider />
