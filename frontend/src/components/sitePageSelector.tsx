@@ -22,11 +22,11 @@ export function SitePageSelector({ adminAccess }: any) {
         }}
       >
         <Tabs value={selection} onChange={handleSelection} variant="fullWidth">
-          <Tab label="Item 1" index={0} />
-          <Tab label="Item 2" index={1} />
-          <Tab label="Item 3" index={2} />
-          <Tab label="Item 4" index={3} />
-          <Tab label="Item 10" index={4} />
+          <Tab label="Item 1"/>
+          <Tab label="Item 2"/>
+          <Tab label="Item 10"/>
+          <Tab label="Item 11"/>
+          <Tab label="Item 100"/>
         </Tabs>
       </Container>
       <Divider />
