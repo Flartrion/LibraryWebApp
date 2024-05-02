@@ -12,6 +12,7 @@ import {
 import { MouseEvent, useState } from "react";
 import { themes } from "../styles";
 import { themeObserver } from "../controllers/themeObserver";
+import { pageSelectorController } from "../pageSelection/pageSelectorController";
 
 export function SiteHeader({ siteName }: any) {
   const [headerMenuAnchor, setAnchor] = useState(null);
@@ -74,7 +75,7 @@ export function SiteHeader({ siteName }: any) {
         >
           <MenuItem>Hoho, you're approaching me?</MenuItem>
           <Divider />
-          <MenuItem>Login</MenuItem>
+          <MenuItem onClick={() => {pageSelectorController.updateModel(10)}}>Login</MenuItem>
           <MenuItem onClick={() => setDrawerOpened(true)}>Settings</MenuItem>
         </Menu>
         <Drawer

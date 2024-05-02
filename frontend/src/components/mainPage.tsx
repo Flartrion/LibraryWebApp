@@ -1,13 +1,19 @@
 import { useEffect, useReducer, useState } from "react";
-import { pageSelectorController } from "../controllers/pageSelectorController";
+import { pageSelectorController } from "../pageSelection/pageSelectorController";
 import { Alert, Box, Container } from "@mui/material";
+import { pageSelectorModel } from "../pageSelection/pageSelectorModel";
 
 export function MainPage({ someProp }: any) {
   const [pageSelection, setPageSelection] = useState(
-    pageSelectorController.pageSelection
+    pageSelectorModel.pageSelection
   );
-  // Optimization? I don't know her.
-  pageSelectorController.mainPageSetState = setPageSelection;
+
+  useEffect(() => {
+    pageSelectorController.subscribeView("mainPage", setPageSelection);
+    return () => {
+      pageSelectorController.unsubscribeView("mainPage");
+    };
+  });
 
   let output: any;
   switch (pageSelection) {

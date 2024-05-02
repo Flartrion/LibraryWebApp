@@ -14,7 +14,7 @@ group = "com.flartrion.librapp.frontend"
 
 node {
 //    version = "20.12.2"
-//    download = true
+    download = true
 }
 
 tasks.register<NpmTask>("jsStatic") {
@@ -25,6 +25,6 @@ tasks.register<NpmTask>("jsStatic") {
 tasks.register<Copy>("elevateOutputsFront") {
     group = "build"
     dependsOn(tasks.getByName("jsStatic"))
-    from("out/esbuild/index.js","out/esbuild/index.html","out/esbuild/index.js.map")
+    from("out/index.js","out/index.html","out/index.js.map")
     into(project.relativeProjectPath("../out/static"))
 }
