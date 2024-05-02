@@ -1,6 +1,6 @@
 import { Box, CssBaseline, ThemeProvider } from "@mui/material";
 import { createRoot } from "react-dom/client";
-import { themes } from "./styles";
+import { projectThemesArray } from "./styles";
 import { SiteHeader } from "./components/header";
 import { SitePageSelector } from "./pageSelection/sitePageSelector";
 import { MainPage } from "./components/mainPage";

@@ -1,7 +1,7 @@
 import { ThemeProvider } from "@mui/material";
-import { themes } from "../styles";
+import projectThemesArray from "../styles";
 import { useEffect, useState } from "react";
-import { themeObserver } from "../controllers/themeObserver";
+import themeObserver from "../controllers/themeObserver";
 
 export function ThemeChangeObserver({ children }: any) {
   const [themeState, setTheme] = useState(0);
@@ -10,6 +10,8 @@ export function ThemeChangeObserver({ children }: any) {
   });
 
   return (
-    <ThemeProvider theme={themes[themeState][1]}>{children}</ThemeProvider>
+    <ThemeProvider theme={projectThemesArray[themeState][1]}>
+      {children}
+    </ThemeProvider>
   );
 }

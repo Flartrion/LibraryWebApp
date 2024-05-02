@@ -1,4 +1,4 @@
-export const themeObserver = {
+const themeObserver = {
   currentTheme: 0,
   updateView: (newTheme: number) => {},
   updateModel: (newTheme: number) => {
@@ -6,3 +6,4 @@ export const themeObserver = {
     themeObserver.updateView(newTheme);
   },
 };
+export default themeObserver;

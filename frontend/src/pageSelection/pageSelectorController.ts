@@ -1,20 +1,15 @@
-import { pageSelectorModel } from "./pageSelectorModel";
+import ReactGeneralController from "../support/reactController";
+import stateSubscriberEntry from "../support/stateSubscriberEntry";
+import pageSelectorModel from "./pageSelectorModel";
 
-type PageSelectorController = {
-  updateView: { (newValue: number): void };
-  updateModel: { (newValue: number): void };
-  subscribeView: {
-    (
-      name: string,
-      stateFun: React.Dispatch<React.SetStateAction<number>>
-    ): void;
-  };
-  unsubscribeView: { (name: string): void };
+type PageSelectorController = ReactGeneralController<number> & {
+  subscribers: stateSubscriberEntry<number>[];
 };
 
-export const pageSelectorController: PageSelectorController = {
+const pageSelectorController: PageSelectorController = {
+  subscribers: [],
   updateView: (newValue: number) => {
-    for (let subscribers of pageSelectorModel.subscribers) {
+    for (let subscribers of pageSelectorController.subscribers) {
       subscribers[1](newValue);
     }
   },
@@ -23,16 +18,16 @@ export const pageSelectorController: PageSelectorController = {
     pageSelectorController.updateView(newValue);
   },
   subscribeView: (name, stateFun) => {
-    pageSelectorModel.subscribers.push([name, stateFun]);
+    pageSelectorController.subscribers.push([name, stateFun]);
   },
   unsubscribeView: (name) => {
-    const indexToRemove = pageSelectorModel.subscribers.findIndex((entry) => {
-      entry[0] === name;
-    });
+    const indexToRemove = pageSelectorController.subscribers.findIndex(
+      (entry) => {
+        entry[0] === name;
+      }
+    );
     if (indexToRemove > -1)
-      pageSelectorModel.subscribers = pageSelectorModel.subscribers.splice(
-        indexToRemove,
-        1
-      );
+      pageSelectorController.subscribers.splice(indexToRemove, 1);
   },
 };
+export default pageSelectorController;

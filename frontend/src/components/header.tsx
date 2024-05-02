@@ -10,9 +10,10 @@ import {
   MenuItem,
 } from "@mui/material";
 import { MouseEvent, useState } from "react";
-import { themes } from "../styles";
+import { projectThemesArray } from "../styles";
 import { themeObserver } from "../controllers/themeObserver";
-import { pageSelectorController } from "../pageSelection/pageSelectorController";
+import pageSelectorController from "../pageSelection/pageSelectorController";
+import Page from "../pageSelection/pageSelectionEnum";
 
 export function SiteHeader({ siteName }: any) {
   const [headerMenuAnchor, setAnchor] = useState(null);
@@ -32,7 +33,7 @@ export function SiteHeader({ siteName }: any) {
     themeObserver.updateModel(index);
   };
 
-  const themesList = themes.map((theme, index) => {
+  const themesList = projectThemesArray.map((theme, index) => {
     return (
       <MenuItem
         selected={index === themeObserver.currentTheme}
@@ -75,7 +76,13 @@ export function SiteHeader({ siteName }: any) {
         >
           <MenuItem>Hoho, you're approaching me?</MenuItem>
           <Divider />
-          <MenuItem onClick={() => {pageSelectorController.updateModel(10)}}>Login</MenuItem>
+          <MenuItem
+            onClick={() => {
+              pageSelectorController.updateModel(Page.Login);
+            }}
+          >
+            Login
+          </MenuItem>
           <MenuItem onClick={() => setDrawerOpened(true)}>Settings</MenuItem>
         </Menu>
         <Drawer

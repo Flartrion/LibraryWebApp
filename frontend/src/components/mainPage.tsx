@@ -1,7 +1,8 @@
 import { useEffect, useReducer, useState } from "react";
-import { pageSelectorController } from "../pageSelection/pageSelectorController";
+import pageSelectorController from "../pageSelection/pageSelectorController";
 import { Alert, Box, Container } from "@mui/material";
-import { pageSelectorModel } from "../pageSelection/pageSelectorModel";
+import pageSelectorModel from "../pageSelection/pageSelectorModel";
+import Page from "../pageSelection/pageSelectionEnum";
 
 export function MainPage({ someProp }: any) {
   const [pageSelection, setPageSelection] = useState(
@@ -17,24 +18,24 @@ export function MainPage({ someProp }: any) {
 
   let output: any;
   switch (pageSelection) {
-    case 0:
+    case Page.Items:
       output = pageSelection.toString(2);
       break;
 
-    case 1:
+    case Page.Storages:
       output = pageSelection.toString(2);
       break;
 
-    case 2:
+    case Page.Users:
       output = pageSelection.toString(2);
       break;
 
-    case 3:
-      output = pageSelection.toString(2);
-      break;
-
-    case 4:
-      output = pageSelection.toString(2);
+    case Page.Login:
+      output = (
+        <Container>
+          <Alert severity="info">Login page W.I.P.</Alert>
+        </Container>
+      );
       break;
 
     default:

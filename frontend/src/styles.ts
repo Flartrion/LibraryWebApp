@@ -1,6 +1,9 @@
+import { Theme } from "@emotion/react";
 import { createTheme } from "@mui/material/styles";
 
-export const themes = [
+type NamedTheme = [string, Theme];
+
+const projectThemesArray: NamedTheme[] = [
   [
     "Abominable Classique",
     createTheme({
@@ -41,3 +44,4 @@ export const themes = [
     }),
   ],
 ];
+export default projectThemesArray;

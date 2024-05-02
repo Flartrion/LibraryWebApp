@@ -1,4 +1,4 @@
-import { User } from "../dataclasses/user";
+import User from "../dataclasses/user";
 
 export const userController = {
   getUser: (id: number): any => {
@@ -12,7 +12,7 @@ export const userController = {
     headers.append("Accept", "application/json");
     let options = {
       headers: headers,
-      body: filters.toJson,
+      body: filters,
     };
     let results = fetch(document.URL + "/api/user");
   },
