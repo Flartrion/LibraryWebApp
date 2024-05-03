@@ -1,23 +1,9 @@
-import { Check } from "@mui/icons-material";
-import { Box, Divider, ListItem, ListItemIcon, Tab, Tabs } from "@mui/material";
+import { Box, Divider, Tab, Tabs } from "@mui/material";
 import { useEffect, useState } from "react";
-import ReactVirtualizedAutoSizer from "react-virtualized-auto-sizer";
-import { ListChildComponentProps, FixedSizeList } from "react-window";
 import ItemPageTab from "./itemPageTabsEnum";
 import itemPageController from "./itemPageController";
 import itemPageModel from "./itemPageModel";
-
-function renderRow(props: ListChildComponentProps) {
-  const { index, style } = props;
-  return (
-    <ListItem style={style} key={index}>
-      <ListItemIcon>
-        <Check />
-      </ListItemIcon>
-      {"item"}
-    </ListItem>
-  );
-}
+import BookItemList from "./itemList";
 
 function ItemPage({ adminRights }: any) {
   const [tabSelection, setTabSelection] = useState(itemPageModel.tabSelection);
@@ -39,26 +25,7 @@ function ItemPage({ adminRights }: any) {
   function SelectedPage({ pageSelection }: any) {
     switch (pageSelection) {
       case ItemPageTab.Items:
-        return (
-          // TODO: Gotta extract this to it's own file, as this would become ridiculous in layering after actual functionality would have been implemented.
-          <ReactVirtualizedAutoSizer>
-            {({ height, width }: any) => (
-              <FixedSizeList
-                className="List"
-                height={height}
-                width={width}
-                itemCount={100}
-                itemSize={50}
-                onScroll={(props) => {
-                  itemPageModel.scrollOffset = props.scrollOffset;
-                }}
-                initialScrollOffset={itemPageModel.scrollOffset}
-              >
-                {renderRow}
-              </FixedSizeList>
-            )}
-          </ReactVirtualizedAutoSizer>
-        );
+        return <BookItemList />;
       case ItemPageTab.Filters:
         return "No";
       case ItemPageTab.Item:
