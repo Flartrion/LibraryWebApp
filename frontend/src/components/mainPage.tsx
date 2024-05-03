@@ -20,7 +20,8 @@ function MainPage({ someProp }: any) {
   let output: any;
   switch (pageSelection) {
     case Page.Items:
-      output = <ItemPage />;
+      // TODO: fow now just "true", fix later
+      output = <ItemPage adminRights={true} />;
       break;
 
     case Page.Storages:

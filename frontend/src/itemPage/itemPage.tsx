@@ -23,7 +23,7 @@ function renderRow(props: ListChildComponentProps) {
   );
 }
 
-function ItemPage({}: any) {
+function ItemPage({ adminRights }: any) {
   const [tabSelection, setTabSelection] = useState(itemPageModel.pageSelection);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ function ItemPage({}: any) {
     switch (pageSelection) {
       case ItemPageTab.Items:
         return (
-          // TODO: Gotta extract this to it's own file, it's ridiculous already and will become even more so after actual functionality is implemented.
+          // TODO: Gotta extract this to it's own file, as this would become ridiculous in layering after actual functionality would have been implemented.
           <ReactVirtualizedAutoSizer>
             {({ height, width }: any) => (
               <FixedSizeList
@@ -72,6 +72,8 @@ function ItemPage({}: any) {
       <Tabs value={tabSelection} onChange={handleSelection} variant="fullWidth">
         <Tab label="Results" key={ItemPageTab.Items} />
         <Tab label="Filters" key={ItemPageTab.Filters} />
+        <Tab label="Item" key={ItemPageTab.Item} />
+        {adminRights ? <Tab label="Add Item" key={ItemPageTab.AddItem} /> : ""}
       </Tabs>
       <Divider />
       <SelectedPage pageSelection={tabSelection} />

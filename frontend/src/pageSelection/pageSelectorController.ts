@@ -1,33 +1,12 @@
 import ReactGeneralController from "../support/reactGeneralController";
-import stateSubscriberEntry from "../support/stateSubscriberEntry";
 import pageSelectorModel from "./pageSelectorModel";
 
-type PageSelectorController = ReactGeneralController<number> & {
-  subscribers: stateSubscriberEntry<number>[];
-};
-
-const pageSelectorController: PageSelectorController = {
-  subscribers: [],
-  updateView: (newValue: number) => {
-    for (let subscribers of pageSelectorController.subscribers) {
-      subscribers[1](newValue);
-    }
-  },
-  updateModel: (newValue: number) => {
+class PageSelectorController extends ReactGeneralController<number> {
+  updateModel(newValue: number): void {
+    super.updateView(newValue);
     pageSelectorModel.pageSelection = newValue;
-    pageSelectorController.updateView(newValue);
-  },
-  subscribeView: (name, stateFun) => {
-    pageSelectorController.subscribers.push([name, stateFun]);
-  },
-  unsubscribeView: (name) => {
-    const indexToRemove = pageSelectorController.subscribers.findIndex(
-      (entry) => {
-        entry[0] === name;
-      }
-    );
-    if (indexToRemove > -1)
-      pageSelectorController.subscribers.splice(indexToRemove, 1);
-  },
-};
+  }
+}
+
+const pageSelectorController = new PageSelectorController();
 export default pageSelectorController;
