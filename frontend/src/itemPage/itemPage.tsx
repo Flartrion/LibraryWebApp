@@ -5,11 +5,7 @@ import ReactVirtualizedAutoSizer from "react-virtualized-auto-sizer";
 import { ListChildComponentProps, FixedSizeList } from "react-window";
 import ItemPageTab from "./itemPageTabsEnum";
 import itemPageController from "./itemPageController";
-
-// I'm soooo not making a different file for that.
-const itemPageModel = {
-  pageSelection: 0,
-};
+import itemPageModel from "./itemPageModel";
 
 function renderRow(props: ListChildComponentProps) {
   const { index, style } = props;
@@ -24,7 +20,7 @@ function renderRow(props: ListChildComponentProps) {
 }
 
 function ItemPage({ adminRights }: any) {
-  const [tabSelection, setTabSelection] = useState(itemPageModel.pageSelection);
+  const [tabSelection, setTabSelection] = useState(itemPageModel.tabSelection);
 
   useEffect(() => {
     itemPageController.subscribeView("itemPage", setTabSelection);
@@ -37,7 +33,6 @@ function ItemPage({ adminRights }: any) {
     e: React.SyntheticEvent<Element, Event>,
     newValue: number
   ) {
-    itemPageModel.pageSelection = newValue;
     itemPageController.updateModel(newValue);
   }
 
@@ -54,6 +49,10 @@ function ItemPage({ adminRights }: any) {
                 width={width}
                 itemCount={100}
                 itemSize={50}
+                onScroll={(props) => {
+                  itemPageModel.scrollOffset = props.scrollOffset;
+                }}
+                initialScrollOffset={itemPageModel.scrollOffset}
               >
                 {renderRow}
               </FixedSizeList>
@@ -72,7 +71,14 @@ function ItemPage({ adminRights }: any) {
       <Tabs value={tabSelection} onChange={handleSelection} variant="fullWidth">
         <Tab label="Results" key={ItemPageTab.Items} />
         <Tab label="Filters" key={ItemPageTab.Filters} />
-        <Tab label="Item" key={ItemPageTab.Item} />
+        {/* Don't show if no item is selected */}
+        {itemPageModel.itemSelection > -1 ? (
+          <Tab label="Item" key={ItemPageTab.Item} />
+        ) : (
+          ""
+        )}
+        {/* Don't show if no admin privilegies. */}
+        {/* TODO: Admin privilegies */}
         {adminRights ? <Tab label="Add Item" key={ItemPageTab.AddItem} /> : ""}
       </Tabs>
       <Divider />
