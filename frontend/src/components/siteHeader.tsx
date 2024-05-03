@@ -10,12 +10,12 @@ import {
   MenuItem,
 } from "@mui/material";
 import { MouseEvent, useState } from "react";
-import { projectThemesArray } from "../styles";
-import { themeObserver } from "../controllers/themeObserver";
+import projectThemesArray from "../styles";
 import pageSelectorController from "../pageSelection/pageSelectorController";
 import Page from "../pageSelection/pageSelectionEnum";
+import themeObserver from "../theming/themeObserver";
 
-export function SiteHeader({ siteName }: any) {
+function SiteHeader({ siteName }: any) {
   const [headerMenuAnchor, setAnchor] = useState(null);
   const menuOpened = Boolean(headerMenuAnchor);
   const [drawerOpened, setDrawerOpened] = useState(false);
@@ -74,7 +74,7 @@ export function SiteHeader({ siteName }: any) {
           onClick={handleMenuClose}
           onClose={handleMenuClose}
         >
-          <MenuItem>Hoho, you're approaching me?</MenuItem>
+          <ListSubheader>Hoho, you're approaching me?</ListSubheader>
           <Divider />
           <MenuItem
             onClick={() => {
@@ -86,6 +86,7 @@ export function SiteHeader({ siteName }: any) {
           <MenuItem onClick={() => setDrawerOpened(true)}>Settings</MenuItem>
         </Menu>
         <Drawer
+          anchor="right"
           open={drawerOpened}
           onClick={() => {
             setDrawerOpened(false);
@@ -99,3 +100,5 @@ export function SiteHeader({ siteName }: any) {
     </Box>
   );
 }
+
+export default SiteHeader;

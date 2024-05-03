@@ -5,7 +5,7 @@ import pageSelectorModel from "./pageSelectorModel";
 import Page from "./pageSelectionEnum";
 import pageSelectorController from "./pageSelectorController";
 
-export function SitePageSelector({ adminAccess }: any) {
+function SitePageSelector({ adminAccess }: any) {
   const [selection, setSelection] = useState(pageSelectorModel.pageSelection);
   function handleSelection(e: React.SyntheticEvent, newValue: number) {
     setSelection(newValue);
@@ -31,9 +31,15 @@ export function SitePageSelector({ adminAccess }: any) {
           <Tab label="Items" key={Page.Items} />
           <Tab label="Storages" key={Page.Storages} />
           <Tab label="Users" key={Page.Users} />
+          {selection == Page.Login ? (
+            <Tab label="Login" key={Page.Login} />
+          ) : (
+            ""
+          )}
         </Tabs>
       </Container>
       <Divider />
     </Box>
   );
 }
+export default SitePageSelector;

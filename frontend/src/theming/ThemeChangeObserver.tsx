@@ -1,9 +1,9 @@
 import { ThemeProvider } from "@mui/material";
 import projectThemesArray from "../styles";
 import { useEffect, useState } from "react";
-import themeObserver from "../controllers/themeObserver";
+import themeObserver from "./themeObserver";
 
-export function ThemeChangeObserver({ children }: any) {
+function ThemeChangeObserver({ children }: any) {
   const [themeState, setTheme] = useState(0);
   useEffect(() => {
     themeObserver.updateView = (newTheme: number) => setTheme(newTheme);
@@ -15,3 +15,4 @@ export function ThemeChangeObserver({ children }: any) {
     </ThemeProvider>
   );
 }
+export default ThemeChangeObserver;

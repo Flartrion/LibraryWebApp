@@ -3,8 +3,9 @@ import pageSelectorController from "../pageSelection/pageSelectorController";
 import { Alert, Box, Container } from "@mui/material";
 import pageSelectorModel from "../pageSelection/pageSelectorModel";
 import Page from "../pageSelection/pageSelectionEnum";
+import ItemPage from "../itemPage/itemPage";
 
-export function MainPage({ someProp }: any) {
+function MainPage({ someProp }: any) {
   const [pageSelection, setPageSelection] = useState(
     pageSelectorModel.pageSelection
   );
@@ -19,15 +20,27 @@ export function MainPage({ someProp }: any) {
   let output: any;
   switch (pageSelection) {
     case Page.Items:
-      output = pageSelection.toString(2);
+      output = (
+        <Container>
+          <ItemPage />
+        </Container>
+      );
       break;
 
     case Page.Storages:
-      output = pageSelection.toString(2);
+      output = (
+        <Container>
+          <Alert severity="info">Storages page W.I.P.</Alert>
+        </Container>
+      );
       break;
 
     case Page.Users:
-      output = pageSelection.toString(2);
+      output = (
+        <Container>
+          <Alert severity="info">Users page W.I.P.</Alert>
+        </Container>
+      );
       break;
 
     case Page.Login:
@@ -50,3 +63,4 @@ export function MainPage({ someProp }: any) {
 
   return <Box>{output}</Box>;
 }
+export default MainPage;

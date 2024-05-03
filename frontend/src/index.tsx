@@ -1,10 +1,9 @@
-import { Box, CssBaseline, ThemeProvider } from "@mui/material";
+import { Box, CssBaseline } from "@mui/material";
 import { createRoot } from "react-dom/client";
-import { projectThemesArray } from "./styles";
-import { SiteHeader } from "./components/header";
-import { SitePageSelector } from "./pageSelection/sitePageSelector";
-import { MainPage } from "./components/mainPage";
-import { ThemeChangeObserver } from "./components/ThemeChangeObserver";
+import SiteHeader from "./components/siteHeader";
+import SitePageSelector from "./pageSelection/sitePageSelector";
+import MainPage from "./components/mainPage";
+import ThemeChangeObserver from "./theming/ThemeChangeObserver";
 
 const container = document.getElementById("root");
 const root = createRoot(container!);
