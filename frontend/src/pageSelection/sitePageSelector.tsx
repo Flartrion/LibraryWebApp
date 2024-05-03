@@ -18,26 +18,16 @@ function SitePageSelector({ adminAccess }: any) {
     };
   });
 
+  
   return (
     <Box>
       <Divider />
-      <Container
-        css={{
-          borderBottom: "1px",
-          borderColor: "black",
-        }}
-      >
-        <Tabs value={selection} onChange={handleSelection} variant="fullWidth">
-          <Tab label="Items" key={Page.Items} />
-          <Tab label="Storages" key={Page.Storages} />
-          <Tab label="Users" key={Page.Users} />
-          {selection == Page.Login ? (
-            <Tab label="Login" key={Page.Login} />
-          ) : (
-            ""
-          )}
-        </Tabs>
-      </Container>
+      <Tabs value={selection} onChange={handleSelection} variant="fullWidth">
+        <Tab label="Items" key={Page.Items} />
+        <Tab label="Storages" key={Page.Storages} />
+        <Tab label="Users" key={Page.Users} />
+        {selection == Page.Login ? <Tab label="Login" key={Page.Login} /> : ""}
+      </Tabs>
       <Divider />
     </Box>
   );

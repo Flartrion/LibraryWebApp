@@ -20,11 +20,7 @@ function MainPage({ someProp }: any) {
   let output: any;
   switch (pageSelection) {
     case Page.Items:
-      output = (
-        <Container>
-          <ItemPage />
-        </Container>
-      );
+      output = <ItemPage />;
       break;
 
     case Page.Storages:
@@ -61,6 +57,6 @@ function MainPage({ someProp }: any) {
       );
   }
 
-  return <Box>{output}</Box>;
+  return <>{output}</>;
 }
 export default MainPage;

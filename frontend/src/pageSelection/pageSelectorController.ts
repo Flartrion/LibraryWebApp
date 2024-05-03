@@ -1,4 +1,4 @@
-import ReactGeneralController from "../support/reactController";
+import ReactGeneralController from "../support/reactGeneralController";
 import stateSubscriberEntry from "../support/stateSubscriberEntry";
 import pageSelectorModel from "./pageSelectorModel";
 

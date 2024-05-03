@@ -37,6 +37,7 @@ function SiteHeader({ siteName }: any) {
     return (
       <MenuItem
         selected={index === themeObserver.currentTheme}
+        key={index}
         onClick={(event) => handleThemeChange(event, index)}
       >
         {String(theme[0])}
@@ -51,7 +52,7 @@ function SiteHeader({ siteName }: any) {
         paddingRight: "30px",
         alignItems: "center",
         minHeight: "50px",
-        maxHeight: "20%",
+        maxHeight: "20vh",
       }}
       sx={{
         display: "flex",
