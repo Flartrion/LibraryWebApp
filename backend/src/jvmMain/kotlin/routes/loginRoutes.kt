@@ -1,15 +1,21 @@
 package routes
 
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.config.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import java.sql.SQLException
+import java.io.File
+import java.security.KeyFactory
+import java.security.interfaces.RSAPrivateKey
+import java.security.interfaces.RSAPublicKey
+import java.security.spec.PKCS8EncodedKeySpec
+import java.util.*
 
-fun Route.loginRouting() {
+fun Route.loginRouting(config: ApplicationConfig) {
     post("/login") {
         TODO("WIP")
         val parameters = call.receiveParameters()
@@ -21,28 +27,16 @@ fun Route.loginRouting() {
             "Missing or malformed role",
             status = HttpStatusCode.BadRequest
         )
-//        val resultSet = statement
-//            .executeQuery(
-//                "SELECT * FROM \"HumanResources\".\"Users\"" +
-//                        "WHERE email = '$username' AND card_num = '$password'"
-//            )
-        try {
-//            resultSet.next()
-//            val users = User(
-//                resultSet.getString(1),
-//                resultSet.getString(2),
-//                resultSet.getString(3),
-//                resultSet.getString(4),
-//                resultSet.getString(5),
-//                resultSet.getString(6),
-//                resultSet.getString(7)
-//            )
-//            call.respondText(Json.encodeToString(users))
-        } catch (e: SQLException) {
-            call.respondText("Login failed!", status = HttpStatusCode.BadRequest)
-        } catch (e: Exception) {
-            call.respondText("Internal error", status = HttpStatusCode.BadGateway)
-            e.printStackTrace()
-        }
+
+
+        val publicKey = File(config.property("jwtkeys.public").getString()).readText()
+        val keySpecPKCS8 = PKCS8EncodedKeySpec(Base64.getDecoder().decode(publicKey))
+        val privateKey = KeyFactory.getInstance("EC").generatePrivate(keySpecPKCS8)
+        val token = JWT.create()
+            .withAudience("audience")
+            .withIssuer("issuer")
+            .withClaim("username", "username")
+            .withExpiresAt(Date(System.currentTimeMillis() + 60000))
+            .sign(Algorithm.ECDSA512("publicKey" as RSAPublicKey, "privateKey" as RSAPrivateKey))
     }
 }

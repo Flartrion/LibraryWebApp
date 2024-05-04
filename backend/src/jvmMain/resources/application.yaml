@@ -11,7 +11,7 @@ ktor:
       - ServerKt.module
   security:
     ssl:
-      keyStore: "$SSLKEYSTOREPATH:keystore.jks"
+      keyStore: "$SSLKEYSTOREPATH:keys/keystore.jks"
       keyAlias: "$SSLKEYALIAS:testKeys"
       keyStorePassword: "$SSLKEYSTOREPASS:foobar"
       privateKeyPassword: "$SSLPKEYPASS:foobar"
@@ -23,3 +23,6 @@ database:
   port: "$DBPORT:5432"
   username: "$DBCLIENTNAME:postgres"
   password: "$DBPASSWORD:postgres"
+jwtkeys:
+  public: "$AUTHPUBKEY:keys/authkey.pub"
+  private: "$AUTHPRIKEY:keys/authkey"

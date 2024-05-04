@@ -46,7 +46,7 @@ kotlin {
                 implementation("io.ktor:ktor-server-status-pages:$ktor_version")
                 implementation("io.ktor:ktor-server-config-yaml:$ktor_version")
                 implementation("io.ktor:ktor-server-auth:$ktor_version")
-                implementation("io.ktor:ktor-server-sessions:$ktor_version")
+                implementation("io.ktor:ktor-server-auth-jwt:$ktor_version")
 //                implementation("ch.qos.logback:logback-classic")
 //                implementation("org.apache.logging.log4j:log4j-core")
 //                implementation("org.apache.logging.log4j:log4j-slf4j-impl")

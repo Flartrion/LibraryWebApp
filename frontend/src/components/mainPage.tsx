@@ -4,6 +4,7 @@ import { Alert, Box, Container } from "@mui/material";
 import pageSelectorModel from "../pageSelection/pageSelectorModel";
 import Page from "../pageSelection/pageSelectionEnum";
 import ItemPage from "../itemPage/itemPage";
+import LoginPage from "../login/loginPage";
 
 function MainPage({ someProp }: any) {
   const [pageSelection, setPageSelection] = useState(
@@ -41,11 +42,7 @@ function MainPage({ someProp }: any) {
       break;
 
     case Page.Login:
-      output = (
-        <Container>
-          <Alert severity="info">Login page W.I.P.</Alert>
-        </Container>
-      );
+      output = <LoginPage />;
       break;
 
     default:
