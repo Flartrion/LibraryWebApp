@@ -1,6 +1,6 @@
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
 import db.DatabaseSingleton
-import db.entity.UserEntity
-import db.model.Users
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -23,18 +23,33 @@ fun Application.module() {
     install(ContentNegotiation) {
         json()
     }
+    val issuer = environment.config.property("jwt.issuer").getString()
+    val audience = environment.config.property("jwt.audience").getString()
+    val myRealm = environment.config.property("jwt.realm").getString()
     install(Authentication) {
-        jwt {
-
+        jwt("auth-jwt") {
+            realm = myRealm
+            verifier(
+                JWT.require(Algorithm.HMAC256(this@module.environment.config.property("jwt.secret").getString()))
+                    .withAudience(audience).withIssuer(issuer).build()
+            )
+            validate { jwtCredential ->
+                // I don't believe I particularly need this since the check is being performed at time of
+                // issuing the JWT, but I will leave it here nonetheless, as a reminder.
+                if (jwtCredential.payload.claims["username"].toString() != "")
+                    JWTPrincipal(jwtCredential.payload)
+                else
+                    null
+            }
         }
     }
-    DatabaseSingleton.init(config = this.environment.config)
+    DatabaseSingleton.init(config = environment.config)
     routing {
         get("/") {
             call.respondHtml(HttpStatusCode.OK, HTML::index)
         }
 
-        loginRouting(this.environment!!.config)
+        loginRouting(environment!!.config)
 
         storagesRouting()
         itemRoutes()
