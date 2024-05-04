@@ -30,23 +30,29 @@ function ItemPage({ adminRights }: any) {
         return "No";
       case ItemPageTab.Item:
         return "very no";
+      case ItemPageTab.AddItem:
+        return "very-very no";
     }
   }
 
   return (
     <Box height={"80vh"}>
       <Tabs value={tabSelection} onChange={handleSelection} variant="fullWidth">
-        <Tab label="Results" key={ItemPageTab.Items} />
-        <Tab label="Filters" key={ItemPageTab.Filters} />
-        {/* Don't show if no item is selected */}
-        {itemPageModel.itemSelection > -1 ? (
-          <Tab label="Item" key={ItemPageTab.Item} />
-        ) : (
-          ""
-        )}
-        {/* Don't show if no admin privilegies. */}
-        {/* TODO: Admin privilegies */}
-        {adminRights ? <Tab label="Add Item" key={ItemPageTab.AddItem} /> : ""}
+        <Tab label="Results" tabIndex={ItemPageTab.Items} />
+        <Tab label="Filters" tabIndex={ItemPageTab.Filters} />
+        {/* BUG: Apparently not displaying one Tab shifts indexes (God, why?) of all tabs after that,
+         so I can not just hide it, I have to go out of my way to disable it. Why can't the numbering 
+         just remain consistent?*/}
+        <Tab
+          disabled={itemPageModel.itemSelection < 0}
+          label="Item"
+          tabIndex={ItemPageTab.Item}
+        />
+        <Tab
+          disabled={!adminRights}
+          label="Add Item"
+          tabIndex={ItemPageTab.AddItem}
+        />
       </Tabs>
       <Divider />
       <SelectedPage pageSelection={tabSelection} />

@@ -20,7 +20,7 @@ function MainPage({ someProp }: any) {
   let output: any;
   switch (pageSelection) {
     case Page.Items:
-      // TODO: fow now just "true", fix later
+      // TODO: fow now just "true", fix after login implementation
       output = <ItemPage adminRights={true} />;
       break;
 
