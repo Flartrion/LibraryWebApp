@@ -1,3 +1,6 @@
+# Ignore test keys
+/keys
+
 # Created by https://www.toptal.com/developers/gitignore/api/intellij+all,gradle,kotlin,react,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=intellij+all,gradle,kotlin,react,visualstudiocode
 

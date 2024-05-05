@@ -4,19 +4,14 @@ import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import db.entity.UserEntity
 import db.model.*
-import io.ktor.network.sockets.*
 import io.ktor.server.config.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.datetime.LocalDate
-import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.DatabaseConfig
 import org.jetbrains.exposed.sql.Schema
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.util.Date
-import java.util.UUID
 
 object DatabaseSingleton {
     private fun createHikariDataSource(url: String, driver: String, user: String, pass: String) =

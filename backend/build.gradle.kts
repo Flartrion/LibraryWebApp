@@ -49,7 +49,6 @@ kotlin {
                 implementation("io.ktor:ktor-server-config-yaml:$ktor_version")
                 implementation("io.ktor:ktor-server-auth:$ktor_version")
                 implementation("io.ktor:ktor-server-auth-jwt:$ktor_version")
-//                implementation("ch.qos.logback:logback-classic")
 //                implementation("org.apache.logging.log4j:log4j-core")
 //                implementation("org.apache.logging.log4j:log4j-slf4j-impl")
 
@@ -97,12 +96,12 @@ tasks.getByName<Copy>("processResources") {
 
 tasks.register<Copy>("elevateOutputsBack") {
     group = "build"
+    dependsOn(tasks.getByName("buildFatJar"))
     duplicatesStrategy = DuplicatesStrategy.WARN
     from(tasks.getByName<Jar>("jar").destinationDirectory)
-    from("src/jvmMain/resources")
+//    from("src/jvmMain/resources")
     into(project.relativeProjectPath("../out"))
-    include("*.jar", "*.yaml")
-    dependsOn(tasks.getByName("buildFatJar"))
+    include("*.jar")
 }
 
 tasks.getByName<JavaExec>("run") {

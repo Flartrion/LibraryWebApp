@@ -1,5 +1,4 @@
 import com.github.gradle.node.npm.task.NpmTask
-import com.github.gradle.node.task.NodeTask
 
 repositories {
     mavenCentral()
@@ -24,7 +23,10 @@ tasks.register<NpmTask>("jsStatic") {
 
 tasks.register<Copy>("elevateOutputsFront") {
     group = "build"
+    duplicatesStrategy = DuplicatesStrategy.WARN
     dependsOn(tasks.getByName("jsStatic"))
     from("out/index.js","out/index.html","out/index.js.map")
-    into(project.relativeProjectPath("../out/static"))
+//    into(project.relativeProjectPath("../out/static"))
+    // Not elegant at all, but whatever, it does the job of throwing static files to server compilation.
+    into(project.relativeProjectPath("../backend/src/main/resources/static"))
 }

@@ -1,2 +1,4 @@
 # A little something to not upload testing keys
 keys/*
+# Do not track elevated frontend outputs
+**/resources/static
