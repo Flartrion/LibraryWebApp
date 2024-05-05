@@ -1,14 +1,13 @@
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import db.DatabaseSingleton
-import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
-import io.ktor.server.html.*
 import io.ktor.server.http.content.*
 import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.html.*
 import routes.api.items.itemRoutes
@@ -45,9 +44,9 @@ fun Application.module() {
     }
     DatabaseSingleton.init(config = environment.config)
     routing {
-        get("/") {
-            call.respondHtml(HttpStatusCode.OK, HTML::index)
-        }
+//        get("/") {
+//            call.respondHtml(HttpStatusCode.OK, HTML::index)
+//        }
 
         loginRouting(environment!!.config)
 
@@ -59,9 +58,17 @@ fun Application.module() {
 //        itemLocationRouting()
 //        bankHistoryRouting()
 
-        staticResources("/static", basePackage = "/static") {
-
+        get("/favicon.ico") {
+            val favicon = call.resolveResource("/favicon.ico", "static")
+            if (favicon != null) {
+                call.respond(favicon)
+            }
         }
+
+        staticResources("/", "static") {
+            default("index.html")
+        }
+
     }
 }
 
