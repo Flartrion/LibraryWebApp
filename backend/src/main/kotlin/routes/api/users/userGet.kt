@@ -11,7 +11,7 @@ import kotlinx.serialization.json.Json
 import java.util.UUID
 
 fun Route.userGet() {
-    get("{id}") {
+    get("/{id}") {
         if (call.request.cookies["role"] != "admin") return@get call.respondText(
             "Access is forbidden",
             status = HttpStatusCode.Forbidden

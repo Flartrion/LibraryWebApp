@@ -9,7 +9,7 @@ import io.ktor.server.routing.*
 import java.util.*
 
 fun Route.itemDelete() {
-    delete("{id}") {
+    delete("/{id}") {
         if (call.request.cookies["role"] != "admin") return@delete call.respondText(
             "Access is forbidden",
             status = HttpStatusCode.Forbidden

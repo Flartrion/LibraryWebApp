@@ -13,7 +13,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 fun Route.storageGet() {
-    get("{id}") {
+    get("/{id}") {
         if (call.request.cookies["role"] != "admin" && call.request.cookies["role"] != "user") return@get call.respondText(
             "Access is forbidden",
             status = HttpStatusCode.Forbidden

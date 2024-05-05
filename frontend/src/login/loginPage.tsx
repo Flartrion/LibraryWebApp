@@ -1,6 +1,26 @@
-import { Box, Container, TextField } from "@mui/material";
+import {
+  Backdrop,
+  Box,
+  Button,
+  CircularProgress,
+  TextField,
+} from "@mui/material";
+import loginObjectTempName from "./loginController";
+import { useState } from "react";
 
 function LoginPage() {
+  const [processing, setProcessing] = useState(false);
+
+  function handleSubmit(e: React.MouseEvent) {
+    setProcessing(true);
+    const login = (document.getElementById("loginEmail") as HTMLInputElement)
+      .value;
+    const password = (
+      document.getElementById("loginPassword") as HTMLInputElement
+    ).value;
+    loginObjectTempName.loginRequest({ login, password });
+  }
+
   return (
     <Box
       sx={{
@@ -29,6 +49,12 @@ function LoginPage() {
         variant="outlined"
         helperText="THERE ARE NO SECRETS FROM YOURSELF"
       />
+      <Button variant="contained" onClick={handleSubmit}>
+        SUBMIT OF YOUR OVERLORDS
+      </Button>
+      <Backdrop open={processing}>
+        <CircularProgress />
+      </Backdrop>
     </Box>
   );
 }

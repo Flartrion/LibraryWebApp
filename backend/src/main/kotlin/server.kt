@@ -65,8 +65,8 @@ fun Application.module() {
             }
         }
 
-        staticResources("/", "static") {
-            default("index.html")
+        staticResources("/", "static", index = "index.html") {
+
         }
 
     }

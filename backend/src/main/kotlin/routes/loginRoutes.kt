@@ -2,6 +2,7 @@ package routes
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import db.DatabaseSingleton.dbQuery
 import db.entity.UserEntity
 import db.model.Users
 import io.ktor.http.*
@@ -28,10 +29,12 @@ fun Route.loginRouting(config: ApplicationConfig) {
 
         // I'm ignoring the edge case of more than one return. That is not a situation that should arise.
         // Admin skill issue.
-        val user = UserEntity.find {
-            Users.email like username
-            Users.phoneNumber like password
-        }.firstOrNull()
+        val user = dbQuery {
+            UserEntity.find {
+                Users.email like username
+                Users.phoneNumber like password
+            }.firstOrNull()
+        }
 
         if (user != null) {
             val audience = config.property("ktor.jwt.audience").toString()
