@@ -23,14 +23,14 @@ fun Application.module() {
     install(ContentNegotiation) {
         json()
     }
-    val issuer = environment.config.property("jwt.issuer").getString()
-    val audience = environment.config.property("jwt.audience").getString()
-    val myRealm = environment.config.property("jwt.realm").getString()
+    val issuer = environment.config.property("ktor.jwt.issuer").getString()
+    val audience = environment.config.property("ktor.jwt.audience").getString()
+    val myRealm = environment.config.property("ktor.jwt.realm").getString()
     install(Authentication) {
         jwt("auth-jwt") {
             realm = myRealm
             verifier(
-                JWT.require(Algorithm.HMAC256(this@module.environment.config.property("jwt.secret").getString()))
+                JWT.require(Algorithm.HMAC256(this@module.environment.config.property("ktor.jwt.secret").getString()))
                     .withAudience(audience).withIssuer(issuer).build()
             )
             validate { jwtCredential ->
@@ -59,7 +59,9 @@ fun Application.module() {
 //        itemLocationRouting()
 //        bankHistoryRouting()
 
-        staticResources("/static", basePackage = "") {}
+        staticResources("/static", basePackage = "/static") {
+
+        }
     }
 }
 
@@ -69,7 +71,7 @@ fun HTML.index() {
     }
     body {
         id = "root"
-        script(src = "/static/user.js") {}
+        script(src = "/static/index.js") {}
     }
 
 }

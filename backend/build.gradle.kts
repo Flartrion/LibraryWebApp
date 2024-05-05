@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 repositories {
     mavenCentral()
@@ -8,21 +8,18 @@ group = "com.flartrion.librapp.backend"
 version = "1.1-SNAPSHOT"
 
 plugins {
-    kotlin("multiplatform") version "1.9.23"
+    kotlin("jvm") version "1.9.23"
     kotlin("plugin.serialization") version "1.9.23"
     id("io.ktor.plugin") version "2.3.10"
+    `java-base`
     application
 }
 
+
+
 kotlin {
-    jvm {
-        compilations.all {
-            kotlinOptions.jvmTarget = "15"
-        }
-        testRuns["test"].executionTask.configure {
-            useJUnit()
-        }
-        withJava()
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_1_8)
     }
 
     val ktor_version: String by project
@@ -32,8 +29,13 @@ kotlin {
     val hikaricp_version: String by project
     val ehcache_version: String by project
 
+    sourceSets.main {
+        kotlin.srcDirs("src/main/kotlin")
+        resources.srcDirs("src/main/resources")
+    }
+
     sourceSets {
-        val jvmMain by getting {
+        val main by getting {
             dependencies {
                 runtimeOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
@@ -76,21 +78,34 @@ ktor {
     }
 }
 
-tasks.getByName<Jar>("jvmJar") {
+
+tasks.withType<JavaCompile> {
+    targetCompatibility = "1.8"
+    sourceCompatibility = "1.8"
+}
+
+
+tasks.getByName<Jar>("jar") {
 //    dependsOn(tasks.getByName("jsBrowserProductionWebpack"))
 //    val jsBrowserProductionWebpack = tasks.getByName<KotlinWebpack>("jsBrowserProductionWebpack")
 //    from(jsBrowserProductionWebpack.outputDirectory, jsBrowserProductionWebpack.mainOutputFileName)
 }
 
+tasks.getByName<Copy>("processResources") {
+    duplicatesStrategy = DuplicatesStrategy.WARN
+}
+
 tasks.register<Copy>("elevateOutputsBack") {
     group = "build"
-    from(tasks.getByName<Jar>("jvmJar").destinationDirectory)
+    duplicatesStrategy = DuplicatesStrategy.WARN
+    from(tasks.getByName<Jar>("jar").destinationDirectory)
+    from("src/jvmMain/resources")
     into(project.relativeProjectPath("../out"))
-    include("*.jar")
+    include("*.jar", "*.yaml")
     dependsOn(tasks.getByName("buildFatJar"))
 }
 
 tasks.getByName<JavaExec>("run") {
-    dependsOn(tasks.getByName<Jar>("jvmJar"))
-    classpath(tasks.getByName<Jar>("jvmJar"))
+    dependsOn(tasks.getByName<Jar>("jar"))
+    classpath(tasks.getByName<Jar>("jar"))
 }

@@ -3,12 +3,13 @@ package db.entity
 import db.model.Rents
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
+import org.jetbrains.exposed.dao.UUIDEntity
 import org.jetbrains.exposed.dao.id.EntityID
 import java.util.*
 
 // TODO: Think again about the app structure. What point is there sending sad single
 //       entries when DAO opens up ability to find and transfer entire maps of values?
-class RentEntity(id: EntityID<UUID>) : Entity<UUID>(id) {
+class RentEntity(id: EntityID<UUID>) : UUIDEntity(id) {
     companion object : EntityClass<UUID, RentEntity>(Rents)
 
     val idUser by UserEntity referencedOn Rents.idUser

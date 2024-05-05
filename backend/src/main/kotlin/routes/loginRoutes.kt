@@ -34,9 +34,9 @@ fun Route.loginRouting(config: ApplicationConfig) {
         }.firstOrNull()
 
         if (user != null) {
-            val audience = config.property("ktor.jwk.audience").toString()
-            val issuer = config.property("ktor.jwk.issuer").toString()
-            val secret = config.property("ktor.jwk.secret").toString()
+            val audience = config.property("ktor.jwt.audience").toString()
+            val issuer = config.property("ktor.jwt.issuer").toString()
+            val secret = config.property("ktor.jwt.secret").toString()
 
             val token = JWT.create()
                 .withAudience(audience)

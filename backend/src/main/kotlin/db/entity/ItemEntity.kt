@@ -4,10 +4,11 @@ import dataType.Item
 import db.model.Items
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
+import org.jetbrains.exposed.dao.UUIDEntity
 import org.jetbrains.exposed.dao.id.EntityID
 import java.util.*
 
-class ItemEntity(id: EntityID<UUID>) : Entity<UUID>(id) {
+class ItemEntity(id: EntityID<UUID>) : UUIDEntity(id) {
     companion object : EntityClass<UUID, ItemEntity>(Items)
 
     var isbn by Items.isbn

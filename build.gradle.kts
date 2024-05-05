@@ -23,3 +23,10 @@ tasks.register<GradleBuild>("buildAll") {
     dependsOn(childProjects["frontend"]!!.tasks.named("elevateOutputsFront"))
     dependsOn(childProjects["backend"]!!.tasks.named("elevateOutputsBack"))
 }
+
+tasks.register<JavaExec>("devRun") {
+    group = "application"
+    dependsOn(childProjects["frontend"]!!.tasks.named("elevateOutputsFront"))
+    dependsOn(childProjects["backend"]!!.tasks.named("elevateOutputsBack"))
+    classpath("out/backend-all.jar")
+}

@@ -1,11 +1,9 @@
 package db.model
 
-import org.jetbrains.exposed.dao.id.IdTable
+import org.jetbrains.exposed.dao.id.UUIDTable
 import org.jetbrains.exposed.sql.kotlin.datetime.date
-import java.util.UUID
 
-object Users : IdTable<UUID>() {
-    override val id = uuid("id_user").uniqueIndex().entityId()
+object Users : UUIDTable() {
     val role = integer("role")
     val fullName = varchar("full_name", 50)
     val dob = date("dob")

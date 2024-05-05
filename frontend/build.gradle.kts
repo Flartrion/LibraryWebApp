@@ -19,7 +19,7 @@ node {
 
 tasks.register<NpmTask>("jsStatic") {
     group = "build"
-    args = listOf("run", "esbuild")
+    args = listOf("run", "build")
 }
 
 tasks.register<Copy>("elevateOutputsFront") {

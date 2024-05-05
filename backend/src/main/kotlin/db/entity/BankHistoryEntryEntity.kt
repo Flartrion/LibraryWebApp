@@ -6,12 +6,13 @@ import db.model.Rents.references
 import db.model.Storages
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
+import org.jetbrains.exposed.dao.UUIDEntity
 import org.jetbrains.exposed.dao.id.EntityID
 import java.util.*
 
 // TODO: Think again about the app structure. What point is there sending sad single
 //       entries when DAO opens up ability to find and transfer entire maps of values?
-class BankHistoryEntryEntity(id: EntityID<UUID>) : Entity<UUID>(id) {
+class BankHistoryEntryEntity(id: EntityID<UUID>) : UUIDEntity(id) {
     companion object : EntityClass<UUID, BankHistoryEntryEntity>(BankHistory)
 
     var item by ItemEntity referencedOn BankHistory.item

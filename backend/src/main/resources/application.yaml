@@ -21,7 +21,7 @@ ktor:
     audience: "$JWTAUD:localhost/"
     realm: "$REALM:General site authorization"
 database:
-  init: "$DBINIT:true"
+  init: "$DBINIT:false"
   driverName: "$DBDRIVER:org.postgresql.Driver"
   hostname: "$DBHOSTNAME://localhost"
   jdbcURL: "$JDBCURL:jdbc:postgresql"
