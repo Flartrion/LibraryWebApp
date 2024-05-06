@@ -10,10 +10,10 @@ const projectThemesArray: NamedTheme[] = [
       palette: {
         mode: "dark",
         primary: {
-          main: "#1976d2",
+          main: "#ff0089",
         },
         secondary: {
-          main: "#9c27b0",
+          main: "#ff0000",
           contrastText: "#ffcdd2",
         },
         background: {

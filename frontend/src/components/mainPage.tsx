@@ -5,6 +5,7 @@ import pageSelectorModel from "../pageSelection/pageSelectorModel";
 import Page from "../pageSelection/pageSelectionEnum";
 import ItemPage from "../itemPage/itemPage";
 import LoginPage from "../login/loginPage";
+import cookieWorker from "../support/credentialHolder";
 
 function MainPage({ someProp }: any) {
   const [pageSelection, setPageSelection] = useState(

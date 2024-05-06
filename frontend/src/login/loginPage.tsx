@@ -5,7 +5,7 @@ import {
   CircularProgress,
   TextField,
 } from "@mui/material";
-import loginObjectTempName from "./loginController";
+import loginController from "./loginController";
 import { useEffect, useState } from "react";
 
 function LoginPage() {
@@ -18,11 +18,14 @@ function LoginPage() {
     const password = (
       document.getElementById("loginPassword") as HTMLInputElement
     ).value;
-    loginObjectTempName.loginRequest(login, password);
+    loginController.loginRequest(login, password);
   }
 
   useEffect(() => {
-    loginObjectTempName.subscribeView("loginPage", setProcessing);
+    loginController.subscribeView("loginPage", setProcessing);
+    return () => {
+      loginController.unsubscribeView("loginPage");
+    };
   });
 
   return (

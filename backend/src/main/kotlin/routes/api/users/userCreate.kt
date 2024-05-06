@@ -12,10 +12,6 @@ import kotlinx.datetime.toLocalDate
 
 fun Route.userCreate() {
     post("/new") {
-        if (call.request.cookies["role"] != "admin") return@post call.respondText(
-            "Access is forbidden",
-            status = HttpStatusCode.Forbidden
-        )
         val newEntity = call.receive<User>()
 
         val success = dbQuery {

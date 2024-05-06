@@ -1,6 +1,10 @@
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import dataType.User
 import db.DatabaseSingleton
+import io.ktor.http.*
+import io.ktor.http.auth.*
+import io.ktor.http.parsing.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -28,6 +32,15 @@ fun Application.module() {
     install(Authentication) {
         jwt("auth-jwt") {
             realm = myRealm
+            authHeader {
+                val JWTAuth = it.request.cookies["JWTAuth"]
+                try {
+                    parseAuthorizationHeader("Authorization: Bearer $JWTAuth")
+                } catch (cause: ParseException) {
+                    println(cause.message)
+                    null
+                }
+            }
             verifier(
                 JWT.require(Algorithm.HMAC256(this@module.environment.config.property("ktor.jwt.secret").getString()))
                     .withAudience(audience).withIssuer(issuer).build()
@@ -39,6 +52,9 @@ fun Application.module() {
                     JWTPrincipal(jwtCredential.payload)
                 else
                     null
+            }
+            challenge { defaultScheme, realm ->
+                call.respond(HttpStatusCode.Unauthorized, "No access to $defaultScheme, $realm")
             }
         }
     }

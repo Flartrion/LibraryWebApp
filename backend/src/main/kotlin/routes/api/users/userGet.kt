@@ -12,10 +12,6 @@ import java.util.UUID
 
 fun Route.userGet() {
     get("/{id}") {
-        if (call.request.cookies["role"] != "admin") return@get call.respondText(
-            "Access is forbidden",
-            status = HttpStatusCode.Forbidden
-        )
         val id = call.parameters["id"] ?: return@get call.respondText(
             "Missing or malformed id",
             status = HttpStatusCode.BadRequest

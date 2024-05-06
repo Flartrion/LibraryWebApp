@@ -1,6 +1,5 @@
-import { Dispatch, SetStateAction } from "react";
+import cookieWorker from "../support/credentialHolder";
 import ReactGeneralController from "../support/reactGeneralController";
-import credentialsHolder from "./credentialsHolder";
 
 class LoginController extends ReactGeneralController<Boolean> {
   loginRequest(login: string, password: string): void {
@@ -14,7 +13,6 @@ class LoginController extends ReactGeneralController<Boolean> {
       },
       body: form,
     };
-    console.log(form);
 
     const request = new Request("login", options);
     fetch(request).then((response) => {
@@ -34,5 +32,5 @@ class LoginController extends ReactGeneralController<Boolean> {
   }
 }
 
-const loginObjectTempName = new LoginController();
-export default loginObjectTempName;
+const loginController = new LoginController();
+export default loginController;

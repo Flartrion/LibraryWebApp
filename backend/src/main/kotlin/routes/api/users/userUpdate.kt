@@ -13,10 +13,6 @@ import java.util.*
 
 fun Route.userUpdate() {
     post("/update/{id}") {
-        if (call.request.cookies["role"] != "admin") return@post call.respondText(
-            "Access is forbidden",
-            status = HttpStatusCode.Forbidden
-        )
         val id = call.parameters["id"] ?: return@post call.respondText(
             "Missing or malformed id",
             status = HttpStatusCode.BadRequest

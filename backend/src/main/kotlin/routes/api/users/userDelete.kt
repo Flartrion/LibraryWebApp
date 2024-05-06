@@ -10,10 +10,6 @@ import java.util.*
 
 fun Route.userDelete() {
     delete("/{id}") {
-        if (call.request.cookies["role"] != "admin") return@delete call.respondText(
-            "Access is forbidden",
-            status = HttpStatusCode.Forbidden
-        )
         val id = call.parameters["id"] ?: return@delete call.respondText(
             "Missing or malformed id",
             status = HttpStatusCode.BadRequest

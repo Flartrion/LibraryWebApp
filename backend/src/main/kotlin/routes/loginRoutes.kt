@@ -11,8 +11,6 @@ import io.ktor.server.config.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import java.util.*
 
 fun Route.loginRouting(config: ApplicationConfig) {
@@ -49,6 +47,8 @@ fun Route.loginRouting(config: ApplicationConfig) {
                         "HttpOnly; " +
                         "SameSite=Strict"
             )
+            call.response.cookies.append("userName",user.fullName, maxAge = 3600000L, secure = true)
+            call.response.cookies.append("userRole",user.role.toString(), maxAge = 3600000L, secure = true)
             call.respond(HttpStatusCode.OK, "Authorized!")
         } else
             call.respond(HttpStatusCode.Unauthorized, "Login failed")

@@ -15,11 +15,6 @@ import kotlinx.serialization.json.Json
 
 fun Route.userGetFiltered() {
     get {
-        if (call.request.cookies["role"] != "admin") return@get call.respondText(
-            "Access is forbidden",
-            status = HttpStatusCode.Forbidden
-        )
-
         val search = call.receive<User>()
         val resultSet = dbQuery {
             UserEntity.find {

@@ -1,3 +1,4 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 repositories {
@@ -66,6 +67,9 @@ kotlin {
     }
 }
 
+dependencies {
+    implementation(project.parent!!.childProjects["frontend"]!!)
+}
 
 application {
     mainClass.set("ServerKt")
