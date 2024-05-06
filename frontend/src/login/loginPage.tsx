@@ -6,7 +6,7 @@ import {
   TextField,
 } from "@mui/material";
 import loginObjectTempName from "./loginController";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function LoginPage() {
   const [processing, setProcessing] = useState(false);
@@ -18,8 +18,12 @@ function LoginPage() {
     const password = (
       document.getElementById("loginPassword") as HTMLInputElement
     ).value;
-    loginObjectTempName.loginRequest({ login, password });
+    loginObjectTempName.loginRequest(login, password);
   }
+
+  useEffect(() => {
+    loginObjectTempName.subscribeView("loginPage", setProcessing);
+  });
 
   return (
     <Box

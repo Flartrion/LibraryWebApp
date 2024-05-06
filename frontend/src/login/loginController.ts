@@ -1,36 +1,38 @@
-const loginObjectTempName = {
-  loginRequest({ login, password }: any): void {
+import { Dispatch, SetStateAction } from "react";
+import ReactGeneralController from "../support/reactGeneralController";
+import credentialsHolder from "./credentialsHolder";
+
+class LoginController extends ReactGeneralController<Boolean> {
+  loginRequest(login: string, password: string): void {
+    const form = new FormData();
+    form.set("email", login);
+    form.set("password", password);
     const options = {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
         "Accept-Encoding": "application/json",
       },
-      body: JSON.stringify({
-        email: login,
-        password: password,
-      }),
+      body: form,
     };
-    console.log(JSON.stringify({
-      email: login,
-      password: password,
-    }))
-    const request = new Request("/login", options);
-    const response = fetch(request);
-    response.then((response) => {
-      if (response.status == 200)
-        response.json().then((jsonBody) => {
-          console.log(response.statusText);
-          console.log(jsonBody);
+    console.log(form);
+
+    const request = new Request("login", options);
+    fetch(request).then((response) => {
+      if (response.status == 200) {
+        console.log(response.statusText);
+        response.text().then((resText) => {
+          console.log(resText);
         });
-      else {
+      } else {
         console.log(response.statusText);
         response.text().then((resText) => {
           console.log(resText);
         });
       }
     });
-  },
-};
+    this.updateModel(false);
+  }
+}
 
+const loginObjectTempName = new LoginController();
 export default loginObjectTempName;

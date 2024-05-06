@@ -18,21 +18,13 @@ import java.util.*
 fun Route.loginRouting(config: ApplicationConfig) {
     post("/login") {
         val parameters = call.receiveParameters()
-        val username = parameters["email"] ?: return@post call.respondText(
-            "Missing or malformed email",
-            status = HttpStatusCode.BadRequest
-        )
-        val password = parameters["password"] ?: return@post call.respondText(
-            "Missing or malformed password",
-            status = HttpStatusCode.BadRequest
-        )
 
         // I'm ignoring the edge case of more than one return. That is not a situation that should arise.
         // Admin skill issue.
         val user = dbQuery {
             UserEntity.find {
-                Users.email like username
-                Users.phoneNumber like password
+                Users.email like (parameters["email"] ?: "")
+                Users.phoneNumber like (parameters["password"] ?: "")
             }.firstOrNull()
         }
 
@@ -46,10 +38,19 @@ fun Route.loginRouting(config: ApplicationConfig) {
                 .withIssuer(issuer)
                 .withClaim("username", user.fullName)
                 .withClaim("role", user.role)
-                .withExpiresAt(Date(System.currentTimeMillis() + 1000000))
+                .withExpiresAt(Date(System.currentTimeMillis() + 1000 * 3600))
                 .sign(Algorithm.HMAC256(secret))
-            call.respond(HttpStatusCode.OK, Json.encodeToString(mapOf("token" to token)))
+
+            call.response.headers.append(
+                HttpHeaders.SetCookie,
+                "JWTAuth=${token}; " +
+                        "Max-Age=3600000; " +
+                        "Secure; " +
+                        "HttpOnly; " +
+                        "SameSite=Strict"
+            )
+            call.respond(HttpStatusCode.OK, "Authorized!")
         } else
-            call.respond(HttpStatusCode.BadRequest, "Login failed")
+            call.respond(HttpStatusCode.Unauthorized, "Login failed")
     }
 }
