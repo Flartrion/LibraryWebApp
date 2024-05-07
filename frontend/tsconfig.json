@@ -4,15 +4,11 @@
     "jsxImportSource": "@emotion/react",
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
-    "moduleResolution": "Node16",
-    "module": "Node16",
+    "moduleResolution": "Bundler",
+    "module": "ESNext",
     "target": "es5",
     "allowJs": true
   },
-  "files": [
-    "src/index.tsx"
-  ],
-  "include": [
-    "src/**/*"
-  ]
+  "files": ["src/index.tsx"],
+  "include": ["src/**/*"]
 }

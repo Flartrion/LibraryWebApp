@@ -2,7 +2,7 @@ import { ThemeProvider } from "@mui/material";
 import projectThemesArray from "../styles";
 import { useEffect, useState } from "react";
 import themeObserver from "./themeObserver";
-import cookieWorker from "../support/credentialHolder";
+import cookieWorker from "../support/cookieWorker";
 
 function ThemeChangeObserver({ children }: any) {
   const [themeState, setTheme] = useState(

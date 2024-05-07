@@ -1,5 +1,6 @@
-import { Box } from "@mui/material";
-import HeaderMenu from "./dropoutMenu";
+import { Box, CircularProgress } from "@mui/material";
+import { lazy, Suspense } from "react";
+const HeaderMenu = lazy(() => import("./dropoutMenu"));
 
 function SiteHeader({ siteName }: any) {
   return (
@@ -17,7 +18,9 @@ function SiteHeader({ siteName }: any) {
       }}
     >
       <h1>{siteName}</h1>
-      <HeaderMenu />
+      <Suspense fallback={<CircularProgress />}>
+        <HeaderMenu />
+      </Suspense>
     </Box>
   );
 }

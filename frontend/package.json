@@ -13,8 +13,8 @@
   "author": "Flartrion",
   "license": "MIT",
   "scripts": {
-    "build": "esbuild src/index.tsx --bundle --minify --sourcemap --jsx=automatic --outdir=out/",
-    "build:dev": "esbuild src/index.tsx --bundle --sourcemap --jsx=automatic --outdir=out/",
+    "build": "esbuild src/index.tsx --bundle --sourcemap --minify --splitting --format=esm --jsx=automatic --outdir=out/",
+    "build:dev": "esbuild src/index.tsx --bundle --sourcemap --splitting --format=esm --jsx=automatic --outdir=out/",
     "watch": "esbuild src/index.tsx --bundle --watch --outdir=out/"
   },
   "dependencies": {

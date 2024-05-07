@@ -1,4 +1,4 @@
-import cookieWorker from "../support/credentialHolder";
+import cookieWorker from "../support/cookieWorker";
 import ReactGeneralController from "../support/reactGeneralController";
 
 class LoginController extends ReactGeneralController<Boolean> {

@@ -1,13 +1,13 @@
-import { useEffect, useReducer, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import pageSelectorController from "../pageSelection/pageSelectorController";
-import { Alert, Box, Container } from "@mui/material";
+import { Alert, CircularProgress, Container } from "@mui/material";
 import pageSelectorModel from "../pageSelection/pageSelectorModel";
 import Page from "../pageSelection/pageSelectionEnum";
-import ItemPage from "../itemPage/itemPage";
-import LoginPage from "../login/loginPage";
-import cookieWorker from "../support/credentialHolder";
+const ItemPage = lazy(() => import("../listPages/itemPage/itemPage"));
+const LoginPage = lazy(() => import("../login/loginPage"));
+const UsersPage = lazy(() => import("../listPages/usersPage/usersPage"));
 
-function MainPage({ someProp }: any) {
+function MainPage({}: any) {
   const [pageSelection, setPageSelection] = useState(
     pageSelectorModel.pageSelection
   );
@@ -23,7 +23,11 @@ function MainPage({ someProp }: any) {
   switch (pageSelection) {
     case Page.Items:
       // TODO: fow now just "true", fix after login implementation
-      output = <ItemPage adminRights={true} />;
+      output = (
+        <Suspense fallback={<CircularProgress sx={{ alignSelf: "center" }} />}>
+          <ItemPage adminRights={true} />
+        </Suspense>
+      );
       break;
 
     case Page.Storages:
@@ -36,14 +40,18 @@ function MainPage({ someProp }: any) {
 
     case Page.Users:
       output = (
-        <Container>
-          <Alert severity="info">Users page W.I.P.</Alert>
-        </Container>
+        <Suspense fallback={<CircularProgress sx={{ alignSelf: "center" }} />}>
+          <UsersPage adminRights={true}></UsersPage>
+        </Suspense>
       );
       break;
 
     case Page.Login:
-      output = <LoginPage />;
+      output = (
+        <Suspense fallback={<CircularProgress sx={{ alignSelf: "center" }} />}>
+          <LoginPage />
+        </Suspense>
+      );
       break;
 
     default:

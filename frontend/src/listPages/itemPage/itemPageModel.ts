@@ -1,4 +1,4 @@
-import Item from "../dataclasses/item";
+import Item from "../../dataclasses/item";
 
 // Only here for type-safety.
 type ItemPageModel = {

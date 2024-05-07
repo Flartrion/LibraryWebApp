@@ -1,4 +1,4 @@
-import ReactGeneralController from "../support/reactGeneralController";
+import ReactGeneralController from "../../support/reactGeneralController";
 import itemPageModel from "./itemPageModel";
 
 class ItemPageController extends ReactGeneralController<number> {

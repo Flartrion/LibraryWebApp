@@ -26,9 +26,10 @@ tasks.register<Copy>("elevateOutputsFront") {
     duplicatesStrategy = DuplicatesStrategy.WARN
     dependsOn(tasks.getByName("jsStatic"))
     from("out/") {
-        include("index*")
+//        include("index*")
+        include("*.js*")
     }
-    from (".") {
+    from(".") {
         include("index*")
     }
 //    into(project.relativeProjectPath("../out/static"))

@@ -13,7 +13,7 @@ import { Person } from "@mui/icons-material";
 import pageSelectorController from "../pageSelection/pageSelectorController";
 import { useState } from "react";
 import Page from "../pageSelection/pageSelectionEnum";
-import cookieWorker from "../support/credentialHolder";
+import cookieWorker from "../support/cookieWorker";
 
 function HeaderMenu() {
   const [headerMenuAnchor, setAnchor] = useState(null);

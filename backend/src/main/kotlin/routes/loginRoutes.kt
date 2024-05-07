@@ -15,7 +15,13 @@ import java.util.*
 
 fun Route.loginRouting(config: ApplicationConfig) {
     post("/login") {
-        val parameters = call.receiveParameters()
+        val parameters: Parameters
+        try {
+            parameters = call.receiveParameters()
+        } catch (e: ContentTransformationException) {
+            call.respond(HttpStatusCode.BadRequest, e.message ?: "Login form parse failed!")
+            return@post
+        }
 
         // I'm ignoring the edge case of more than one return. That is not a situation that should arise.
         // Admin skill issue.
