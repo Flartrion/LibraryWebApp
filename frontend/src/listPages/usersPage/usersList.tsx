@@ -1,15 +1,22 @@
-import { Check } from "@mui/icons-material";
-import { ListItem, ListItemIcon } from "@mui/material";
+import {
+  Avatar,
+  CircularProgress,
+  ListItem,
+  ListItemIcon,
+} from "@mui/material";
 import ReactVirtualizedAutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList, ListChildComponentProps } from "react-window";
 import usersPageModel from "./usersPageModel";
+import { useState } from "react";
+import User from "../../dataclasses/user";
 
 function renderRow(props: ListChildComponentProps) {
-  const { index, style } = props;
+  const { index, style, data } = props;
+  const user: User = data[index];
   return (
     <ListItem style={style} key={index}>
       <ListItemIcon>
-        <Check />
+        <Avatar />
       </ListItemIcon>
       {"User " + index.toString()}
     </ListItem>
@@ -18,8 +25,8 @@ function renderRow(props: ListChildComponentProps) {
 
 // TODO: Gotta replace this with virtualized grid eventually if I want to implement pictures or something like that.
 // Do I, though?
-function UserList() {
-  return (
+function UsersList({ usersLoaded }: any) {
+  return usersLoaded ? (
     <ReactVirtualizedAutoSizer>
       {({ height, width }: any) => (
         <FixedSizeList
@@ -32,11 +39,14 @@ function UserList() {
             usersPageModel.scrollOffset = props.scrollOffset;
           }}
           initialScrollOffset={usersPageModel.scrollOffset}
+          itemData={usersPageModel.users}
         >
           {renderRow}
         </FixedSizeList>
       )}
     </ReactVirtualizedAutoSizer>
+  ) : (
+    <CircularProgress size="100px" sx={{ justifySelf: "center" }} />
   );
 }
-export default UserList;
+export default UsersList;

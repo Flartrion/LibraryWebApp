@@ -1,8 +1,8 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 repositories {
     mavenCentral()
+    gradlePluginPortal()
 }
 
 group = "com.flartrion.librapp.backend"
@@ -50,8 +50,8 @@ kotlin {
                 implementation("io.ktor:ktor-server-config-yaml:$ktor_version")
                 implementation("io.ktor:ktor-server-auth:$ktor_version")
                 implementation("io.ktor:ktor-server-auth-jwt:$ktor_version")
-//                implementation("org.apache.logging.log4j:log4j-core")
-//                implementation("org.apache.logging.log4j:log4j-slf4j-impl")
+//                implementation("org.apache.logging.log4j:log4j-core:2.23.1")
+//                implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.23.1")
 
                 implementation("org.postgresql:postgresql:42.7.3")
                 implementation("org.jetbrains.exposed:exposed-core:$exposed_version")

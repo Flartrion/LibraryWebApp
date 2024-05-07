@@ -15,6 +15,7 @@ import kotlinx.serialization.json.Json
 
 fun Route.userGetFiltered() {
     get {
+//        call.respond("Access success")
         val search = call.receive<User>()
         val resultSet = dbQuery {
             UserEntity.find {

@@ -15,11 +15,6 @@ ktor:
       keyAlias: "$SSLKEYALIAS:testKeys"
       keyStorePassword: "$SSLKEYSTOREPASS:foobar"
       privateKeyPassword: "$SSLPKEYPASS:foobar"
-  jwt:
-    secret: "$JWTSECRET:secret"
-    issuer: "$DOMAINNAME:localhost"
-    audience: "$JWTAUD:localhost/"
-    realm: "$REALM:General site authorization"
 database:
   init: "$DBINIT:false"
   driverName: "$DBDRIVER:org.postgresql.Driver"
@@ -28,3 +23,8 @@ database:
   port: "$DBPORT:5432"
   username: "$DBCLIENTNAME:postgres"
   password: "$DBPASSWORD:postgres"
+jwt:
+  secret: "$JWTSECRET:a5b486662c6b95de54054283fc81a51f493ab1967d857be86daff6a737738334"
+  issuer: "$JWTISS:https://localhost"
+  audience: "$JWTAUD:https://localhost/"
+  realm: "$REALM:GeneralAuth"

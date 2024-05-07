@@ -15,20 +15,19 @@ class LoginController extends ReactGeneralController<Boolean> {
     };
 
     const request = new Request("login", options);
-    fetch(request).then((response) => {
-      if (response.status == 200) {
+    fetch(request)
+      .then((response) => {
         console.log(response.statusText);
-        response.text().then((resText) => {
-          console.log(resText);
-        });
-      } else {
-        console.log(response.statusText);
-        response.text().then((resText) => {
-          console.log(resText);
-        });
-      }
-    });
-    this.updateModel(false);
+        return response.text();
+      })
+      .then((resText) => {
+        console.log(resText);
+        this.updateModel(false);
+      })
+      .catch((reason) => {
+        console.log(reason);
+        this.updateModel(false);
+      });
   }
 }
 

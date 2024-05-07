@@ -41,7 +41,7 @@ function MainPage({}: any) {
     case Page.Users:
       output = (
         <Suspense fallback={<CircularProgress sx={{ alignSelf: "center" }} />}>
-          <UsersPage adminRights={true}></UsersPage>
+          <UsersPage></UsersPage>
         </Suspense>
       );
       break;

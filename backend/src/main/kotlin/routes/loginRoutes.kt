@@ -33,11 +33,12 @@ fun Route.loginRouting(config: ApplicationConfig) {
         }
 
         if (user != null) {
-            val audience = config.property("ktor.jwt.audience").toString()
-            val issuer = config.property("ktor.jwt.issuer").toString()
-            val secret = config.property("ktor.jwt.secret").toString()
+            val audience = config.property("jwt.audience").getString()
+            val issuer = config.property("jwt.issuer").getString()
+            val secret = config.property("jwt.secret").getString()
 
             val token = JWT.create()
+                .withSubject("TestAuthentication")
                 .withAudience(audience)
                 .withIssuer(issuer)
                 .withClaim("username", user.fullName)
@@ -53,8 +54,8 @@ fun Route.loginRouting(config: ApplicationConfig) {
                         "HttpOnly; " +
                         "SameSite=Strict"
             )
-            call.response.cookies.append("userName",user.fullName, maxAge = 3600000L, secure = true)
-            call.response.cookies.append("userRole",user.role.toString(), maxAge = 3600000L, secure = true)
+            call.response.cookies.append("userName", user.fullName, maxAge = 3600000L, secure = true)
+            call.response.cookies.append("userRole", user.role.toString(), maxAge = 3600000L, secure = true)
             call.respond(HttpStatusCode.OK, "Authorized!")
         } else
             call.respond(HttpStatusCode.Unauthorized, "Login failed")
