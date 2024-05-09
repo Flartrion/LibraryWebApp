@@ -5,6 +5,31 @@ type NamedTheme = [string, Theme];
 
 const projectThemesArray: NamedTheme[] = [
   [
+    "Le Abominifique",
+    createTheme({
+      palette: {
+        mode: "dark",
+        primary: {
+          main: "#00004c",
+        },
+        secondary: {
+          main: "#000000",
+          contrastText: "#ffcdd2",
+        },
+        background: {
+          default: "#250000",
+          paper: "#270101",
+        },
+        warning: {
+          main: "#ed6c02",
+        },
+      },
+      shape: {
+        borderRadius: 20,
+      },
+    }),
+  ],
+  [
     "Abominable Classique",
     createTheme({
       palette: {

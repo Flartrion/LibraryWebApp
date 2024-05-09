@@ -1,4 +1,3 @@
-import cookieWorker from "../support/cookieWorker";
 import ReactGeneralController from "../support/reactGeneralController";
 
 class LoginController extends ReactGeneralController<Boolean> {
@@ -14,7 +13,7 @@ class LoginController extends ReactGeneralController<Boolean> {
       body: form,
     };
 
-    const request = new Request("login", options);
+    const request = new Request("login/plain", options);
     fetch(request)
       .then((response) => {
         console.log(response.statusText);

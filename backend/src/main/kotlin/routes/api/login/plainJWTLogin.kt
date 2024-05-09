@@ -1,8 +1,8 @@
-package routes
+package routes.api.login
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import db.DatabaseSingleton.dbQuery
+import db.DatabaseSingleton
 import db.entity.UserEntity
 import db.model.Users
 import io.ktor.http.*
@@ -13,8 +13,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import java.util.*
 
-fun Route.loginRouting(config: ApplicationConfig) {
-    post("/login") {
+fun Route.plainJWTLogin(config: ApplicationConfig) {
+    post("plain") {
         val parameters: Parameters
         try {
             parameters = call.receiveParameters()
@@ -25,7 +25,7 @@ fun Route.loginRouting(config: ApplicationConfig) {
 
         // I'm ignoring the edge case of more than one return. That is not a situation that should arise.
         // Admin skill issue.
-        val user = dbQuery {
+        val user = DatabaseSingleton.dbQuery {
             UserEntity.find {
                 Users.email like (parameters["email"] ?: "")
                 Users.phoneNumber like (parameters["password"] ?: "")
@@ -49,13 +49,14 @@ fun Route.loginRouting(config: ApplicationConfig) {
             call.response.headers.append(
                 HttpHeaders.SetCookie,
                 "JWTAuth=${token}; " +
-                        "Max-Age=3600000; " +
+                        "path=/; " +
+                        "Max-Age=3600; " +
                         "Secure; " +
                         "HttpOnly; " +
                         "SameSite=Strict"
             )
-            call.response.cookies.append("userName", user.fullName, maxAge = 3600000L, secure = true)
-            call.response.cookies.append("userRole", user.role.toString(), maxAge = 3600000L, secure = true)
+            call.response.cookies.append("userName", user.fullName, maxAge = 3600L, secure = true, path = "/")
+            call.response.cookies.append("userRole", user.role.toString(), maxAge = 3600L, secure = true, path = "/")
             call.respond(HttpStatusCode.OK, "Authorized!")
         } else
             call.respond(HttpStatusCode.Unauthorized, "Login failed")

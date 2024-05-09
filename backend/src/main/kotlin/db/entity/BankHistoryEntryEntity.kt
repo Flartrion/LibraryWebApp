@@ -1,10 +1,6 @@
 package db.entity
 
 import db.model.BankHistory
-import db.model.Items
-import db.model.Rents.references
-import db.model.Storages
-import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.UUIDEntity
 import org.jetbrains.exposed.dao.id.EntityID

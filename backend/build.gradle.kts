@@ -49,6 +49,7 @@ kotlin {
                 implementation("io.ktor:ktor-server-status-pages:$ktor_version")
                 implementation("io.ktor:ktor-server-config-yaml:$ktor_version")
                 implementation("io.ktor:ktor-server-auth:$ktor_version")
+                implementation("io.ktor:ktor-server-sessions:$ktor_version")
                 implementation("io.ktor:ktor-server-auth-jwt:$ktor_version")
 //                implementation("org.apache.logging.log4j:log4j-core:2.23.1")
 //                implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.23.1")
@@ -58,6 +59,10 @@ kotlin {
                 implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
                 implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
                 implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposed_version")
+
+                implementation("io.ktor:ktor-client-core:$ktor_version")
+                implementation("io.ktor:ktor-client-cio:$ktor_version")
+                implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
 
                 implementation("com.zaxxer:HikariCP:$hikaricp_version")
                 implementation("org.ehcache:ehcache:$ehcache_version")
@@ -96,6 +101,7 @@ tasks.getByName<Jar>("jar") {
 
 tasks.getByName<Copy>("processResources") {
     duplicatesStrategy = DuplicatesStrategy.WARN
+//    dependsOn(project.childProjects["frontend"]!!.tasks.named("elevateOutputsFront"))
 }
 
 tasks.register<Copy>("elevateOutputsBack") {

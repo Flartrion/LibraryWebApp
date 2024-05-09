@@ -1,7 +1,7 @@
 ktor:
   deployment:
-    port: "$PORT:8080"
-    sslPort: "$SSLPORT:8443"
+    port: "$PORT:80"
+    sslPort: "$SSLPORT:8080"
     tcpKeepAlive: true
     shareWorkGroup: false
     requestQueueLimit: 16
@@ -28,3 +28,6 @@ jwt:
   issuer: "$JWTISS:https://localhost"
   audience: "$JWTAUD:https://localhost/"
   realm: "$REALM:GeneralAuth"
+github:
+  clientid: "$GITCLIENTID:Ov23liJqi3HPj35vrItx"
+  secret: "$GITSECRET:f2d2740953c74f90aef4f0599674b3f8ab690913"

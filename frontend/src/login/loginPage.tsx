@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import loginController from "./loginController";
 import { useEffect, useState } from "react";
+import { GitHub } from "@mui/icons-material";
 
 function LoginPage() {
   const [processing, setProcessing] = useState(false);
@@ -58,6 +59,9 @@ function LoginPage() {
       />
       <Button variant="contained" onClick={handleSubmit}>
         SUBMIT OF YOUR OVERLORDS
+      </Button>
+      <Button onClick={() => {location.href="/login/github"}}>
+        <GitHub/>
       </Button>
       <Backdrop open={processing}>
         <CircularProgress />
