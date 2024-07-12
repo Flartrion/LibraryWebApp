@@ -59,12 +59,12 @@ function UsersPage() {
          just remain consistent?*/}
         <Tab
           disabled={usersPageModel.userSelection < 0}
-          label="Item"
+          label="User"
           tabIndex={UsersPageTab.User}
         />
         // TODO: Replace with a floating action? Will make this entire design
         more tolerable for mobile, too
-        <Tab label="Add Item" tabIndex={UsersPageTab.AddUser} />
+        <Tab label="Add User" tabIndex={UsersPageTab.AddUser} />
       </Tabs>
       <Divider />
       <SelectedPage pageSelection={tabSelection} />

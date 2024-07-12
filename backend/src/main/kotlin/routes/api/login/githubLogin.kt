@@ -11,6 +11,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
@@ -41,18 +42,22 @@ fun Route.githubLogin(config: ApplicationConfig) {
                 }
                 println("Got the state: $state")
 
-                val result = applicationClient.post("https://github.com/login/oauth/access_token") {
-                    headers["Accept"] = "application/json"
-                    setBody(
-                        buildJsonObject {
-                            put("client_id", config.property("github.clientid").getString())
-                            put("client_secret", config.property("github.secret").getString())
-                            put("code", code)
-                        }
-                    )
-                }
-                println(result.status)
-                println(result.bodyAsText())
+                // Last I checked, this was empty despite redirect here properly occuring. I'll let it stew for a while.
+                println(redirects)
+
+                runBlocking {
+                    val result = applicationClient.post("https://github.com/login/oauth/access_token") {
+                        headers["Accept"] = "application/json"
+                        setBody(
+                            buildJsonObject {
+                                put("client_id", config.property("github.clientid").getString())
+                                put("client_secret", config.property("github.secret").getString())
+                                put("code", code)
+                            }
+                        )
+                    }
+                    println(result.status)
+                    println(result.bodyAsText())
 
 //                val currentPrincipal: OAuthAccessTokenResponse.OAuth2? = call.principal()
 //                // redirects home if the url is not found before authorization
@@ -65,6 +70,7 @@ fun Route.githubLogin(config: ApplicationConfig) {
 //                        }
 //                    }
 //                }
+                }
                 call.respondRedirect("/")
             }
         }

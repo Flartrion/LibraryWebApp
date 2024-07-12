@@ -1,3 +1,5 @@
+import Page from "../pageSelection/pageSelectionEnum";
+import pageSelectorController from "../pageSelection/pageSelectorController";
 import ReactGeneralController from "../support/reactGeneralController";
 
 class LoginController extends ReactGeneralController<Boolean> {
@@ -21,6 +23,7 @@ class LoginController extends ReactGeneralController<Boolean> {
       })
       .then((resText) => {
         console.log(resText);
+        pageSelectorController.updateModel(Page.Items);
         this.updateModel(false);
       })
       .catch((reason) => {

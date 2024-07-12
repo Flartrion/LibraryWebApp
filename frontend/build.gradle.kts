@@ -18,7 +18,7 @@ node {
 
 tasks.register<NpmTask>("jsStatic") {
     group = "build"
-    args = listOf("run", "build")
+    args = listOf("run", "build:dev")
 }
 
 tasks.register<Copy>("elevateOutputsFront") {
