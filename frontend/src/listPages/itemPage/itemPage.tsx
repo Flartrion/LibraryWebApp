@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import ItemPageTab from "./itemPageTabsEnum";
 import itemPageController from "./itemPageController";
 import itemPageModel from "./itemPageModel";
-import BookItemList from "./itemList";
+import BookItemList from "./itemList/itemList";
+import itemListModel from "./itemList/itemListModel";
 
 function ItemPage({ adminRights }: any) {
   const [tabSelection, setTabSelection] = useState(itemPageModel.tabSelection);
@@ -44,7 +45,7 @@ function ItemPage({ adminRights }: any) {
          so I can not just hide it, I have to go out of my way to disable it. Why can't the numbering 
          just remain consistent?*/}
         <Tab
-          disabled={itemPageModel.itemSelection < 0}
+          disabled={itemListModel.itemSelection < 0}
           label="Item"
           tabIndex={ItemPageTab.Item}
         />
