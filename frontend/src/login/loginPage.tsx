@@ -48,20 +48,22 @@ function LoginPage() {
         type="email"
         label="E-mail"
         variant="outlined"
-        helperText="NETIZENS HAVE AN OBLIGATION TO REPORT THEIR RESIDENCE STATUS"
       />
       <TextField
         id="loginPassword"
         type="password"
         label="Password"
         variant="outlined"
-        helperText="THERE ARE NO SECRETS FROM YOURSELF"
       />
       <Button variant="contained" onClick={handleSubmit}>
-        SUBMIT OF YOUR OVERLORDS
+        PROCEED
       </Button>
-      <Button onClick={() => {location.href="/login/github"}}>
-        <GitHub/>
+      <Button
+        onClick={() => {
+          location.href = "/login/github";
+        }}
+      >
+        <GitHub />
       </Button>
       <Backdrop open={processing}>
         <CircularProgress />

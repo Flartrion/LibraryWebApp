@@ -57,9 +57,13 @@ function HeaderMenu() {
         onClick={handleMenuClose}
         onClose={handleMenuClose}
       >
-        <ListSubheader>Hoho, you're approaching me?</ListSubheader>
+        <ListSubheader>
+          {cookieWorker.extractCookie("userRole")
+            ? "Then come as close as you like!"
+            : "Hoho, you're approaching me?"}
+        </ListSubheader>
         <Divider />
-        {cookieWorker.extractCookie("userName") == null ? (
+        {cookieWorker.extractCookie("userRole") == null ? (
           <MenuItem
             onClick={() => {
               pageSelectorController.updateModel(Page.Login);
@@ -68,7 +72,19 @@ function HeaderMenu() {
             Login
           </MenuItem>
         ) : (
-          <MenuItem disabled={true}>Logged in!</MenuItem>
+          <MenuItem
+            onClick={() => {
+              pageSelectorController.updateModel(Page.Login);
+              document.cookie =
+                "userName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+              document.cookie =
+                "userRole=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+              document.cookie =
+                "JWTAuth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            }}
+          >
+            Logout
+          </MenuItem>
         )}
         <MenuItem onClick={() => setDrawerOpened(true)}>Settings</MenuItem>
       </Menu>
