@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Box,
   CircularProgress,
   ListItem,
   ListItemIcon,
@@ -7,7 +8,6 @@ import {
 import ReactVirtualizedAutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList, ListChildComponentProps } from "react-window";
 import usersPageModel from "./usersPageModel";
-import { useState } from "react";
 import User from "../../dataclasses/user";
 
 function renderRow(props: ListChildComponentProps) {
@@ -46,7 +46,9 @@ function UsersList({ usersLoaded }: any) {
       )}
     </ReactVirtualizedAutoSizer>
   ) : (
-    <CircularProgress size="100px" sx={{ justifySelf: "center" }} />
+    <Box>
+      <CircularProgress size="100px" />
+    </Box>
   );
 }
 export default UsersList;

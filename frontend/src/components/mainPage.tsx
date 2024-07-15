@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import pageSelectorController from "../pageSelection/pageSelectorController";
 import { Alert, CircularProgress, Container } from "@mui/material";
 import pageSelectorModel from "../pageSelection/pageSelectorModel";
-import Page from "../pageSelection/pageSelectionEnum";
+import PageSelection from "../pageSelection/pageSelectionEnum";
 const ItemPage = lazy(() => import("../listPages/itemPage/itemPage"));
 const LoginPage = lazy(() => import("../login/loginPage"));
 const UsersPage = lazy(() => import("../listPages/usersPage/usersPage"));
@@ -21,16 +21,15 @@ function MainPage({}: any) {
 
   let output: any;
   switch (pageSelection) {
-    case Page.Items:
-      // TODO: fow now just "true", fix after login implementation
+    case PageSelection.Items:
       output = (
         <Suspense fallback={<CircularProgress sx={{ alignSelf: "center" }} />}>
-          <ItemPage adminRights={true} />
+          <ItemPage />
         </Suspense>
       );
       break;
 
-    case Page.Storages:
+    case PageSelection.Storages:
       output = (
         <Container>
           <Alert severity="info">Storages page W.I.P.</Alert>
@@ -38,15 +37,15 @@ function MainPage({}: any) {
       );
       break;
 
-    case Page.Users:
+    case PageSelection.Users:
       output = (
         <Suspense fallback={<CircularProgress sx={{ alignSelf: "center" }} />}>
-          <UsersPage></UsersPage>
+          <UsersPage />
         </Suspense>
       );
       break;
 
-    case Page.Login:
+    case PageSelection.Login:
       output = (
         <Suspense fallback={<CircularProgress sx={{ alignSelf: "center" }} />}>
           <LoginPage />

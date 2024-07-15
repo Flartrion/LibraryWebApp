@@ -1,6 +1,7 @@
-import Page from "../pageSelection/pageSelectionEnum";
+import PageSelection from "../pageSelection/pageSelectionEnum";
 import pageSelectorController from "../pageSelection/pageSelectorController";
 import ReactGeneralController from "../support/reactGeneralController";
+import userDataModel from "../support/userDataModel";
 
 class LoginController extends ReactGeneralController<Boolean> {
   loginRequest(login: string, password: string): void {
@@ -31,10 +32,20 @@ class LoginController extends ReactGeneralController<Boolean> {
         this.updateModel(false);
       })
       .finally(() => {
-        if (responseStatus === 200)
-          pageSelectorController.updateModel(Page.Items);
-        else if (responseStatus === 401) loginController.updateModel(false);
+        if (responseStatus === 200) {
+          pageSelectorController.updateModel(PageSelection.Items);
+          userDataModel.update();
+        } else if (responseStatus === 401) loginController.updateModel(false);
       });
+  }
+
+  logout() {
+    document.cookie =
+      "userName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie =
+      "userRole=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie =
+      "JWTAuth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   }
 }
 

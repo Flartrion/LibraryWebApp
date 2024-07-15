@@ -1,8 +1,8 @@
-enum Page {
+enum PageSelection {
   Items,
   Storages,
   Users,
 
   Login,
 }
-export default Page;
+export default PageSelection;

@@ -5,8 +5,9 @@ import itemPageController from "./itemPageController";
 import itemPageModel from "./itemPageModel";
 import BookItemList from "./itemList/itemList";
 import itemListModel from "./itemList/itemListModel";
+import userDataModel from "../../support/userDataModel";
 
-function ItemPage({ adminRights }: any) {
+function ItemPage() {
   const [tabSelection, setTabSelection] = useState(itemPageModel.tabSelection);
 
   useEffect(() => {
@@ -50,7 +51,7 @@ function ItemPage({ adminRights }: any) {
           tabIndex={ItemPageTab.Item}
         />
         <Tab
-          disabled={!adminRights}
+          disabled={userDataModel.userRole > 5}
           label="Add Item"
           tabIndex={ItemPageTab.AddItem}
         />

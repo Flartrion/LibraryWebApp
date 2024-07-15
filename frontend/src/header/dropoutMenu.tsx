@@ -12,8 +12,10 @@ import projectThemesArray from "../styles";
 import { Person } from "@mui/icons-material";
 import pageSelectorController from "../pageSelection/pageSelectorController";
 import { useState } from "react";
-import Page from "../pageSelection/pageSelectionEnum";
+import PageSelection from "../pageSelection/pageSelectionEnum";
 import cookieWorker from "../support/cookieWorker";
+import loginController from "../login/loginController";
+import userDataModel from "../support/userDataModel";
 
 function HeaderMenu() {
   const [headerMenuAnchor, setAnchor] = useState(null);
@@ -66,7 +68,7 @@ function HeaderMenu() {
         {cookieWorker.extractCookie("userRole") == null ? (
           <MenuItem
             onClick={() => {
-              pageSelectorController.updateModel(Page.Login);
+              pageSelectorController.updateModel(PageSelection.Login);
             }}
           >
             Login
@@ -74,13 +76,9 @@ function HeaderMenu() {
         ) : (
           <MenuItem
             onClick={() => {
-              pageSelectorController.updateModel(Page.Login);
-              document.cookie =
-                "userName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-              document.cookie =
-                "userRole=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-              document.cookie =
-                "JWTAuth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+              pageSelectorController.updateModel(PageSelection.Login);
+              loginController.logout();
+              userDataModel.update();
             }}
           >
             Logout
