@@ -1,10 +1,9 @@
-import { Box, Container, Divider, Hidden, Tab } from "@mui/material";
+import { Box, Divider, Tab } from "@mui/material";
 import Tabs from "@mui/material/Tabs";
 import { useEffect, useState } from "react";
 import pageSelectorModel from "./pageSelectorModel";
-import PageSelection from "./pageSelectionEnum";
+import PageEnum from "./pageEnum";
 import pageSelectorController from "./pageSelectorController";
-import cookieWorker from "../support/cookieWorker";
 import userDataModel from "../support/userDataModel";
 
 function SitePageSelector() {
@@ -24,10 +23,19 @@ function SitePageSelector() {
     <Box>
       <Divider />
       <Tabs value={selection} onChange={handleSelection} variant="fullWidth">
-        <Tab label="Items" value={PageSelection.Items} tabIndex={PageSelection.Items} />
-        <Tab label="Storages" value={PageSelection.Storages} tabIndex={PageSelection.Storages} />
+        <Tab label="Items" value={PageEnum.Items} tabIndex={PageEnum.Items} />
+        <Tab
+          label="Storages"
+          value={PageEnum.Storages}
+          tabIndex={PageEnum.Storages}
+        />
         {userDataModel.userRole < 5 ? (
-          <Tab label="Users" value={PageSelection.Users} tabIndex={PageSelection.Users} />
+          <Tab label="Users" value={PageEnum.Users} tabIndex={PageEnum.Users} />
+        ) : (
+          ""
+        )}
+        {selection === PageEnum.Login ? (
+          <Tab label="Login" value={PageEnum.Login} tabIndex={PageEnum.Login} />
         ) : (
           ""
         )}

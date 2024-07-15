@@ -12,7 +12,7 @@ import projectThemesArray from "../styles";
 import { Person } from "@mui/icons-material";
 import pageSelectorController from "../pageSelection/pageSelectorController";
 import { useState } from "react";
-import PageSelection from "../pageSelection/pageSelectionEnum";
+import PageSelection from "../pageSelection/pageEnum";
 import cookieWorker from "../support/cookieWorker";
 import loginController from "../login/loginController";
 import userDataModel from "../support/userDataModel";

@@ -1,11 +1,12 @@
-import { Box, Divider, Tab, Tabs } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, CircularProgress, Divider, Tab, Tabs } from "@mui/material";
+import { lazy, Suspense, useEffect, useState } from "react";
 import ItemPageTab from "./itemPageTabsEnum";
 import itemPageController from "./itemPageController";
 import itemPageModel from "./itemPageModel";
 import BookItemList from "./itemList/itemList";
 import itemListModel from "./itemList/itemListModel";
 import userDataModel from "../../support/userDataModel";
+const ItemAddPage = lazy(() => import("./itemAddPage/itemAddPage"));
 
 function ItemPage() {
   const [tabSelection, setTabSelection] = useState(itemPageModel.tabSelection);
@@ -33,7 +34,11 @@ function ItemPage() {
       case ItemPageTab.Item:
         return "very no";
       case ItemPageTab.AddItem:
-        return "very-very no";
+        return (
+          <Suspense fallback={<CircularProgress size="100px" />}>
+            <ItemAddPage />
+          </Suspense>
+        );
     }
   }
 
@@ -51,7 +56,7 @@ function ItemPage() {
           tabIndex={ItemPageTab.Item}
         />
         <Tab
-          disabled={userDataModel.userRole > 5}
+          disabled={(userDataModel.userRole ?? 999) > 5}
           label="Add Item"
           tabIndex={ItemPageTab.AddItem}
         />

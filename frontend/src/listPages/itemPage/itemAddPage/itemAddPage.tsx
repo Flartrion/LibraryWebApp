@@ -1,7 +1,7 @@
-import { Box } from "@mui/material";
+import { Container } from "@mui/material";
 
 function ItemAddPage() {
-  return <Box>
-    
-  </Box>;
+  return <Container></Container>;
 }
+
+export default ItemAddPage;

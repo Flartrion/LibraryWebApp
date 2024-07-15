@@ -1,4 +1,4 @@
-import PageSelection from "../pageSelection/pageSelectionEnum";
+import PageSelection from "../pageSelection/pageEnum";
 import pageSelectorController from "../pageSelection/pageSelectorController";
 import ReactGeneralController from "../support/reactGeneralController";
 import userDataModel from "../support/userDataModel";

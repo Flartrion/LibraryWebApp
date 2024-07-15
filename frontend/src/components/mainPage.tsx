@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import pageSelectorController from "../pageSelection/pageSelectorController";
 import { Alert, CircularProgress, Container } from "@mui/material";
 import pageSelectorModel from "../pageSelection/pageSelectorModel";
-import PageSelection from "../pageSelection/pageSelectionEnum";
+import PageSelection from "../pageSelection/pageEnum";
 const ItemPage = lazy(() => import("../listPages/itemPage/itemPage"));
 const LoginPage = lazy(() => import("../login/loginPage"));
 const UsersPage = lazy(() => import("../listPages/usersPage/usersPage"));
