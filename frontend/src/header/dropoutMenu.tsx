@@ -13,9 +13,10 @@ import { Person } from "@mui/icons-material";
 import pageSelectorController from "../pageSelection/pageSelectorController";
 import { useState } from "react";
 import PageSelection from "../pageSelection/pageEnum";
-import cookieWorker from "../support/cookieWorker";
 import loginController from "../login/loginController";
 import userDataModel from "../support/userDataModel";
+import itemPageController from "../listPages/itemPage/itemPageController";
+import ItemPageTab from "../listPages/itemPage/itemPageTabsEnum";
 
 function HeaderMenu() {
   const [headerMenuAnchor, setAnchor] = useState(null);
@@ -60,12 +61,12 @@ function HeaderMenu() {
         onClose={handleMenuClose}
       >
         <ListSubheader>
-          {cookieWorker.extractCookie("userRole")
+          {userDataModel.userRole
             ? "Then come as close as you like!"
             : "Hoho, you're approaching me?"}
         </ListSubheader>
         <Divider />
-        {cookieWorker.extractCookie("userRole") == null ? (
+        {userDataModel.userRole == undefined ? (
           <MenuItem
             onClick={() => {
               pageSelectorController.updateModel(PageSelection.Login);
@@ -77,6 +78,8 @@ function HeaderMenu() {
           <MenuItem
             onClick={() => {
               pageSelectorController.updateModel(PageSelection.Login);
+              // TODO: When storage page is implemented, switch the page to storage list over there also
+              itemPageController.updateModel(ItemPageTab.Items);
               loginController.logout();
               userDataModel.update();
             }}

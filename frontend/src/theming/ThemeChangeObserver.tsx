@@ -2,7 +2,6 @@ import { ThemeProvider } from "@mui/material";
 import projectThemesArray from "../styles";
 import { useEffect, useState } from "react";
 import themeObserver from "./themeObserver";
-import cookieWorker from "../support/cookieWorker";
 import userDataModel from "../support/userDataModel";
 
 function ThemeChangeObserver({ children }: any) {

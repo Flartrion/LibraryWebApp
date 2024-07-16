@@ -23,7 +23,7 @@ function renderRow(props: ListChildComponentProps) {
   );
 }
 
-// TODO: Gotta replace this with virtualized grid eventually if I want to implement pictures or something like that.
+// TODO: Gotta replace this with virtualized grid eventually if I want to implement avatars or something like that.
 // Do I, though?
 function UsersList({ usersLoaded }: any) {
   return usersLoaded ? (

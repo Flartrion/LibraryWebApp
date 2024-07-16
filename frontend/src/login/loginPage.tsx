@@ -46,12 +46,14 @@ function LoginPage() {
       <TextField
         id="loginEmail"
         type="email"
+        autoComplete="email"
         label="E-mail"
         variant="outlined"
       />
       <TextField
         id="loginPassword"
         type="password"
+        autoComplete="current-password"
         label="Password"
         variant="outlined"
       />
