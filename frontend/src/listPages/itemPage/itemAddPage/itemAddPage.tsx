@@ -6,9 +6,9 @@ function itemAddPageReducer(state: any, action: any) {}
 
 function ItemAddPage() {
   const [processing, setProcessing] = useState<Boolean>(false);
-  const [itemAddPageState, dispatch] = useReducer(itemAddPageReducer, {
-    ...itemAddModel,
-  });
+  // const [itemAddPageState, dispatch] = useReducer(itemAddPageReducer, {
+  //   ...itemAddModel,
+  // });
   useEffect(() => {
     return () => {};
   });

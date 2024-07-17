@@ -1,7 +1,7 @@
 ktor:
   deployment:
     port: "$PORT:80"
-    sslPort: "$SSLPORT:8080"
+    sslPort: "$SSLPORT:8443"
     tcpKeepAlive: true
     shareWorkGroup: false
     requestQueueLimit: 16
@@ -11,8 +11,8 @@ ktor:
       - ServerKt.module
   security:
     ssl:
-      keyStore: "$SSLKEYSTOREPATH:keys/keystore.jks"
-      keyAlias: "$SSLKEYALIAS:testKeys"
+      keyStore: "$SSLKEYSTOREPATH:keys/testkey.jks"
+      keyAlias: "$SSLKEYALIAS:testkey"
       keyStorePassword: "$SSLKEYSTOREPASS:foobar"
       privateKeyPassword: "$SSLPKEYPASS:foobar"
 database:

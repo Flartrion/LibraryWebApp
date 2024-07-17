@@ -6,9 +6,7 @@ class UserDataModel {
   userTheme: number;
 
   constructor() {
-    this.userName = cookieWorker.extractCookie("userName");
-    this.userRole = parseInt(cookieWorker.extractCookie("userRole"));
-    this.userTheme = parseInt(cookieWorker.extractCookie("userTheme"));
+    this.update();
   }
 
   update() {
@@ -20,7 +18,7 @@ class UserDataModel {
 
     let userTheme = parseInt(cookieWorker.extractCookie("userTheme"));
     if (!Number.isNaN(userTheme)) this.userTheme = userTheme;
-    else this.userTheme = undefined;
+    else this.userTheme = 0;
   }
 }
 
