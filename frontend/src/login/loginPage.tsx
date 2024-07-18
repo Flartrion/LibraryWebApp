@@ -17,11 +17,10 @@ function LoginPage() {
   ) => {
     event.preventDefault();
     setProcessing(true);
-    const login = (document.getElementById("loginEmail") as HTMLInputElement)
-      .value;
-    const password = (
-      document.getElementById("loginPassword") as HTMLInputElement
-    ).value;
+    const data = new FormData(event.currentTarget);
+    const login = data.get("loginEmail").valueOf().toString();
+    const password = data.get("loginPassword").valueOf().toString();
+
     loginController.loginRequest(login, password);
   };
 
@@ -51,6 +50,7 @@ function LoginPage() {
         <TextField
           id="loginEmail"
           type="email"
+          name="loginEmail"
           autoComplete="email"
           label="E-mail"
           variant="outlined"
@@ -58,6 +58,7 @@ function LoginPage() {
         />
         <TextField
           id="loginPassword"
+          name="loginPassword"
           type="password"
           autoComplete="current-password"
           label="Password"
