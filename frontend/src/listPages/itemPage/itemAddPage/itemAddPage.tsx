@@ -1,56 +1,26 @@
-import { Button, Container, TextField } from "@mui/material";
-import { useEffect, useReducer, useState } from "react";
+import {
+  Backdrop,
+  Button,
+  CircularProgress,
+  Container,
+  TextField,
+} from "@mui/material";
+import { useEffect, useReducer } from "react";
 import itemAddModel from "./itemAddModel";
-
-const itemAddPageReducer: React.Reducer<any, any> = (
-  state: any,
-  action: any
-) => {
-  const [actionType, payload] = action;
-  const newState = { ...state };
-  switch (actionType) {
-    case "isbn":
-      newState.isbn = payload;
-      itemAddModel.isbn = payload;
-      return newState;
-    case "rlbc":
-      newState.rlbc = payload;
-      itemAddModel.rlbc = payload;
-      return newState;
-    case "title":
-      newState.title = payload;
-      itemAddModel.title = payload;
-      return newState;
-    case "authors":
-      newState.authors = payload;
-      itemAddModel.authors = payload;
-      return newState;
-    case "type":
-      newState.type = payload;
-      itemAddModel.type = payload;
-      return newState;
-    case "language":
-      newState.language = payload;
-      itemAddModel.language = payload;
-      return newState;
-    case "details":
-      newState.details = payload;
-      itemAddModel.details = payload;
-      return newState;
-    case "processing":
-      newState.processing = !newState.processing;
-      break;
-  }
-};
+import itemAddPageReducer from "./itemAddPageReducer";
+import itemAddController from "./itemAddController";
 
 function ItemAddPage() {
-  const [itemAddPageState, dispatch] = useReducer(itemAddPageReducer, {
+  const [state, dispatch] = useReducer(itemAddPageReducer, {
     processing: false,
     ...itemAddModel,
   });
 
   useEffect(() => {
-    return () => {};
+    itemAddController.subscribedPageDispatch = dispatch;
+    return () => {
+      itemAddController.subscribedPageDispatch = undefined;
+    };
   });
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (
@@ -58,9 +28,11 @@ function ItemAddPage() {
   ) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    data.forEach((value, key, parent) => {
-      console.log(key + ": " + value);
-    });
+    // data.forEach((value, key, parent) => {
+    //   console.log(key + ": " + value);
+    // });
+    itemAddController.submit(data);
+    
   };
 
   return (
@@ -77,14 +49,14 @@ function ItemAddPage() {
           label="ISBN"
           name="isbn"
           variant="standard"
-          value={itemAddPageState.isbn}
+          value={state.isbn}
           onChange={(event) => dispatch(["isbn", event.currentTarget.value])}
         />
         <TextField
           label="RLBC"
           name="rlbc"
           variant="standard"
-          value={itemAddPageState.rlbc}
+          value={state.rlbc}
           onChange={(event) => dispatch(["rlbc", event.currentTarget.value])}
         />
         <TextField
@@ -92,28 +64,28 @@ function ItemAddPage() {
           name="title"
           variant="standard"
           required
-          value={itemAddPageState.title}
+          value={state.title}
           onChange={(event) => dispatch(["title", event.target.value])}
         />
         <TextField
           label="Authors"
           name="authors"
           variant="standard"
-          value={itemAddPageState.authors}
+          value={state.authors}
           onChange={(event) => dispatch(["authors", event.target.value])}
         />
         <TextField
           label="Type"
           name="type"
           variant="standard"
-          value={itemAddPageState.type}
+          value={state.type}
           onChange={(event) => dispatch(["type", event.target.value])}
         />
         <TextField
           label="Language"
           name="language"
           variant="standard"
-          value={itemAddPageState.language}
+          value={state.language}
           onChange={(event) => dispatch(["language", event.target.value])}
         />
         <TextField
@@ -122,12 +94,15 @@ function ItemAddPage() {
           label="Details"
           name="details"
           variant="standard"
-          value={itemAddPageState.details}
+          value={state.details}
           onChange={(event) => dispatch(["details", event.target.value])}
         />
         <Button type="submit" variant="contained">
           Submit
         </Button>
+        <Backdrop open={state.processing}>
+          <CircularProgress />
+        </Backdrop>
       </Container>
     </form>
   );

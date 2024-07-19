@@ -27,8 +27,8 @@ fun Route.plainJWTLogin(config: ApplicationConfig) {
         // Admin skill issue.
         val user = DatabaseSingleton.dbQuery {
             UserEntity.find {
-                Users.email like (parameters["email"] ?: "")
-                Users.phoneNumber like (parameters["password"] ?: "")
+                Users.email eq (parameters["email"] ?: "")
+                Users.phoneNumber eq (parameters["password"] ?: "")
             }.firstOrNull()
         }
 

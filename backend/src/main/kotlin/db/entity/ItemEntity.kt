@@ -5,11 +5,13 @@ import db.model.Items
 import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.UUIDEntity
+import org.jetbrains.exposed.dao.UUIDEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import java.util.*
 
 class ItemEntity(id: EntityID<UUID>) : UUIDEntity(id) {
-    companion object : EntityClass<UUID, ItemEntity>(Items)
+//    companion object : EntityClass<UUID, ItemEntity>(Items)
+    companion object: UUIDEntityClass<ItemEntity>(Items)
 
     var isbn by Items.isbn
     var rlbc by Items.rlbc

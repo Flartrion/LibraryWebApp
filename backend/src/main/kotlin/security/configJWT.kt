@@ -21,7 +21,7 @@ fun AuthenticationConfig.configJWT(config: ApplicationConfig) {
         realm = myRealm
         authHeader {
             val JWTAuth = it.request.cookies["JWTAuth"]
-            println(JWTAuth)
+//            println(JWTAuth)
             if (JWTAuth != null) {
                 try {
                     // TODO: Automatize auth scheme?
@@ -41,7 +41,7 @@ fun AuthenticationConfig.configJWT(config: ApplicationConfig) {
         validate { jwtCredential ->
             // I don't believe I particularly need this since the check is being performed at time of
             // issuing the JWT, but I will leave it here nonetheless, as a reminder.
-            println(jwtCredential.payload.claims)
+//            println(jwtCredential.payload.claims)
             if (jwtCredential.payload.claims["username"].toString() != "") {
                 JWTPrincipal(jwtCredential.payload)
             } else {

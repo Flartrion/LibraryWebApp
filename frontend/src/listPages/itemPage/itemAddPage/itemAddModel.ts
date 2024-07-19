@@ -1,14 +1,4 @@
-type ItemAddFields = {
-  isbn: string;
-  rlbc: string;
-  title: string;
-  authors: string;
-  type: string;
-  language: string;
-  details: string;
-};
-
-const itemAddModel: ItemAddFields = {
+const itemAddModel = {
   isbn: "",
   rlbc: "",
   title: "",
