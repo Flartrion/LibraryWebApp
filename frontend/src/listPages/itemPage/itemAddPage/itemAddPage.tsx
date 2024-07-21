@@ -32,7 +32,6 @@ function ItemAddPage() {
     //   console.log(key + ": " + value);
     // });
     itemAddController.submit(data);
-    
   };
 
   return (

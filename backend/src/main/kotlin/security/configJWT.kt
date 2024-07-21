@@ -2,7 +2,6 @@ package security
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import io.ktor.client.engine.*
 import io.ktor.http.*
 import io.ktor.http.auth.*
 import io.ktor.http.parsing.*

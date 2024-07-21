@@ -27,6 +27,7 @@ fun Route.itemCreate() {
         val role = principal!!.payload.getClaim("role").asInt()
         if (role >= 5) {
             call.respond(HttpStatusCode.Unauthorized, "Not enough privilege")
+            return@post
         }
 
         try {
@@ -43,7 +44,7 @@ fun Route.itemCreate() {
                 }.empty()
             }
             if (noSimilar) {
-                val success = dbQuery {
+                dbQuery {
                     ItemEntity.new {
                         this.isbn = newEntity.isbn
                         this.rlbc = newEntity.rlbc
