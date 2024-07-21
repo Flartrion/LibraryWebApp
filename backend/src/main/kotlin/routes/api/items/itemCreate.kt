@@ -17,6 +17,7 @@ import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.jetbrains.exposed.sql.and
 
 fun Route.itemCreate() {
     post("/new") {
@@ -34,13 +35,13 @@ fun Route.itemCreate() {
             val newEntity = call.receive<Item>()
             val noSimilar = dbQuery {
                 ItemEntity.find {
-                    isbn eq newEntity.isbn
-                    rlbc eq newEntity.rlbc
-                    title eq newEntity.title
-                    authors eq newEntity.authors
-                    type eq newEntity.type
-                    language eq newEntity.language
-                    details eq newEntity.details
+                    (isbn eq newEntity.isbn) and
+                    (rlbc eq newEntity.rlbc) and
+                    (title eq newEntity.title) and
+                    (authors eq newEntity.authors) and
+                    (type eq newEntity.type) and
+                    (language eq newEntity.language) and
+                    (details eq newEntity.details)
                 }.empty()
             }
             if (noSimilar) {

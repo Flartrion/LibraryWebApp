@@ -4,34 +4,53 @@ const itemAddPageReducer: React.Reducer<any, any> = (
   state: any,
   action: any
 ) => {
-  const [actionType, payload] = action;
+  const [actionName, payload] = action;
   const newState = { ...state };
-  switch (actionType) {
+  switch (actionName) {
     case "isbn":
-      newState.isbn = payload;
-      itemAddModel.isbn = payload;
+      if (payload.length <= 20) {
+        newState.errField = "";
+        newState.isbn = payload;
+        itemAddModel.isbn = payload;
+      } else newState.errField = actionName;
       return newState;
     case "rlbc":
-      newState.rlbc = payload;
-      itemAddModel.rlbc = payload;
+      if (payload.length <= 20) {
+        newState.errField = "";
+        newState.rlbc = payload;
+        itemAddModel.rlbc = payload;
+      } else newState.errField = actionName;
       return newState;
     case "title":
-      newState.title = payload;
-      itemAddModel.title = payload;
+      if (payload.length <= 40) {
+        newState.errField = "";
+        newState.title = payload;
+        itemAddModel.title = payload;
+      } else newState.errField = actionName;
       return newState;
     case "authors":
-      newState.authors = payload;
-      itemAddModel.authors = payload;
+      if (payload.length <= 60) {
+        newState.errField = "";
+        newState.authors = payload;
+        itemAddModel.authors = payload;
+      } else newState.errField = actionName;
       return newState;
     case "type":
-      newState.type = payload;
-      itemAddModel.type = payload;
+      if (payload.length <= 20) {
+        newState.errField = "";
+        newState.type = payload;
+        itemAddModel.type = payload;
+      } else newState.errField = actionName;
       return newState;
     case "language":
-      newState.language = payload;
-      itemAddModel.language = payload;
+      if (payload.length <= 20) {
+        newState.errField = "";
+        newState.language = payload;
+        itemAddModel.language = payload;
+      } else newState.errField = actionName;
       return newState;
     case "details":
+      newState.errField = "";
       newState.details = payload;
       itemAddModel.details = payload;
       return newState;
