@@ -45,6 +45,7 @@ class ItemListController {
         if (responseStatus == 200) {
           const items: Item[] = JSON.parse(body);
           itemListModel.items = items;
+          itemListModel.itemsLoaded = true;
           this.setItemsLoaded(true);
           // console.log(items);
         } else {
