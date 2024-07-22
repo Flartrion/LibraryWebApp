@@ -17,7 +17,7 @@ class UserEntity(id: EntityID<UUID>) : UUIDEntity(id) {
     var email by Users.email
 
     fun entityToUser(): User = User(
-        idUser = id.value.toString(),
+        id = id.value.toString(),
         role = role,
         fullName = fullName,
         dateOfBirth = dob.toString(),

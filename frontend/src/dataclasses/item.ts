@@ -1,9 +1,10 @@
 type Item = {
-  idItem: string;
+  id: string;
   isbn: string;
-  rlbs: string;
+  rlbc: string;
   authors: string;
   title: string;
+  type: string;
   language: string;
   details: string;
 };

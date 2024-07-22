@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Item(
-    val idItem: String,
+    val id: String,
     val isbn: String,
     val rlbc: String,
     val title: String,

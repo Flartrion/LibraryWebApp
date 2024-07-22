@@ -6,7 +6,7 @@ class ItemAddController {
 
   submit(data: FormData) {
     this.setProcessing(true);
-    data.append("idItem", "0");
+    data.append("id", "0");
     const options = {
       method: "POST",
       headers: {

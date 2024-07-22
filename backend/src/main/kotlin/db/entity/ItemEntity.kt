@@ -20,7 +20,7 @@ class ItemEntity(id: EntityID<UUID>) : UUIDEntity(id) {
     var language by Items.language
 
     fun entityToItem(): Item = Item(
-        idItem = id.value.toString(),
+        id = id.value.toString(),
         isbn = isbn,
         rlbc = rlbc,
         title = title,

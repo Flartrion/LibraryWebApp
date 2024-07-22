@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Storage(
-    val id_storage: String,
+    val id: String,
     val address: String
 )

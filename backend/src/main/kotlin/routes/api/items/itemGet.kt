@@ -11,8 +11,8 @@ import kotlinx.serialization.json.Json
 import java.util.*
 
 fun Route.itemGet() {
-    get("/{id}") {
-        val id = call.parameters["id"] ?: return@get call.respondText(
+    post("get/{id}") {
+        val id = call.parameters["id"] ?: return@post call.respondText(
             "Missing or malformed id",
             status = HttpStatusCode.BadRequest
         )
