@@ -1,4 +1,7 @@
 import Item from "../../../dataclasses/item";
+import itemPageController from "../itemPageController";
+import ItemPageTab from "../itemPageTabsEnum";
+import itemViewModel from "../itemViewPage/itemViewModel";
 import itemListModel from "./itemListModel";
 
 class ItemListController {
@@ -6,33 +9,20 @@ class ItemListController {
   setItemsLoaded: React.Dispatch<React.SetStateAction<boolean>>;
   changeSelection(newValue: number): void {
     this.setItemSelection(newValue);
+    itemViewModel.item = itemListModel.items[newValue];
+    itemViewModel.itemIndex = newValue;
     itemListModel.itemSelection = newValue;
+    itemPageController.updateModel(ItemPageTab.Item);
   }
 
   getFiltered(filters: Item) {
-    // TODO
-  }
-
-  getInitial() {
-    const data: Item & {
-      id: "";
-    } = {
-      id: "",
-      isbn: "",
-      rlbc: "",
-      authors: "",
-      details: "",
-      type: "",
-      language: "",
-      title: "",
-    };
     const options = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Accept-Encoding": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(filters),
     };
     let responseStatus: number;
     const request = new Request("items/get", options);
@@ -55,6 +45,20 @@ class ItemListController {
       .catch((reason) => {
         console.log(reason);
       });
+  }
+
+  getInitial() {
+    const data: Item = {
+      id: "",
+      isbn: "",
+      rlbc: "",
+      authors: "",
+      details: "",
+      type: "",
+      language: "",
+      title: "",
+    };
+    this.getFiltered(data);
   }
 }
 

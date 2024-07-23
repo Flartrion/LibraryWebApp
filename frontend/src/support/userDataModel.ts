@@ -1,5 +1,9 @@
 import cookieWorker from "./cookieWorker";
 
+/**
+ * Storage for user data extracted from cookies, 
+ * for the purpose of reducing unneccessary regexp operations 
+ */
 class UserDataModel {
   userName: String;
   userRole: number;

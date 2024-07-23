@@ -1,6 +1,6 @@
 import itemAddModel from "./itemAddModel";
 
-const itemAddPageReducer: React.Reducer<any, any> = (
+const reducer: React.Reducer<any, any> = (
   state: any,
   action: any
 ) => {
@@ -60,4 +60,4 @@ const itemAddPageReducer: React.Reducer<any, any> = (
   }
 };
 
-export default itemAddPageReducer;
+export default reducer;

@@ -6,22 +6,18 @@ import {
   TextField,
 } from "@mui/material";
 import { useEffect, useReducer } from "react";
-import itemAddModel from "./itemAddModel";
 import reducer from "./reducer";
-import itemAddController from "./itemAddController";
+import itemViewModel from "./itemViewModel";
 
-function ItemAddPage() {
+function ItemEditPage() {
   const [state, dispatch] = useReducer(reducer, {
     processing: false,
     errField: "",
-    ...itemAddModel,
+    ...itemViewModel,
   });
 
   useEffect(() => {
-    itemAddController.subscribedPageDispatch = dispatch;
-    return () => {
-      itemAddController.subscribedPageDispatch = undefined;
-    };
+    return () => {};
   });
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (
@@ -29,10 +25,7 @@ function ItemAddPage() {
   ) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // data.forEach((value, key, parent) => {
-    //   console.log(key + ": " + value);
-    // });
-    itemAddController.submit(data);
+    // itemAddController.submit(data);
   };
 
   return (
@@ -127,4 +120,4 @@ function ItemAddPage() {
   );
 }
 
-export default ItemAddPage;
+export default ItemEditPage;
