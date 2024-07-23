@@ -6,9 +6,10 @@ import itemPageModel from "./itemPageModel";
 import BookItemList from "./itemList/itemList";
 import itemListModel from "./itemList/itemListModel";
 import userDataModel from "../../support/userDataModel";
-import ItemViewPage from "./itemViewPage/ItemViewPage";
 import itemViewModel from "./itemViewPage/itemViewModel";
+import DefaultPageSuspence from "../../support/defaultPageSuspence";
 const ItemAddPage = lazy(() => import("./itemAddPage/itemAddPage"));
+const ItemViewPage = lazy(() => import("./itemViewPage/ItemViewPage"));
 
 function ItemPage() {
   const [tabSelection, setTabSelection] = useState(itemPageModel.tabSelection);
@@ -34,10 +35,14 @@ function ItemPage() {
       case ItemPageTab.Filters:
         return "No";
       case ItemPageTab.Item:
-        return <ItemViewPage item={itemViewModel.item}></ItemViewPage>;
+        return (
+          <Suspense fallback={<DefaultPageSuspence />}>
+            <ItemViewPage item={itemViewModel.item}></ItemViewPage>;
+          </Suspense>
+        );
       case ItemPageTab.AddItem:
         return (
-          <Suspense fallback={<CircularProgress size="100px" />}>
+          <Suspense fallback={<DefaultPageSuspence />}>
             <ItemAddPage />
           </Suspense>
         );

@@ -1,5 +1,6 @@
 import {
   Backdrop,
+  Box,
   Button,
   CircularProgress,
   Container,
@@ -7,13 +8,18 @@ import {
 } from "@mui/material";
 import { useEffect, useReducer } from "react";
 import reducer from "./reducer";
-import itemViewModel from "./itemViewModel";
+import Item from "../../../../dataclasses/item";
 
-function ItemEditPage() {
+interface ItemEditPageProps {
+  item: Item;
+  setEditState: React.Dispatch<React.SetStateAction<Boolean>>;
+}
+
+function ItemEditPage({ item, setEditState }: ItemEditPageProps) {
   const [state, dispatch] = useReducer(reducer, {
     processing: false,
     errField: "",
-    ...itemViewModel,
+    ...item,
   });
 
   useEffect(() => {
@@ -38,6 +44,16 @@ function ItemEditPage() {
           minHeight: "40%",
         }}
       >
+        <TextField
+          label="ID"
+          name="id"
+          variant="standard"
+          margin="normal"
+          inputProps={{
+            readOnly: true,
+          }}
+          value={item.id}
+        />
         <TextField
           label="ISBN"
           name="isbn"
@@ -109,9 +125,19 @@ function ItemEditPage() {
           value={state.details}
           onChange={(event) => dispatch(["details", event.target.value])}
         />
-        <Button type="submit" variant="contained">
-          Submit
-        </Button>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+          }}
+        >
+          <Button type="submit" variant="contained">
+            Submit
+          </Button>
+          <Button disabled>Reset</Button>
+          <Button onClick={() => setEditState(false)}>Cancel</Button>
+        </Box>
         <Backdrop open={state.processing}>
           <CircularProgress />
         </Backdrop>

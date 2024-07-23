@@ -1,6 +1,8 @@
-import { Container, TextField } from "@mui/material";
+import { Box, Button, Container, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import Item from "../../../dataclasses/item";
+import userDataModel from "../../../support/userDataModel";
+import ItemEditPage from "./itemEditPage/itemEditPage";
 
 interface ItemViewPageProps {
   item: Item;
@@ -13,7 +15,7 @@ function ItemViewPage({ item }: ItemViewPageProps) {
     return () => {};
   });
 
-  return (
+  return !editState ? (
     <Container
       sx={{
         display: "flex",
@@ -104,10 +106,25 @@ function ItemViewPage({ item }: ItemViewPageProps) {
         }}
         value={item.details}
       />
-      {/* <Button type="submit" variant="contained">
-        Submit
-      </Button> */}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-evenly",
+        }}
+      >
+        {userDataModel.userRole <= 5 ? (
+          <>
+            <Button onClick={() => setEditState(true)}>Edit</Button>
+            <Button>Delete</Button>
+          </>
+        ) : (
+          ""
+        )}
+      </Box>
     </Container>
+  ) : (
+    <ItemEditPage item={item} setEditState={setEditState} />
   );
 }
 
