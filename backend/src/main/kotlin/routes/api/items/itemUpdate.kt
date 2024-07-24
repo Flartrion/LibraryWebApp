@@ -31,7 +31,7 @@ fun Route.itemUpdate() {
             val editedEntity = dbQuery {
                 ItemEntity.findById(UUID.fromString(newEntity.id))
             }
-            println(newEntity)
+//            println(newEntity)
             if (editedEntity != null) {
                 dbQuery {
                     editedEntity.apply {
@@ -43,7 +43,7 @@ fun Route.itemUpdate() {
                         this.details = newEntity.details
                         this.authors = newEntity.authors
                     }
-                    println(editedEntity.entityToItem())
+//                    println(editedEntity.entityToItem())
                 }
             } else {
                 call.respond(HttpStatusCode.BadRequest, "Item not found")
