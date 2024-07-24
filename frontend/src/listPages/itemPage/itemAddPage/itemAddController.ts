@@ -1,3 +1,5 @@
+import itemListModel from "../itemList/itemListModel";
+
 class ItemAddController {
   subscribedPageDispatch: React.Dispatch<any>;
   setProcessing(newValue: boolean) {
@@ -30,6 +32,9 @@ class ItemAddController {
         console.log(reason);
       })
       .finally(() => {
+        if (responseStatus == 201) {
+          itemListModel.itemsLoaded = false;
+        }
         this.setProcessing(false);
       });
   }
