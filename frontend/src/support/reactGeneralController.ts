@@ -2,12 +2,12 @@ import stateSubscriberEntry from "./stateSubscriberEntry";
 
 /**
  * Just general properties any single useState controller would need.
- * Main selling point is ability to update several components far across 
+ * Main selling point is ability to update several components far across
  * as long as they subscribe to controller on mount
  * */
 abstract class ReactGeneralController<T> {
-  private subscribers: stateSubscriberEntry<T>[];
-  private updateView(newValue: T): void {
+  protected subscribers: stateSubscriberEntry<T>[];
+  protected updateView(newValue: T): void {
     for (let subscribers of this.subscribers) {
       subscribers[1](newValue);
     }

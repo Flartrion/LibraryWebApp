@@ -24,7 +24,7 @@ class ItemEntity(id: EntityID<UUID>) : UUIDEntity(id) {
         isbn = isbn,
         rlbc = rlbc,
         title = title,
-        authors = language,
+        authors = authors,
         type = type,
         details = details,
         language = language

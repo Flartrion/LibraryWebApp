@@ -1,5 +1,5 @@
 import { Box, CircularProgress, Divider, Tab, Tabs } from "@mui/material";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useDeferredValue, useEffect, useState } from "react";
 import ItemPageTab from "./itemPageTabsEnum";
 import itemPageController from "./itemPageController";
 import itemPageModel from "./itemPageModel";
@@ -8,15 +8,19 @@ import itemListModel from "./itemList/itemListModel";
 import userDataModel from "../../support/userDataModel";
 import itemViewModel from "./itemViewPage/itemViewModel";
 import DefaultPageSuspence from "../../support/defaultPageSuspence";
+import itemListController from "./itemList/itemListController";
 const ItemAddPage = lazy(() => import("./itemAddPage/itemAddPage"));
 const ItemViewPage = lazy(() => import("./itemViewPage/ItemViewPage"));
 
 function ItemPage() {
   const [tabSelection, setTabSelection] = useState(itemPageModel.tabSelection);
+  const [viewedItem, setViewedItem] = useState(undefined);
 
   useEffect(() => {
+    itemListController.setViewedItem = setViewedItem;
     itemPageController.subscribeView("itemPage", setTabSelection);
     return () => {
+      itemListController.setViewedItem = undefined;
       itemPageController.unsubscribeView("itemPage");
     };
   });

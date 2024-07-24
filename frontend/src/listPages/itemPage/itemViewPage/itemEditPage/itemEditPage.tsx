@@ -9,6 +9,7 @@ import {
 import { useEffect, useReducer } from "react";
 import reducer from "./reducer";
 import Item from "../../../../dataclasses/item";
+import itemEditController from "./itemEditController";
 
 interface ItemEditPageProps {
   item: Item;
@@ -23,7 +24,12 @@ function ItemEditPage({ item, setEditState }: ItemEditPageProps) {
   });
 
   useEffect(() => {
-    return () => {};
+    itemEditController.subscribedPageDispatch = dispatch;
+    itemEditController.setEditState = setEditState;
+    return () => {
+      itemEditController.subscribedPageDispatch = undefined;
+      itemEditController.setEditState = undefined;
+    };
   });
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (
@@ -31,7 +37,7 @@ function ItemEditPage({ item, setEditState }: ItemEditPageProps) {
   ) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // itemAddController.submit(data);
+    itemEditController.submit(data);
   };
 
   return (

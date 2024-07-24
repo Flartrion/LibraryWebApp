@@ -1,3 +1,4 @@
+import React from "react";
 import Item from "../../../dataclasses/item";
 import itemPageController from "../itemPageController";
 import ItemPageTab from "../itemPageTabsEnum";
@@ -7,11 +8,13 @@ import itemListModel from "./itemListModel";
 class ItemListController {
   setItemSelection: React.Dispatch<React.SetStateAction<number>>;
   setItemsLoaded: React.Dispatch<React.SetStateAction<boolean>>;
+  setViewedItem: React.Dispatch<React.SetStateAction<Item>>;
   changeSelection(newValue: number): void {
     this.setItemSelection(newValue);
     itemViewModel.item = itemListModel.items[newValue];
     itemViewModel.itemIndex = newValue;
     itemListModel.itemSelection = newValue;
+    this.setViewedItem(itemListModel.items[newValue]);
     itemPageController.updateModel(ItemPageTab.Item);
   }
 
