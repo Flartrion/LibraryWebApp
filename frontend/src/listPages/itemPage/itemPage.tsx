@@ -9,6 +9,7 @@ import userDataModel from "../../support/userDataModel";
 import itemViewModel from "./itemViewPage/itemViewModel";
 import DefaultPageSuspence from "../../support/defaultPageSuspence";
 import itemListController from "./itemList/itemListController";
+import ItemFilterPage from "./itemFilterPage/itemFIlterPage";
 const ItemAddPage = lazy(() => import("./itemAddPage/itemAddPage"));
 const ItemViewPage = lazy(() => import("./itemViewPage/ItemViewPage"));
 
@@ -37,7 +38,7 @@ function ItemPage() {
       case ItemPageTab.Items:
         return <BookItemList />;
       case ItemPageTab.Filters:
-        return "No";
+        return <ItemFilterPage />;
       case ItemPageTab.Item:
         return (
           <Suspense fallback={<DefaultPageSuspence />}>
