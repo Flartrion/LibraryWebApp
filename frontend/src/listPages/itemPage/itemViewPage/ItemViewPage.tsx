@@ -9,6 +9,7 @@ import itemListModel from "../itemList/itemListModel";
 import itemPageController from "../itemPageController";
 import ItemPageTab from "../itemPageTabsEnum";
 import itemDeleteController from "./itemDeleteDialog/itemDeleteController";
+import ItemTextFieldsAbstract from "../itemTextFieldsAbstract";
 
 interface ItemViewPageProps {
   item: Item;
@@ -53,87 +54,12 @@ function ItemViewPage({ item }: ItemViewPageProps) {
         minHeight: "40%",
       }}
     >
-      <TextField
-        label="ID"
-        name="id"
-        variant="standard"
-        margin="normal"
-        inputProps={{
-          readOnly: true,
-        }}
-        value={item.id}
-      />
-      <TextField
-        label="ISBN"
-        name="isbn"
-        variant="standard"
-        margin="normal"
-        inputProps={{
-          readOnly: true,
-        }}
-        value={item.isbn}
-      />
-      <TextField
-        label="RLBC"
-        name="rlbc"
-        variant="standard"
-        margin="normal"
-        inputProps={{
-          readOnly: true,
-        }}
-        value={item.rlbc}
-      />
-      <TextField
-        label="Title"
-        name="title"
-        variant="standard"
-        margin="normal"
-        inputProps={{
-          readOnly: true,
-        }}
-        value={item.title}
-      />
-      <TextField
-        label="Authors"
-        name="authors"
-        variant="standard"
-        margin="normal"
-        inputProps={{
-          readOnly: true,
-        }}
-        value={item.authors}
-      />
-      <TextField
-        label="Type"
-        name="type"
-        variant="standard"
-        margin="normal"
-        inputProps={{
-          readOnly: true,
-        }}
-        value={item.type}
-      />
-      <TextField
-        label="Language"
-        name="language"
-        variant="standard"
-        margin="normal"
-        inputProps={{
-          readOnly: true,
-        }}
-        value={item.language}
-      />
-      <TextField
-        multiline
-        aria-multiline
-        label="Details"
-        name="details"
-        variant="standard"
-        margin="normal"
-        inputProps={{
-          readOnly: true,
-        }}
-        value={item.details}
+      <ItemTextFieldsAbstract
+        errField={""}
+        readonly={true}
+        showId={true}
+        idreadonly={true}
+        state={item}
       />
       <Box
         sx={{

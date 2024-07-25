@@ -10,6 +10,7 @@ import { useEffect, useReducer } from "react";
 import reducer from "./reducer";
 import Item from "../../../../dataclasses/item";
 import itemEditController from "./itemEditController";
+import ItemTextFieldsAbstract from "../../itemTextFieldsAbstract";
 
 interface ItemEditPageProps {
   item: Item;
@@ -50,86 +51,13 @@ function ItemEditPage({ item, setEditState }: ItemEditPageProps) {
           minHeight: "40%",
         }}
       >
-        <TextField
-          label="ID"
-          name="id"
-          variant="standard"
-          margin="normal"
-          inputProps={{
-            readOnly: true,
-          }}
-          value={item.id}
-        />
-        <TextField
-          label="ISBN"
-          name="isbn"
-          variant="standard"
-          margin="normal"
-          value={state.isbn}
-          error={state.errField == "isbn"}
-          helperText={state.errField == "isbn" ? "Too long!" : ""}
-          onChange={(event) => dispatch(["isbn", event.currentTarget.value])}
-        />
-        <TextField
-          label="RLBC"
-          name="rlbc"
-          variant="standard"
-          margin="normal"
-          value={state.rlbc}
-          error={state.errField == "rlbc"}
-          helperText={state.errField == "rlbc" ? "Too long!" : ""}
-          onChange={(event) => dispatch(["rlbc", event.currentTarget.value])}
-        />
-        <TextField
-          label="Title"
-          name="title"
-          variant="standard"
-          margin="normal"
-          required
-          value={state.title}
-          error={state.errField == "title"}
-          helperText={state.errField == "title" ? "Too long!" : ""}
-          onChange={(event) => dispatch(["title", event.target.value])}
-        />
-        <TextField
-          label="Authors"
-          name="authors"
-          variant="standard"
-          margin="normal"
-          value={state.authors}
-          error={state.errField == "authors"}
-          helperText={state.errField == "authors" ? "Too long!" : ""}
-          onChange={(event) => dispatch(["authors", event.target.value])}
-        />
-        <TextField
-          label="Type"
-          name="type"
-          variant="standard"
-          margin="normal"
-          value={state.type}
-          error={state.errField == "type"}
-          helperText={state.errField == "type" ? "Too long!" : ""}
-          onChange={(event) => dispatch(["type", event.target.value])}
-        />
-        <TextField
-          label="Language"
-          name="language"
-          variant="standard"
-          margin="normal"
-          value={state.language}
-          error={state.errField == "language"}
-          helperText={state.errField == "language" ? "Too long!" : ""}
-          onChange={(event) => dispatch(["language", event.target.value])}
-        />
-        <TextField
-          multiline
-          aria-multiline
-          label="Details"
-          name="details"
-          variant="standard"
-          margin="normal"
-          value={state.details}
-          onChange={(event) => dispatch(["details", event.target.value])}
+        <ItemTextFieldsAbstract
+          errField={state.errField}
+          readonly={false}
+          showId={true}
+          idreadonly={true}
+          dispatch={dispatch}
+          state={state}
         />
         <Box
           sx={{

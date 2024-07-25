@@ -30,9 +30,9 @@ function ItemFilterPage() {
         }}
       >
         <ItemTextFieldsAbstract
-          showId={true}
           errField={state.errField}
           readonly={false}
+          showId={true}
           idreadonly={false}
           dispatch={dispatch}
           state={state}
