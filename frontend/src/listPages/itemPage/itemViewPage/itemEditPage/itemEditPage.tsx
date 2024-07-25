@@ -58,6 +58,7 @@ function ItemEditPage({ item, setEditState }: ItemEditPageProps) {
           idreadonly={true}
           dispatch={dispatch}
           state={state}
+          requirements={true}
         />
         <Box
           sx={{

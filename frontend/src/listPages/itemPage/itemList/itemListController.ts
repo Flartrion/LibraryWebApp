@@ -39,7 +39,10 @@ class ItemListController {
           const items: Item[] = JSON.parse(body);
           itemListModel.items = items;
           itemListModel.itemsLoaded = true;
-          this.setItemsLoaded(true);
+          itemListModel.scrollOffset = 0;
+          itemListModel.itemSelection = undefined;
+          if (this.setItemsLoaded != undefined) this.setItemsLoaded(true);
+          else itemPageController.updateModel(ItemPageTab.Items);
           // console.log(items);
         } else {
           console.log(body);

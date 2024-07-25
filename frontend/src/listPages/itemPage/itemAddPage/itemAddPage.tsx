@@ -53,6 +53,7 @@ function ItemAddPage() {
           idreadonly={false}
           dispatch={dispatch}
           state={state}
+          requirements={true}
         />
         <Button type="submit" variant="contained">
           Submit

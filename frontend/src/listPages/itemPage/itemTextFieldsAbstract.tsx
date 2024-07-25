@@ -8,6 +8,7 @@ interface ItemTextFieldsProps {
   readonly?: boolean;
   idreadonly?: boolean;
   showId?: boolean;
+  requirements?: boolean;
 }
 
 function ItemTextFieldsAbstract({
@@ -17,6 +18,7 @@ function ItemTextFieldsAbstract({
   readonly = false,
   idreadonly = true,
   showId = true,
+  requirements = false,
 }: ItemTextFieldsProps) {
   return (
     <>
@@ -69,7 +71,7 @@ function ItemTextFieldsAbstract({
         inputProps={{
           readOnly: readonly,
         }}
-        required
+        required={requirements}
         value={state.title}
         error={errField == "title"}
         helperText={errField == "title" ? "Too long!" : ""}

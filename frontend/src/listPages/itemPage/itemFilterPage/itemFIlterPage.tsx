@@ -3,6 +3,8 @@ import ItemTextFieldsAbstract from "../itemTextFieldsAbstract";
 import reducer from "./reducer";
 import itemFilterModel from "./itemFilterModel";
 import { Button, Container } from "@mui/material";
+import itemListController from "../itemList/itemListController";
+import Item from "../../../dataclasses/item";
 
 function ItemFilterPage() {
   const [state, dispatch] = useReducer(reducer, {
@@ -14,9 +16,11 @@ function ItemFilterPage() {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
-    data.forEach((value, key, parent) => {
-      console.log(key + ": " + value);
-    });
+    // TODO: Filtering by ID requires different form and different handling.
+    // data.forEach((value, key, parent) => {
+    //   console.log(key + ": " + value);
+    // });
+    itemListController.getFiltered(Object.fromEntries(data) as Item);
   }
 
   return (
@@ -33,9 +37,10 @@ function ItemFilterPage() {
           errField={state.errField}
           readonly={false}
           showId={true}
-          idreadonly={false}
+          idreadonly={true}
           dispatch={dispatch}
           state={state}
+          requirements={false}
         />
         <Button type="submit" variant="contained">
           Submit
