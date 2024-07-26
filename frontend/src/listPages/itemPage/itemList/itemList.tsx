@@ -1,10 +1,4 @@
-import { Check } from "@mui/icons-material";
-import {
-  CircularProgress,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
+import { CircularProgress, ListItemButton, ListItemText } from "@mui/material";
 import ReactVirtualizedAutoSizer from "react-virtualized-auto-sizer";
 import { areEqual, FixedSizeList } from "react-window";
 import { memo, useEffect, useState } from "react";
@@ -13,8 +7,6 @@ import itemListModel from "./itemListModel";
 import Item from "../../../dataclasses/item";
 
 const renderRow = memo(({ data, index, style }: any) => {
-  // function renderRow(props: ListChildComponentProps) {
-  // const { index, style } = props;
   const [itemSelection, items] = data;
   const item: Item = items[index];
   return (
@@ -23,6 +15,7 @@ const renderRow = memo(({ data, index, style }: any) => {
       key={index}
       divider={true}
       onClick={(event) => {
+        event.stopPropagation();
         itemListController.changeSelection(index);
       }}
       selected={itemSelection === index}
@@ -30,10 +23,7 @@ const renderRow = memo(({ data, index, style }: any) => {
       {/* <ListItemIcon>
         <Check />
       </ListItemIcon> */}
-      <ListItemText
-        primary={item.title}
-        secondary={item.authors}
-      />
+      <ListItemText primary={item.title} secondary={item.authors} />
     </ListItemButton>
   );
 }, areEqual);

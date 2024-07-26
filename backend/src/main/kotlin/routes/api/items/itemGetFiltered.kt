@@ -20,7 +20,7 @@ fun Route.itemGetFiltered() {
         try {
             val search = call.receive<Item>()
             val searchFilter = search.copy(
-                id = filterWrap(search.id),
+//                id = filterWrap(search.id),
                 isbn = filterWrap(search.isbn),
                 rlbc = filterWrap(search.rlbc),
                 title = filterWrap(search.title),

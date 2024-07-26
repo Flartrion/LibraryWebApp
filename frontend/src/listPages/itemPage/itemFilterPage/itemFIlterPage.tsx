@@ -2,7 +2,15 @@ import { useReducer } from "react";
 import ItemTextFieldsAbstract from "../itemTextFieldsAbstract";
 import reducer from "./reducer";
 import itemFilterModel from "./itemFilterModel";
-import { Button, Container } from "@mui/material";
+import {
+  Button,
+  Container,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+} from "@mui/material";
 import itemListController from "../itemList/itemListController";
 import Item from "../../../dataclasses/item";
 
@@ -14,13 +22,19 @@ function ItemFilterPage() {
   });
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
     const data = new FormData(e.currentTarget);
-    // TODO: Filtering by ID requires different form and different handling.
+    e.preventDefault();
+    const submitType = data.get("selectedFilter");
+    data.delete("selectedFilter");
+    // console.log(submitType);
     // data.forEach((value, key, parent) => {
     //   console.log(key + ": " + value);
     // });
-    itemListController.getFiltered(Object.fromEntries(data) as Item);
+    if (submitType == "general") {
+      itemListController.getFiltered(Object.fromEntries(data) as Item);
+    } else if (submitType == "id") {
+      itemListController.getFilteredID(data.get("id").toString());
+    }
   }
 
   return (
@@ -30,20 +44,45 @@ function ItemFilterPage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-evenly",
-          minHeight: "40%",
+          minHeight: "fit-content",
+          maxHeight: "fit-content(120)",
         }}
       >
         <ItemTextFieldsAbstract
           errField={state.errField}
           readonly={false}
-          showId={false}
+          showId={true}
           idreadonly={false}
           dispatch={dispatch}
           state={state}
           requirements={false}
         />
-        <Button type="submit" variant="contained">
-          Submit
+        <FormControl>
+          <FormLabel id="form_radio_label">Search type</FormLabel>
+          <RadioGroup
+            aria-labelledby="form_radio_label"
+            name="selectedFilter"
+            defaultValue={"general"}
+          >
+            <FormControlLabel
+              value="general"
+              control={<Radio />}
+              label="General search"
+            />
+            <FormControlLabel
+              value="id"
+              control={<Radio />}
+              label="Search by ID"
+            />
+          </RadioGroup>
+        </FormControl>
+        <Button
+          type="submit"
+          name="submitButton"
+          value="general"
+          variant="contained"
+        >
+          Filter
         </Button>
       </Container>
     </form>

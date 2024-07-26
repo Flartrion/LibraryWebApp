@@ -1,8 +1,7 @@
-import { Box, Button, Container, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, Button, Container } from "@mui/material";
+import { lazy, Suspense, useEffect, useState } from "react";
 import Item from "../../../dataclasses/item";
 import userDataModel from "../../../support/userDataModel";
-import ItemEditPage from "./itemEditPage/itemEditPage";
 import ItemDeleteDialog from "./itemDeleteDialog/itemDeleteDialog";
 import itemViewModel from "./itemViewModel";
 import itemListModel from "../itemList/itemListModel";
@@ -10,6 +9,10 @@ import itemPageController from "../itemPageController";
 import ItemPageTab from "../itemPageTabsEnum";
 import itemDeleteController from "./itemDeleteDialog/itemDeleteController";
 import ItemTextFieldsAbstract from "../itemTextFieldsAbstract";
+import DefaultPageSuspence from "../../../support/defaultPageSuspence";
+const ItemEditPage = lazy(() => {
+  return import("./itemEditPage/itemEditPage");
+});
 
 interface ItemViewPageProps {
   item: Item;
@@ -35,7 +38,7 @@ function ItemViewPage({ item }: ItemViewPageProps) {
     itemViewModel.item = undefined;
     itemViewModel.itemIndex = undefined;
     itemListModel.itemsLoaded = false;
-    itemListModel.itemSelection = -1;
+    itemListModel.itemSelection = undefined;
     itemListModel.items = undefined;
     itemPageController.updateModel(ItemPageTab.Items);
   }
@@ -73,9 +76,7 @@ function ItemViewPage({ item }: ItemViewPageProps) {
             <Button onClick={handleEdit}>Edit</Button>
             <Button onClick={handleDelete}>Delete</Button>
           </>
-        ) : (
-          ""
-        )}
+        ) : null}
         <ItemDeleteDialog
           item={item}
           open={deleteOpen}
@@ -84,7 +85,9 @@ function ItemViewPage({ item }: ItemViewPageProps) {
       </Box>
     </Container>
   ) : (
-    <ItemEditPage item={item} setEditState={setEditState} />
+    <Suspense fallback={<DefaultPageSuspence />}>
+      <ItemEditPage item={item} setEditState={setEditState} />
+    </Suspense>
   );
 }
 

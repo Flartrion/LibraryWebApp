@@ -12,12 +12,20 @@ import java.util.*
 
 fun Route.itemGet() {
     post("get/{id}") {
-        val id = call.parameters["id"] ?: return@post call.respondText(
-            "Missing or malformed id",
-            status = HttpStatusCode.BadRequest
-        )
-        val items = dbQuery { ItemEntity.findById(UUID.fromString(id)) }
-        if (items != null)
-        call.respondText(Json.encodeToString(items.entityToItem()), ContentType.Application.Json, HttpStatusCode.OK)
+        try {
+            val id = call.parameters["id"] ?: return@post call.respondText(
+                "Missing or malformed id",
+                status = HttpStatusCode.BadRequest
+            )
+            val item = dbQuery { ItemEntity.findById(UUID.fromString(id)) }
+            if (item != null)
+                call.respondText(
+                    Json.encodeToString(item.entityToItem()),
+                    ContentType.Application.Json,
+                    HttpStatusCode.OK
+                )
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }

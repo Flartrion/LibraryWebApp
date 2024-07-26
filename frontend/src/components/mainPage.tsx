@@ -3,9 +3,10 @@ import pageSelectorController from "../pageSelection/pageSelectorController";
 import { Alert, CircularProgress, Container } from "@mui/material";
 import pageSelectorModel from "../pageSelection/pageSelectorModel";
 import PageSelection from "../pageSelection/pageEnum";
+import DefaultPageSuspence from "../support/defaultPageSuspence";
 const ItemPage = lazy(() => import("../listPages/itemPage/itemPage"));
 const LoginPage = lazy(() => import("../login/loginPage"));
-const UsersPage = lazy(() => import("../listPages/usersPage/usersPage"));
+// const UsersPage = lazy(() => import("../listPages/usersPage/usersPage"));
 
 function MainPage({}: any) {
   const [pageSelection, setPageSelection] = useState(
@@ -39,15 +40,15 @@ function MainPage({}: any) {
 
     case PageSelection.Users:
       output = (
-        <Suspense fallback={<CircularProgress sx={{ alignSelf: "center" }} />}>
-          <UsersPage />
+        <Suspense fallback={<DefaultPageSuspence />}>
+          <Alert severity="info">Users page W.I.P.</Alert>
         </Suspense>
       );
       break;
 
     case PageSelection.Login:
       output = (
-        <Suspense fallback={<CircularProgress sx={{ alignSelf: "center" }} />}>
+        <Suspense fallback={<DefaultPageSuspence />}>
           <LoginPage />
         </Suspense>
       );

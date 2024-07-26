@@ -53,6 +53,38 @@ class ItemListController {
       });
   }
 
+  getFilteredID(id: string) {
+    const options = {
+      method: "POST",
+      headers: {
+        "Accept-Encoding": "application/json",
+      },
+    };
+    let responseStatus: number;
+    const request = new Request("items/get/" + id, options);
+    fetch(request)
+      .then((response) => {
+        responseStatus = response.status;
+        return response.text();
+      })
+      .then((body) => {
+        if (responseStatus == 200) {
+          const item: Item = JSON.parse(body);
+          itemListModel.itemSelection = undefined;
+          itemViewModel.item = item;
+          itemViewModel.itemIndex = undefined;
+          if (this.setItemsLoaded != undefined) this.setItemsLoaded(true);
+          else itemPageController.updateModel(ItemPageTab.Item);
+          // console.log(items);
+        } else {
+          console.log(body);
+        }
+      })
+      .catch((reason) => {
+        console.log(reason);
+      });
+  }
+
   getInitial() {
     const data: Item = {
       id: "",
