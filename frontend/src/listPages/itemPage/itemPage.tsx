@@ -63,7 +63,7 @@ function ItemPage() {
          so I can not just hide it, I have to go out of my way to disable it. Why can't the numbering 
          just remain consistent?*/}
         <Tab
-          disabled={itemListModel.itemSelection < 0}
+          disabled={itemListModel.itemSelection == undefined}
           label="Item"
           tabIndex={ItemPageTab.Item}
         />

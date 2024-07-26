@@ -10,7 +10,7 @@ type ItemListModel = {
 const itemListModel: ItemListModel = {
   items: [],
   itemsLoaded: false,
-  itemSelection: -1,
+  itemSelection: undefined,
   scrollOffset: 0,
 };
 

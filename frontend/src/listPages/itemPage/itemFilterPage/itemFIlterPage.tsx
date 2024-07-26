@@ -36,8 +36,8 @@ function ItemFilterPage() {
         <ItemTextFieldsAbstract
           errField={state.errField}
           readonly={false}
-          showId={true}
-          idreadonly={true}
+          showId={false}
+          idreadonly={false}
           dispatch={dispatch}
           state={state}
           requirements={false}
