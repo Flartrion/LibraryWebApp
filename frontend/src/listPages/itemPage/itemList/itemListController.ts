@@ -73,9 +73,7 @@ class ItemListController {
           itemListModel.itemSelection = undefined;
           itemViewModel.item = item;
           itemViewModel.itemIndex = undefined;
-          if (this.setItemsLoaded != undefined) this.setItemsLoaded(true);
-          else itemPageController.updateModel(ItemPageTab.Item);
-          // console.log(items);
+          itemPageController.updateModel(ItemPageTab.Item);
         } else {
           console.log(body);
         }

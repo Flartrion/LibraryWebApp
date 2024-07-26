@@ -18,12 +18,17 @@ fun Route.itemGet() {
                 status = HttpStatusCode.BadRequest
             )
             val item = dbQuery { ItemEntity.findById(UUID.fromString(id)) }
-            if (item != null)
+            if (item != null) {
                 call.respondText(
                     Json.encodeToString(item.entityToItem()),
                     ContentType.Application.Json,
                     HttpStatusCode.OK
                 )
+                return@post
+            } else {
+                call.respond(HttpStatusCode.NotFound, "Item with such id not found")
+                return@post
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
