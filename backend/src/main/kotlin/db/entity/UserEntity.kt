@@ -20,7 +20,7 @@ class UserEntity(id: EntityID<UUID>) : UUIDEntity(id) {
         id = id.value.toString(),
         role = role,
         fullName = fullName,
-        dateOfBirth = dob.toString(),
+        dob = dob.toString(),
         phoneNumber = phoneNumber,
         email = email
     )

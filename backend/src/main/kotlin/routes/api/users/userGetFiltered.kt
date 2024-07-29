@@ -23,7 +23,7 @@ fun Route.userGetFiltered() {
                 Users.fullName like search.fullName
                 Users.email like search.email
                 Users.phoneNumber like search.phoneNumber
-                Users.dob eq search.dateOfBirth.toLocalDate()
+                Users.dob eq search.dob.toLocalDate()
             }.sortedBy { Users.fullName }
         }
 

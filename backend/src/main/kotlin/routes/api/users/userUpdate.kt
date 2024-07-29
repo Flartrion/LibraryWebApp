@@ -23,7 +23,7 @@ fun Route.userUpdate() {
                 fullName = updEntity.fullName
                 role = updEntity.role
                 phoneNumber = updEntity.phoneNumber
-                dob = updEntity.dateOfBirth.toLocalDate()
+                dob = updEntity.dob.toLocalDate()
                 email = updEntity.email
             }
         }

@@ -1,8 +1,8 @@
 type User = {
-  idUser: string;
+  id: string;
   role: number;
   fullName: string;
-  dateOfBirth: string;
+  dob: string;
   phoneNumber: string;
   email: string;
 };

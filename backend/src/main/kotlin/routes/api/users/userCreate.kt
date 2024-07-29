@@ -19,7 +19,7 @@ fun Route.userCreate() {
                 fullName = newEntity.fullName
                 role = newEntity.role
                 phoneNumber = newEntity.phoneNumber
-                dob = newEntity.dateOfBirth.toLocalDate()
+                dob = newEntity.dob.toLocalDate()
                 email = newEntity.email
             }
         }

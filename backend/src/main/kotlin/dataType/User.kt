@@ -7,7 +7,7 @@ data class User(
     val id: String,
     val role: Int,
     val fullName: String,
-    val dateOfBirth: String,
+    val dob: String,
     val phoneNumber: String,
     val email: String
 )
