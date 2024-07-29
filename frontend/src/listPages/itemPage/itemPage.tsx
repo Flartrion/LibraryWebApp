@@ -1,10 +1,8 @@
-import { Box, CircularProgress, Divider, Tab, Tabs } from "@mui/material";
-import { lazy, Suspense, useDeferredValue, useEffect, useState } from "react";
-import ItemPageTab from "./itemPageTabsEnum";
+import { Box, Divider, Tab, Tabs } from "@mui/material";
+import { lazy, Suspense, useEffect, useState } from "react";
 import itemPageController from "./itemPageController";
 import itemPageModel from "./itemPageModel";
 import BookItemList from "./itemList/itemList";
-import itemListModel from "./itemList/itemListModel";
 import userDataModel from "../../support/userDataModel";
 import itemViewModel from "./itemViewPage/itemViewModel";
 import DefaultPageSuspence from "../../support/defaultPageSuspence";
@@ -35,17 +33,17 @@ function ItemPage() {
 
   function SelectedPage({ pageSelection }: any) {
     switch (pageSelection) {
-      case ItemPageTab.Items:
+      case ListTab.Items:
         return <BookItemList />;
-      case ItemPageTab.Filters:
+      case ListTab.Filters:
         return <ItemFilterPage />;
-      case ItemPageTab.Item:
+      case ListTab.View:
         return (
           <Suspense fallback={<DefaultPageSuspence />}>
             <ItemViewPage item={itemViewModel.item}></ItemViewPage>;
           </Suspense>
         );
-      case ItemPageTab.AddItem:
+      case ListTab.Add:
         return (
           <Suspense fallback={<DefaultPageSuspence />}>
             <ItemAddPage />
@@ -57,20 +55,22 @@ function ItemPage() {
   return (
     <Box height={"80vh"}>
       <Tabs value={tabSelection} onChange={handleSelection} variant="fullWidth">
-        <Tab label="Results" tabIndex={ItemPageTab.Items} />
-        <Tab label="Filters" tabIndex={ItemPageTab.Filters} />
+        <Tab label="Results" key={ListTab.Items} tabIndex={ListTab.Items} />
+        <Tab label="Filters" key={ListTab.Add} tabIndex={ListTab.Filters} />
         {/* BUG: Apparently not displaying one Tab shifts indexes (God, why?) of all tabs after that,
          so I can not just hide it, I have to go out of my way to disable it. Why can't the numbering 
          just remain consistent?*/}
         <Tab
           disabled={itemViewModel.item == undefined}
           label="Item"
-          tabIndex={ItemPageTab.Item}
+          key={ListTab.View}
+          tabIndex={ListTab.View}
         />
         <Tab
           disabled={(userDataModel.userRole ?? 999) > 5}
           label="Add Item"
-          tabIndex={ItemPageTab.AddItem}
+          key={ListTab.Add}
+          tabIndex={ListTab.Add}
         />
       </Tabs>
       <Divider />

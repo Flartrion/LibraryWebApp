@@ -6,7 +6,6 @@ import ItemDeleteDialog from "./itemDeleteDialog/itemDeleteDialog";
 import itemViewModel from "./itemViewModel";
 import itemListModel from "../itemList/itemListModel";
 import itemPageController from "../itemPageController";
-import ItemPageTab from "../itemPageTabsEnum";
 import itemDeleteController from "./itemDeleteDialog/itemDeleteController";
 import ItemTextFieldsAbstract from "../support/itemTextFieldsAbstract";
 import DefaultPageSuspence from "../../../support/defaultPageSuspence";
@@ -40,7 +39,7 @@ function ItemViewPage({ item }: ItemViewPageProps) {
     itemListModel.itemsLoaded = false;
     itemListModel.itemSelection = undefined;
     itemListModel.items = undefined;
-    itemPageController.updateModel(ItemPageTab.Items);
+    itemPageController.updateModel(ListTab.Items);
   }
 
   useEffect(() => {

@@ -2,7 +2,7 @@ import Item from "../../dataclasses/item";
 
 // Only here for type-safety.
 type ItemPageModel = {
-  tabSelection: number;
+  tabSelection: ListTab;
 };
 
 const itemPageModel: ItemPageModel = {

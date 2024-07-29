@@ -1,7 +1,6 @@
 import React from "react";
 import Item from "../../../dataclasses/item";
 import itemPageController from "../itemPageController";
-import ItemPageTab from "../itemPageTabsEnum";
 import itemViewModel from "../itemViewPage/itemViewModel";
 import itemListModel from "./itemListModel";
 
@@ -15,7 +14,7 @@ class ItemListController {
     itemViewModel.itemIndex = newValue;
     itemListModel.itemSelection = newValue;
     this.setViewedItem(itemListModel.items[newValue]);
-    itemPageController.updateModel(ItemPageTab.Item);
+    itemPageController.updateModel(ListTab.View);
   }
 
   getFiltered(filters: Item) {
@@ -42,7 +41,7 @@ class ItemListController {
           itemListModel.scrollOffset = 0;
           itemListModel.itemSelection = undefined;
           if (this.setItemsLoaded != undefined) this.setItemsLoaded(true);
-          else itemPageController.updateModel(ItemPageTab.Items);
+          else itemPageController.updateModel(ListTab.Items);
           // console.log(items);
         } else {
           console.log(body);
@@ -73,7 +72,7 @@ class ItemListController {
           itemListModel.itemSelection = undefined;
           itemViewModel.item = item;
           itemViewModel.itemIndex = undefined;
-          itemPageController.updateModel(ItemPageTab.Item);
+          itemPageController.updateModel(ListTab.Items);
         } else {
           console.log(body);
         }
