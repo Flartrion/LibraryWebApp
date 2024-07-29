@@ -31,6 +31,8 @@ fun Route.itemGet() {
             }
         } catch (e: Exception) {
             e.printStackTrace()
+            call.respond(HttpStatusCode.InternalServerError, "Unknown error")
+            return@post
         }
     }
 }

@@ -1,7 +1,7 @@
 import { CircularProgress, ListItemButton, ListItemText } from "@mui/material";
 import ReactVirtualizedAutoSizer from "react-virtualized-auto-sizer";
 import { areEqual, FixedSizeList } from "react-window";
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import itemListController from "./itemListController";
 import itemListModel from "./itemListModel";
 import Item from "../../../dataclasses/item";
@@ -9,6 +9,13 @@ import Item from "../../../dataclasses/item";
 const renderRow = memo(({ data, index, style }: any) => {
   const [itemSelection, items] = data;
   const item: Item = items[index];
+  // console.log(
+  //   "I'm item " +
+  //     index +
+  //     "! I've been re-rendered at " +
+  //     new Date().toLocaleTimeString() +
+  //     "!"
+  // );
   return (
     <ListItemButton
       style={style}
@@ -35,6 +42,10 @@ function BookItemList() {
     itemListModel.itemSelection
   );
   const [itemsLoaded, setLoaded] = useState(itemListModel.itemsLoaded);
+  const data: [number, Item[]] = useMemo(
+    () => [selectedIndex, itemListModel.items],
+    [selectedIndex, itemListModel.items]
+  );
 
   useEffect(() => {
     itemListController.setItemSelection = setItemSelection;
@@ -57,9 +68,12 @@ function BookItemList() {
             className="List"
             height={height}
             width={width}
-            itemData={[selectedIndex, itemListModel.items]}
+            itemData={data}
             itemCount={itemListModel.items.length}
             itemSize={50}
+            itemKey={(index, data) => {
+              return data[1][index].id;
+            }}
             onScroll={(props) => {
               itemListModel.scrollOffset = props.scrollOffset;
             }}
