@@ -1,10 +1,9 @@
 import { TextField } from "@mui/material";
-import Item from "../../dataclasses/item";
 
 interface ItemTextFieldsProps {
   state?: any;
   dispatch?: React.Dispatch<any>;
-  errField?: string;
+  errField?: ItemActionEnum;
   readonly?: boolean;
   idreadonly?: boolean;
   showId?: boolean;
@@ -14,7 +13,7 @@ interface ItemTextFieldsProps {
 function ItemTextFieldsAbstract({
   state = undefined,
   dispatch = undefined,
-  errField = "",
+  errField = undefined,
   readonly = false,
   idreadonly = true,
   showId = true,
@@ -32,9 +31,11 @@ function ItemTextFieldsAbstract({
             readOnly: idreadonly,
           }}
           value={state != undefined ? state.id : ""}
-          error={errField == "id"}
-          helperText={errField == "id" ? "Too long!" : ""}
-          onChange={(event) => dispatch(["id", event.currentTarget.value])}
+          error={errField == ItemActionEnum.id}
+          helperText={errField == ItemActionEnum.id ? "Too long!" : ""}
+          onChange={(event) =>
+            dispatch([ItemActionEnum.id, event.currentTarget.value])
+          }
         />
       ) : null}
       <TextField
@@ -46,9 +47,11 @@ function ItemTextFieldsAbstract({
           readOnly: readonly,
         }}
         value={state.isbn}
-        error={errField == "isbn"}
-        helperText={errField == "isbn" ? "Too long!" : ""}
-        onChange={(event) => dispatch(["isbn", event.currentTarget.value])}
+        error={errField == ItemActionEnum.isbn}
+        helperText={ItemActionEnum.isbn ? "Too long!" : ""}
+        onChange={(event) =>
+          dispatch([ItemActionEnum.isbn, event.currentTarget.value])
+        }
       />
       <TextField
         label="RLBC"
@@ -59,9 +62,11 @@ function ItemTextFieldsAbstract({
           readOnly: readonly,
         }}
         value={state.rlbc}
-        error={errField == "rlbc"}
-        helperText={errField == "rlbc" ? "Too long!" : ""}
-        onChange={(event) => dispatch(["rlbc", event.currentTarget.value])}
+        error={errField == ItemActionEnum.rlbc}
+        helperText={errField == ItemActionEnum.rlbc ? "Too long!" : ""}
+        onChange={(event) =>
+          dispatch([ItemActionEnum.rlbc, event.currentTarget.value])
+        }
       />
       <TextField
         label="Title"
@@ -73,9 +78,11 @@ function ItemTextFieldsAbstract({
         }}
         required={requirements}
         value={state.title}
-        error={errField == "title"}
-        helperText={errField == "title" ? "Too long!" : ""}
-        onChange={(event) => dispatch(["title", event.target.value])}
+        error={errField == ItemActionEnum.title}
+        helperText={errField == ItemActionEnum.title ? "Too long!" : ""}
+        onChange={(event) =>
+          dispatch([ItemActionEnum.title, event.target.value])
+        }
       />
       <TextField
         label="Authors"
@@ -86,9 +93,11 @@ function ItemTextFieldsAbstract({
           readOnly: readonly,
         }}
         value={state.authors}
-        error={errField == "authors"}
-        helperText={errField == "authors" ? "Too long!" : ""}
-        onChange={(event) => dispatch(["authors", event.target.value])}
+        error={errField == ItemActionEnum.authors}
+        helperText={errField == ItemActionEnum.authors ? "Too long!" : ""}
+        onChange={(event) =>
+          dispatch([ItemActionEnum.authors, event.target.value])
+        }
       />
       <TextField
         label="Type"
@@ -99,9 +108,9 @@ function ItemTextFieldsAbstract({
           readOnly: readonly,
         }}
         value={state.type}
-        error={errField == "type"}
-        helperText={errField == "type" ? "Too long!" : ""}
-        onChange={(event) => dispatch(["type", event.target.value])}
+        error={errField == ItemActionEnum.type}
+        helperText={errField == ItemActionEnum.type ? "Too long!" : ""}
+        onChange={(event) => dispatch([ItemActionEnum.type, event.target.value])}
       />
       <TextField
         label="Language"
@@ -112,9 +121,11 @@ function ItemTextFieldsAbstract({
           readOnly: readonly,
         }}
         value={state.language}
-        error={errField == "language"}
-        helperText={errField == "language" ? "Too long!" : ""}
-        onChange={(event) => dispatch(["language", event.target.value])}
+        error={errField == ItemActionEnum.language}
+        helperText={errField == ItemActionEnum.language ? "Too long!" : ""}
+        onChange={(event) =>
+          dispatch([ItemActionEnum.language, event.target.value])
+        }
       />
       <TextField
         multiline
@@ -126,7 +137,9 @@ function ItemTextFieldsAbstract({
           readOnly: readonly,
         }}
         value={state.details}
-        onChange={(event) => dispatch(["details", event.target.value])}
+        onChange={(event) =>
+          dispatch([ItemActionEnum.details, event.target.value])
+        }
       />
     </>
   );

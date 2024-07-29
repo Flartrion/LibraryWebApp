@@ -1,5 +1,5 @@
 import { useReducer } from "react";
-import ItemTextFieldsAbstract from "../itemTextFieldsAbstract";
+import ItemTextFieldsAbstract from "../support/itemTextFieldsAbstract";
 import reducer from "./reducer";
 import itemFilterModel from "./itemFilterModel";
 import {
@@ -17,7 +17,7 @@ import Item from "../../../dataclasses/item";
 function ItemFilterPage() {
   const [state, dispatch] = useReducer(reducer, {
     ...itemFilterModel,
-    errField: "",
+    errField: undefined,
     processing: false,
   });
 

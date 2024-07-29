@@ -8,7 +8,7 @@ import itemListModel from "../itemList/itemListModel";
 import itemPageController from "../itemPageController";
 import ItemPageTab from "../itemPageTabsEnum";
 import itemDeleteController from "./itemDeleteDialog/itemDeleteController";
-import ItemTextFieldsAbstract from "../itemTextFieldsAbstract";
+import ItemTextFieldsAbstract from "../support/itemTextFieldsAbstract";
 import DefaultPageSuspence from "../../../support/defaultPageSuspence";
 const ItemEditPage = lazy(() => {
   return import("./itemEditPage/itemEditPage");
@@ -58,7 +58,7 @@ function ItemViewPage({ item }: ItemViewPageProps) {
       }}
     >
       <ItemTextFieldsAbstract
-        errField={""}
+        errField={undefined}
         readonly={true}
         showId={true}
         idreadonly={true}

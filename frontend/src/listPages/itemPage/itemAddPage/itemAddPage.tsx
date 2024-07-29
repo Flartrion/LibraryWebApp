@@ -9,12 +9,12 @@ import { useEffect, useReducer } from "react";
 import itemAddModel from "./itemAddModel";
 import reducer from "./reducer";
 import itemAddController from "./itemAddController";
-import ItemTextFieldsAbstract from "../itemTextFieldsAbstract";
+import ItemTextFieldsAbstract from "../support/itemTextFieldsAbstract";
 
 function ItemAddPage() {
   const [state, dispatch] = useReducer(reducer, {
     processing: false,
-    errField: "",
+    errField: undefined,
     ...itemAddModel,
   });
 
@@ -47,12 +47,12 @@ function ItemAddPage() {
         }}
       >
         <ItemTextFieldsAbstract
+          state={state}
           errField={state.errField}
           readonly={false}
           showId={false}
           idreadonly={false}
           dispatch={dispatch}
-          state={state}
           requirements={true}
         />
         <Button type="submit" variant="contained">

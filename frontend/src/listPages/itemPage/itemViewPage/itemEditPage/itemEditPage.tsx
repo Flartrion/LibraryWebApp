@@ -4,13 +4,12 @@ import {
   Button,
   CircularProgress,
   Container,
-  TextField,
 } from "@mui/material";
 import { useEffect, useReducer } from "react";
 import reducer from "./reducer";
 import Item from "../../../../dataclasses/item";
 import itemEditController from "./itemEditController";
-import ItemTextFieldsAbstract from "../../itemTextFieldsAbstract";
+import ItemTextFieldsAbstract from "../../support/itemTextFieldsAbstract";
 
 interface ItemEditPageProps {
   item: Item;
@@ -20,7 +19,7 @@ interface ItemEditPageProps {
 function ItemEditPage({ item, setEditState }: ItemEditPageProps) {
   const [state, dispatch] = useReducer(reducer, {
     processing: false,
-    errField: "",
+    errField: undefined,
     ...item,
   });
 

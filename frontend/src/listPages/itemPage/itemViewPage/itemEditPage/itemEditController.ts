@@ -2,7 +2,6 @@ import React from "react";
 import Item from "../../../../dataclasses/item";
 import itemListModel from "../../itemList/itemListModel";
 import itemViewModel from "../itemViewModel";
-import itemPageController from "../../itemPageController";
 import itemListController from "../../itemList/itemListController";
 
 class ItemEditController {
