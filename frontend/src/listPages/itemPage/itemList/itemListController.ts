@@ -3,6 +3,7 @@ import Item from "../../../dataclasses/item";
 import itemPageController from "../itemPageController";
 import itemViewModel from "../itemViewPage/itemViewModel";
 import itemListModel from "./itemListModel";
+import ListTab from "../../support/listTab";
 
 class ItemListController {
   setItemSelection: React.Dispatch<React.SetStateAction<number>>;

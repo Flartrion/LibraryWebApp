@@ -1,4 +1,5 @@
 import { TextField } from "@mui/material";
+import ItemActionEnum from "./itemActionEnum";
 
 interface ItemTextFieldsProps {
   state?: any;

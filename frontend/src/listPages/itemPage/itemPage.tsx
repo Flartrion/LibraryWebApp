@@ -1,4 +1,4 @@
-import { Box, Divider, Tab, Tabs } from "@mui/material";
+import { Box, Divider, List, Tab, Tabs } from "@mui/material";
 import { lazy, Suspense, useEffect, useState } from "react";
 import itemPageController from "./itemPageController";
 import itemPageModel from "./itemPageModel";
@@ -8,6 +8,7 @@ import itemViewModel from "./itemViewPage/itemViewModel";
 import DefaultPageSuspence from "../../support/defaultPageSuspence";
 import itemListController from "./itemList/itemListController";
 import ItemFilterPage from "./itemFilterPage/itemFIlterPage";
+import ListTab from "../support/listTab";
 const ItemAddPage = lazy(() => import("./itemAddPage/itemAddPage"));
 const ItemViewPage = lazy(() => import("./itemViewPage/ItemViewPage"));
 
@@ -56,7 +57,7 @@ function ItemPage() {
     <Box height={"80vh"}>
       <Tabs value={tabSelection} onChange={handleSelection} variant="fullWidth">
         <Tab label="Results" key={ListTab.Items} tabIndex={ListTab.Items} />
-        <Tab label="Filters" key={ListTab.Add} tabIndex={ListTab.Filters} />
+        <Tab label="Filters" key={ListTab.Filters} tabIndex={ListTab.Filters} />
         {/* BUG: Apparently not displaying one Tab shifts indexes (God, why?) of all tabs after that,
          so I can not just hide it, I have to go out of my way to disable it. Why can't the numbering 
          just remain consistent?*/}

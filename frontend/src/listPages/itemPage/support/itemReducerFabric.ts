@@ -1,3 +1,5 @@
+import ItemActionEnum from "./itemActionEnum";
+
 const itemReducerFabric = (attachedModel: any) => {
   const reducer: React.Reducer<any, any> = (state: any, action: any) => {
     const [actionName, payload]: [ItemActionEnum, any] = action;
