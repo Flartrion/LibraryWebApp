@@ -1,4 +1,7 @@
-import { UnfoldLess } from "@mui/icons-material";
+import itemViewModel from "../itemViewModel";
+import itemListModel from "../../itemList/itemListModel";
+import ListTab from "../../../support/listTab";
+import itemPageController from "../../itemPageController";
 
 const itemDeleteController = {
   onSuccessAction: (e: React.MouseEvent<HTMLButtonElement>) => {},
@@ -20,7 +23,15 @@ const itemDeleteController = {
         console.log(reason);
       })
       .finally(() => {
-        if (responseStatus == 200) this.onSuccessAction();
+        if (responseStatus == 200) {
+          itemViewModel.item = undefined;
+          itemViewModel.itemIndex = undefined;
+          itemListModel.itemsLoaded = false;
+          itemListModel.itemSelection = undefined;
+          itemListModel.items = undefined;
+          this.onSuccessAction();
+          itemPageController.updateModel(ListTab.Items);
+        }
       });
   },
 };

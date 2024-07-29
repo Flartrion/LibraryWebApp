@@ -1,8 +1,9 @@
 import ReactGeneralController from "../../support/reactGeneralController";
+import ListTab from "../support/listTab";
 import itemPageModel from "./itemPageModel";
 
-class ItemPageController extends ReactGeneralController<number> {
-  updateModel(newValue: number): void {
+class ItemPageController extends ReactGeneralController<ListTab> {
+  updateModel(newValue: ListTab): void {
     super.updateView(newValue);
     itemPageModel.tabSelection = newValue;
   }

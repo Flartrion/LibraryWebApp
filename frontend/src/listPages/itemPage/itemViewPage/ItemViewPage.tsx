@@ -3,13 +3,9 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import Item from "../../../dataclasses/item";
 import userDataModel from "../../../support/userDataModel";
 import ItemDeleteDialog from "./itemDeleteDialog/itemDeleteDialog";
-import itemViewModel from "./itemViewModel";
-import itemListModel from "../itemList/itemListModel";
-import itemPageController from "../itemPageController";
 import itemDeleteController from "./itemDeleteDialog/itemDeleteController";
 import ItemTextFieldsAbstract from "../support/itemTextFieldsAbstract";
 import DefaultPageSuspence from "../../../support/defaultPageSuspence";
-import ListTab from "../../support/listTab";
 const ItemEditPage = lazy(() => {
   return import("./itemEditPage/itemEditPage");
 });
@@ -35,12 +31,6 @@ function ItemViewPage({ item }: ItemViewPageProps) {
   }
   function handleDeleteSuccess(e: React.MouseEvent<HTMLButtonElement>) {
     setDeleteOpen(false);
-    itemViewModel.item = undefined;
-    itemViewModel.itemIndex = undefined;
-    itemListModel.itemsLoaded = false;
-    itemListModel.itemSelection = undefined;
-    itemListModel.items = undefined;
-    itemPageController.updateModel(ListTab.Items);
   }
 
   useEffect(() => {
