@@ -1,37 +1,37 @@
 import { Backdrop, Button, CircularProgress, Container } from "@mui/material";
 import React, { useEffect, useReducer } from "react";
-import AbstractAddController from "./abstractAddController";
+import GeneralAddController from "./generalAddController";
 
-interface AbstractAddPageProps {
+interface GeneralAddPageProps {
   attachedModel: any;
-  addController: AbstractAddController;
+  addController: GeneralAddController;
   reducer: React.Reducer<any, any>;
-  children: React.ReactNode;
+  textFieldGroup: React.FC<any>;
 }
 
 /**
  * Genreral no-dependency DB row input form
  * @param {any} attachedModel Is supposed to have all the fields that are characteristic of input group passed to children
- * @param {AbstractAddController} addController Inherited from {@link AbstractAddController}
+ * @param {GeneralAddController} addController Inherited from {@link GeneralAddController}
  * @param {React.Reducer<any,any>} reducer Built at {@link itemReducerFabric}
  * @param {React.ReactNode} children Pass input field group here
  */
-function AbstractAddPage({
+function GeneralAddPage({
   attachedModel,
   addController,
   reducer,
-  children,
-}: AbstractAddPageProps) {
+  textFieldGroup,
+}: GeneralAddPageProps) {
   const [state, dispatch] = useReducer(reducer, {
     processing: false,
-    errField: undefined,
+    errField: null,
     ...attachedModel,
   });
 
   useEffect(() => {
     addController.subscribedPageDispatch = dispatch;
     return () => {
-      addController.subscribedPageDispatch = undefined;
+      addController.subscribedPageDispatch = null;
     };
   });
 
@@ -56,7 +56,16 @@ function AbstractAddPage({
           minHeight: "40%",
         }}
       >
-        {children}
+        {React.createElement(textFieldGroup, {
+          state: state,
+          errField: state.errField,
+          readonly: false,
+          showId: false,
+          idreadonly: false,
+          dispatch: dispatch,
+          requirements: true,
+        })}
+
         <Button type="submit" variant="contained">
           Submit
         </Button>
@@ -68,4 +77,4 @@ function AbstractAddPage({
   );
 }
 
-export default AbstractAddPage;
+export default GeneralAddPage;

@@ -12,14 +12,15 @@ interface ItemTextFieldsProps {
 }
 
 function ItemTextFieldsAbstract({
-  state = undefined,
-  dispatch = undefined,
-  errField = undefined,
+  state = null,
+  dispatch = null,
+  errField = null,
   readonly = false,
   idreadonly = true,
   showId = true,
   requirements = false,
 }: ItemTextFieldsProps) {
+  // console.log(state);
   return (
     <>
       {showId ? (
@@ -31,7 +32,7 @@ function ItemTextFieldsAbstract({
           inputProps={{
             readOnly: idreadonly,
           }}
-          value={state != undefined ? state.id : ""}
+          value={state != null ? state.id : ""}
           error={errField == ItemActionEnum.id}
           helperText={errField == ItemActionEnum.id ? "Too long!" : ""}
           onChange={(event) =>
@@ -49,7 +50,7 @@ function ItemTextFieldsAbstract({
         }}
         value={state.isbn}
         error={errField == ItemActionEnum.isbn}
-        helperText={ItemActionEnum.isbn ? "Too long!" : ""}
+        helperText={errField == ItemActionEnum.isbn ? "Too long!" : ""}
         onChange={(event) =>
           dispatch([ItemActionEnum.isbn, event.currentTarget.value])
         }
@@ -111,7 +112,9 @@ function ItemTextFieldsAbstract({
         value={state.type}
         error={errField == ItemActionEnum.type}
         helperText={errField == ItemActionEnum.type ? "Too long!" : ""}
-        onChange={(event) => dispatch([ItemActionEnum.type, event.target.value])}
+        onChange={(event) =>
+          dispatch([ItemActionEnum.type, event.target.value])
+        }
       />
       <TextField
         label="Language"

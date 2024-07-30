@@ -1,4 +1,4 @@
-enum PageSelection {
+const enum PageSelection {
   Items,
   Storages,
   Users,

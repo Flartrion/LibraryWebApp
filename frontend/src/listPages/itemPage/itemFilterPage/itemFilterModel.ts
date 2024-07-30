@@ -1,4 +1,13 @@
-const itemFilterModel = {
+const itemFilterModel: {
+  id: string;
+  isbn: string;
+  rlbc: string;
+  title: string;
+  authors: string;
+  type: string;
+  language: string;
+  details: string;
+} = {
   id: "",
   isbn: "",
   rlbc: "",

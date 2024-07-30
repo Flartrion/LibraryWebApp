@@ -9,7 +9,13 @@ import DefaultPageSuspence from "../../support/defaultPageSuspence";
 import itemListController from "./itemList/itemListController";
 import ItemFilterPage from "./itemFilterPage/itemFIlterPage";
 import ListTab from "../support/listTab";
-const ItemAddPage = lazy(() => import("./itemAddPage/itemAddPage"));
+import itemAddController from "./itemAddPage/itemAddController";
+import itemAddModel from "./itemAddPage/itemAddModel";
+import reducer from "./itemAddPage/reducer";
+import ItemTextFieldsAbstract from "./support/itemTextFieldsAbstract";
+const GeneralAddPage = lazy(
+  () => import("../../components/addPage/generalAddPage")
+);
 const ItemViewPage = lazy(() => import("./itemViewPage/ItemViewPage"));
 
 function ItemPage() {
@@ -47,7 +53,12 @@ function ItemPage() {
       case ListTab.Add:
         return (
           <Suspense fallback={<DefaultPageSuspence />}>
-            <ItemAddPage />
+            <GeneralAddPage
+              addController={itemAddController}
+              attachedModel={itemAddModel}
+              reducer={reducer}
+              textFieldGroup={ItemTextFieldsAbstract}
+            ></GeneralAddPage>
           </Suspense>
         );
     }
