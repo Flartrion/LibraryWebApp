@@ -1,16 +1,9 @@
 import Item from "../../../dataclasses/item";
 
-type ItemListModel = {
-  items: Item[];
-  itemsLoaded: boolean;
-  itemSelection: number;
-  scrollOffset: number;
-};
-
-const itemListModel: ItemListModel = {
+const itemListModel: ListModel<Item> = {
   items: [],
-  itemsLoaded: false,
-  itemSelection: undefined,
+  loaded: false,
+  selection: undefined,
   scrollOffset: 0,
 };
 

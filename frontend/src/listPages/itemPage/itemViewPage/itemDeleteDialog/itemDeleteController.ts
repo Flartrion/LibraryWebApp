@@ -26,8 +26,8 @@ const itemDeleteController = {
         if (responseStatus == 200) {
           itemViewModel.item = undefined;
           itemViewModel.itemIndex = undefined;
-          itemListModel.itemsLoaded = false;
-          itemListModel.itemSelection = undefined;
+          itemListModel.loaded = false;
+          itemListModel.selection = undefined;
           itemListModel.items = undefined;
           this.onSuccessAction();
           itemPageController.updateModel(ListTab.Items);

@@ -1,6 +1,6 @@
 import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
-import Item from "../../../../dataclasses/item";
 import itemDeleteController from "./itemDeleteController";
+import Item from "../../../../dataclasses/item";
 
 interface ItemDeleteDialogProps {
   item: Item;

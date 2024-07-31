@@ -1,13 +1,6 @@
-const itemAddModel: {
-  id: string;
-  isbn: string;
-  rlbc: string;
-  title: string;
-  authors: string;
-  type: string;
-  language: string;
-  details: string;
-} = {
+import Item from "../../../dataclasses/item";
+
+const itemAddModel: GenericFieldModel<Item> = {
   id: "",
   isbn: "",
   rlbc: "",

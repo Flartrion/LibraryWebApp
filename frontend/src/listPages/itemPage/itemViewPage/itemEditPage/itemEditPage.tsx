@@ -7,9 +7,9 @@ import {
 } from "@mui/material";
 import { useEffect, useReducer } from "react";
 import reducer from "./reducer";
-import Item from "../../../../dataclasses/item";
 import itemEditController from "./itemEditController";
 import ItemTextFieldsAbstract from "../../support/itemTextFieldsAbstract";
+import Item from "../../../../dataclasses/item";
 
 interface ItemEditPageProps {
   item: Item;
@@ -19,29 +19,19 @@ interface ItemEditPageProps {
 function ItemEditPage({ item, setEditState }: ItemEditPageProps) {
   const [state, dispatch] = useReducer(reducer, {
     processing: false,
-    errField: undefined,
+    errField: null,
     ...item,
   });
 
   useEffect(() => {
     itemEditController.subscribedPageDispatch = dispatch;
-    itemEditController.setEditState = setEditState;
     return () => {
       itemEditController.subscribedPageDispatch = undefined;
-      itemEditController.setEditState = undefined;
     };
-  });
-
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = (
-    event: React.FormEvent<HTMLFormElement>
-  ) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    itemEditController.submit(data);
-  };
+  }, [itemEditController, dispatch]);
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={itemEditController.submitHandler}>
       <Container
         sx={{
           display: "flex",
@@ -51,12 +41,12 @@ function ItemEditPage({ item, setEditState }: ItemEditPageProps) {
         }}
       >
         <ItemTextFieldsAbstract
+          state={state}
           errField={state.errField}
           readonly={false}
           showId={true}
           idreadonly={true}
           dispatch={dispatch}
-          state={state}
           requirements={true}
         />
         <Box

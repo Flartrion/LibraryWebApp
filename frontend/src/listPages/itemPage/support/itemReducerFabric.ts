@@ -1,5 +1,11 @@
 import ItemActionEnum from "./itemActionEnum";
 
+/**
+ * Is used to create reducers that use different models for ability of
+ * the app to memorize tab states while user uses other tabs
+ * @param attachedModel The model used for memory
+ * @returns See {@link React.Reducer}
+ */
 const itemReducerFabric = (attachedModel: any) => {
   const reducer: React.Reducer<any, any> = (state: any, action: any) => {
     const [actionName, payload]: [ItemActionEnum, any] = action;
@@ -62,6 +68,9 @@ const itemReducerFabric = (attachedModel: any) => {
       case ItemActionEnum.processing:
         newState.processing = payload;
         return newState;
+      default:
+        console.log("Unknown action: " + actionName + "! Returning prevState");
+        return state;
     }
   };
   return reducer;
