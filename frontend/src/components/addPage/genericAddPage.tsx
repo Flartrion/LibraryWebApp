@@ -1,27 +1,27 @@
 import { Backdrop, Button, CircularProgress, Container } from "@mui/material";
 import React, { useEffect, useReducer } from "react";
-import GeneralAddController from "./generalAddController";
+import GenericAddController from "./genericAddController";
 
-interface GeneralAddPageProps {
-  attachedModel: any;
-  addController: GeneralAddController;
+interface GenericAddPageProps<T extends Id> {
+  attachedModel: GenericFieldModel<T>;
+  addController: GenericAddController<T>;
   reducer: React.Reducer<any, any>;
   textFieldGroup: React.FC<any>;
 }
 
 /**
  * Genreral no-dependency DB row input form
- * @param {any} attachedModel Is supposed to have all the fields that are characteristic of input group passed to children
- * @param {GeneralAddController} addController Inherited from {@link GeneralAddController}
+ * @param {T} attachedModel Is supposed to have all the fields that are characteristic of input group passed to children
+ * @param {GenericAddController} addController Inherited from {@link GenericAddController}
  * @param {React.Reducer<any,any>} reducer Built at {@link itemReducerFabric}
  * @param {React.ReactNode} children Pass input field group here
  */
-function GeneralAddPage({
+function GenericAddPage<T extends Id>({
   attachedModel,
   addController,
   reducer,
   textFieldGroup,
-}: GeneralAddPageProps) {
+}: GenericAddPageProps<T>) {
   const [state, dispatch] = useReducer(reducer, {
     processing: false,
     errField: null,
@@ -33,7 +33,7 @@ function GeneralAddPage({
     return () => {
       addController.subscribedPageDispatch = null;
     };
-  });
+  }, [addController]);
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (
     event: React.FormEvent<HTMLFormElement>
@@ -77,4 +77,4 @@ function GeneralAddPage({
   );
 }
 
-export default GeneralAddPage;
+export default GenericAddPage;

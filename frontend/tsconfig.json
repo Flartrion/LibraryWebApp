@@ -5,9 +5,11 @@
     "jsxImportSource": "@emotion/react",
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
+    "removeComments": true,
     "moduleResolution": "Bundler",
+    "esModuleInterop": true,
     "module": "ESNext",
-    "target": "es5",
+    "target": "ES6",
     "allowJs": true
   },
   "files": ["src/index.tsx"],

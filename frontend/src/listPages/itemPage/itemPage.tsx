@@ -1,32 +1,39 @@
-import { Box, Divider, List, Tab, Tabs } from "@mui/material";
+import { Box, Divider, Tab, Tabs } from "@mui/material";
 import { lazy, Suspense, useEffect, useState } from "react";
 import itemPageController from "./itemPageController";
 import itemPageModel from "./itemPageModel";
-import BookItemList from "./itemList/itemList";
 import userDataModel from "../../support/userDataModel";
 import itemViewModel from "./itemViewPage/itemViewModel";
 import DefaultPageSuspence from "../../support/defaultPageSuspence";
 import itemListController from "./itemList/itemListController";
-import ItemFilterPage from "./itemFilterPage/itemFIlterPage";
 import ListTab from "../support/listTab";
 import itemAddController from "./itemAddPage/itemAddController";
 import itemAddModel from "./itemAddPage/itemAddModel";
-import reducer from "./itemAddPage/reducer";
+import addReducer from "./itemAddPage/reducer";
 import ItemTextFieldsAbstract from "./support/itemTextFieldsAbstract";
+import itemFilterModel from "./itemFilterPage/itemFilterModel";
+import filterReducer from "./itemFilterPage/reducer";
+import GenericVirtualList from "../../components/listPage/genericList";
+import renderRow from "./itemList/renderRow";
+import itemListModel from "./itemList/itemListModel";
+import Item from "../../dataclasses/item";
 const GeneralAddPage = lazy(
-  () => import("../../components/addPage/generalAddPage")
+  () => import("../../components/addPage/genericAddPage")
+);
+const GenericFilterPage = lazy(
+  () => import("../../components/filterPage/genericFIlterPage")
 );
 const ItemViewPage = lazy(() => import("./itemViewPage/ItemViewPage"));
 
 function ItemPage() {
   const [tabSelection, setTabSelection] = useState(itemPageModel.tabSelection);
-  const [viewedItem, setViewedItem] = useState(undefined);
+  const [viewedItem, setViewedState] = useState<Item>(undefined);
 
   useEffect(() => {
-    itemListController.setViewedItem = setViewedItem;
+    itemListController.setViewedState = setViewedState;
     itemPageController.subscribeView("itemPage", setTabSelection);
     return () => {
-      itemListController.setViewedItem = undefined;
+      itemListController.setViewedState = undefined;
       itemPageController.unsubscribeView("itemPage");
     };
   });
@@ -41,13 +48,28 @@ function ItemPage() {
   function SelectedPage({ pageSelection }: any) {
     switch (pageSelection) {
       case ListTab.Items:
-        return <BookItemList />;
+        return (
+          <GenericVirtualList
+            renderRow={renderRow}
+            listController={itemListController}
+            listModel={itemListModel}
+          />
+        );
       case ListTab.Filters:
-        return <ItemFilterPage />;
+        return (
+          <Suspense fallback={<DefaultPageSuspence />}>
+            <GenericFilterPage
+              attachedModel={itemFilterModel}
+              listController={itemListController}
+              reducer={filterReducer}
+              textFieldGroup={ItemTextFieldsAbstract}
+            />
+          </Suspense>
+        );
       case ListTab.View:
         return (
           <Suspense fallback={<DefaultPageSuspence />}>
-            <ItemViewPage item={itemViewModel.item}></ItemViewPage>;
+            <ItemViewPage item={viewedItem}></ItemViewPage>;
           </Suspense>
         );
       case ListTab.Add:
@@ -56,7 +78,7 @@ function ItemPage() {
             <GeneralAddPage
               addController={itemAddController}
               attachedModel={itemAddModel}
-              reducer={reducer}
+              reducer={addReducer}
               textFieldGroup={ItemTextFieldsAbstract}
             ></GeneralAddPage>
           </Suspense>

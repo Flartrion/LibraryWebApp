@@ -1,8 +1,8 @@
-import GeneralAddController from "../../../components/addPage/generalAddController";
+import GenericAddController from "../../../components/addPage/genericAddController";
 import itemListController from "../itemList/itemListController";
 import itemAddModel from "./itemAddModel";
 
-const itemAddController = new GeneralAddController(
+const itemAddController = new GenericAddController(
   "items/new",
   itemAddModel,
   itemListController

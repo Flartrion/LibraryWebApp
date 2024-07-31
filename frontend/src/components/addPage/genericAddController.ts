@@ -1,24 +1,23 @@
 import ItemActionEnum from "../../listPages/itemPage/support/itemActionEnum";
+import GenericListController from "../listPage/genericListController";
 
 /**
  * The class from which simple (independent from all other DB tables)
  * add-data controllers should be inherited
  */
-class GeneralAddController {
+class GenericAddController<T extends Id> {
   /** Is supposed to have all the fields of inputted data except for ID */
   model: any;
   /** URL for backend api access */
   postURL: string;
   /** Needed to update list state to "unloaded" so as new addition
    * would be loaded after next visit to list page */
-  // TODO: Replace listController with abstract class type
-  listController: any;
+  listController: GenericListController<T>;
   subscribedPageDispatch: React.Dispatch<any>;
   protected setProcessing(newValue: boolean) {
     this.subscribedPageDispatch([ItemActionEnum.processing, newValue]);
   }
 
-  // TODO: Replace listController with abstract class type
   /**
    *
    * @param postURL URL for backend api access
@@ -26,7 +25,11 @@ class GeneralAddController {
    * @param listController Needed to update list state to "unloaded"
    * so as new addition would be loaded after next visit to list page
    */
-  constructor(postURL: string, model: any, listController: any) {
+  constructor(
+    postURL: string,
+    model: any,
+    listController: GenericListController<T>
+  ) {
     this.postURL = postURL;
     this.model = model;
     this.listController = listController;
@@ -59,12 +62,11 @@ class GeneralAddController {
       })
       .finally(() => {
         if (responseStatus == 201) {
-          // TODO: Actually implement this function
-          // this.listController.itemsLoaded = false;
+          this.listController.setLoaded(false);
         }
         this.setProcessing(false);
       });
   }
 }
 
-export default GeneralAddController;
+export default GenericAddController;
