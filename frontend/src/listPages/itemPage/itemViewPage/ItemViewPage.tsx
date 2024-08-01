@@ -6,9 +6,11 @@ import itemDeleteController from "./itemDeleteDialog/itemDeleteController";
 import ItemTextFieldsAbstract from "../support/itemTextFieldsAbstract";
 import DefaultPageSuspence from "../../../support/defaultPageSuspence";
 import Item from "../../../dataclasses/item";
-const ItemEditPage = lazy(() => {
-  return import("./itemEditPage/itemEditPage");
-});
+import itemEditController from "./itemEditPage/itemEditController";
+import editReducer from "./itemEditPage/reducer";
+const GenericEditPage = lazy(
+  () => import("../../../components/viewPage/editPage/genericEditPage")
+);
 
 interface ItemViewPageProps {
   item: Item;
@@ -76,7 +78,13 @@ function ItemViewPage({ item }: ItemViewPageProps) {
     </Container>
   ) : (
     <Suspense fallback={<DefaultPageSuspence />}>
-      <ItemEditPage item={item} setEditState={setEditState} />
+      <GenericEditPage
+        editController={itemEditController}
+        reducer={editReducer}
+        item={item}
+        setEditState={setEditState}
+        textFieldGroup={ItemTextFieldsAbstract}
+      />
     </Suspense>
   );
 }

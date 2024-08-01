@@ -28,7 +28,6 @@ function GenericVirtualList<T extends Id>({
     listController.setLoadedState = setLoaded;
     if (!listModel.loaded) {
       listController.getInitial();
-      //TODO: Get the controller to actually load stuff
     }
     return () => {
       listController.setSelectionState = undefined;

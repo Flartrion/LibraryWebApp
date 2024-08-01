@@ -25,7 +25,7 @@ const itemDeleteController = {
       .finally(() => {
         if (responseStatus == 200) {
           itemViewModel.item = undefined;
-          itemViewModel.itemIndex = undefined;
+          itemViewModel.index = undefined;
           itemListModel.loaded = false;
           itemListModel.selection = undefined;
           itemListModel.items = undefined;

@@ -1,13 +1,8 @@
 import Item from "../../../dataclasses/item";
 
-type ItemViewModel = {
-  item: Item;
-  itemIndex: number;
-};
-
-const itemViewModel: ItemViewModel = {
+const itemViewModel: GenericViewModel<Item> = {
   item: undefined,
-  itemIndex: undefined,
+  index: undefined,
 };
 
 export default itemViewModel;

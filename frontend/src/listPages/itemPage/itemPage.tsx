@@ -36,7 +36,7 @@ function ItemPage() {
       itemListController.setViewedState = undefined;
       itemPageController.unsubscribeView("itemPage");
     };
-  });
+  }, [itemListController, itemPageController]);
 
   function handleSelection(
     e: React.SyntheticEvent<Element, Event>,

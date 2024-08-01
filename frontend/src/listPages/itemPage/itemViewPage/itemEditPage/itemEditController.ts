@@ -4,6 +4,7 @@ import itemViewModel from "../itemViewModel";
 import itemListController from "../../itemList/itemListController";
 import Item from "../../../../dataclasses/item";
 import ItemActionEnum from "../../support/itemActionEnum";
+import GenericEditController from "../../../../components/viewPage/editPage/genericEditController";
 
 class ItemEditController {
   subscribedPageDispatch: React.Dispatch<any>;
@@ -49,6 +50,13 @@ class ItemEditController {
   };
 }
 
-const itemEditController = new ItemEditController();
+// const itemEditController = new ItemEditController();
+
+const itemEditController = new GenericEditController(
+  itemListModel,
+  itemListController,
+  itemViewModel,
+  ItemActionEnum
+);
 
 export default itemEditController;

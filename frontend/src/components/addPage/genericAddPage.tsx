@@ -1,5 +1,5 @@
 import { Backdrop, Button, CircularProgress, Container } from "@mui/material";
-import React, { useEffect, useReducer } from "react";
+import { createElement, useEffect, useReducer } from "react";
 import GenericAddController from "./genericAddController";
 
 interface GenericAddPageProps<T extends Id> {
@@ -10,7 +10,7 @@ interface GenericAddPageProps<T extends Id> {
 }
 
 /**
- * Genreral no-dependency DB row input form
+ * General no-dependency DB row insert form
  * @param {T} attachedModel Is supposed to have all the fields that are characteristic of input group passed to children
  * @param {GenericAddController} addController Inherited from {@link GenericAddController}
  * @param {React.Reducer<any,any>} reducer Built at {@link itemReducerFabric}
@@ -56,7 +56,7 @@ function GenericAddPage<T extends Id>({
           minHeight: "40%",
         }}
       >
-        {React.createElement(textFieldGroup, {
+        {createElement(textFieldGroup, {
           state: state,
           errField: state.errField,
           readonly: false,
