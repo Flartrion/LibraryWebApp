@@ -1,13 +1,13 @@
 import { Box, Button, Container } from "@mui/material";
 import { lazy, Suspense, useEffect, useState } from "react";
 import userDataModel from "../../../support/userDataModel";
-import ItemDeleteDialog from "./itemDeleteDialog/itemDeleteDialog";
 import itemDeleteController from "./itemDeleteDialog/itemDeleteController";
 import ItemTextFieldsAbstract from "../support/itemTextFieldsAbstract";
 import DefaultPageSuspence from "../../../support/defaultPageSuspence";
 import Item from "../../../dataclasses/item";
 import itemEditController from "./itemEditPage/itemEditController";
 import editReducer from "./itemEditPage/reducer";
+import GenericDeleteDialog from "../../../components/viewPage/deleteDialog/genericDeleteDialog";
 const GenericEditPage = lazy(
   () => import("../../../components/viewPage/editPage/genericEditPage")
 );
@@ -31,7 +31,7 @@ function ItemViewPage({ item }: ItemViewPageProps) {
   function handleDeleteCancel(e: React.MouseEvent<HTMLButtonElement>) {
     setDeleteOpen(false);
   }
-  function handleDeleteSuccess(e: React.MouseEvent<HTMLButtonElement>) {
+  function handleDeleteSuccess() {
     setDeleteOpen(false);
   }
 
@@ -69,7 +69,8 @@ function ItemViewPage({ item }: ItemViewPageProps) {
             <Button onClick={handleDelete}>Delete</Button>
           </>
         ) : null}
-        <ItemDeleteDialog
+        <GenericDeleteDialog
+          deleteController={itemDeleteController}
           item={item}
           open={deleteOpen}
           onCancel={handleDeleteCancel}

@@ -4,13 +4,13 @@ import GenericListController from "../../listPage/genericListController";
 class GenericEditController<T extends Id> {
   subscribedPageDispatch: Dispatch<any>;
 
-  listModel: ListModel<T>;
+  listModel: GenericListModel<T>;
   listController: GenericListController<T>;
   viewModel: GenericViewModel<T>;
   enum: any;
 
   constructor(
-    listModel: ListModel<T>,
+    listModel: GenericListModel<T>,
     listController: GenericListController<T>,
     viewModel: GenericViewModel<T>,
     enumUsed: any

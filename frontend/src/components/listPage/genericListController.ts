@@ -10,14 +10,14 @@ class GenericListController<T extends Id> {
   setViewedState: React.Dispatch<React.SetStateAction<T>>;
 
   postURL: string;
-  listModel: ListModel<T>;
+  listModel: GenericListModel<T>;
   viewModel: any;
   pageController: any;
   emptyItemGen: () => T;
 
   constructor(
     postURL: string,
-    listModel: ListModel<T>,
+    listModel: GenericListModel<T>,
     viewModel: any,
     pageController: any,
     emptyItemGen: () => T

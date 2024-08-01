@@ -1,6 +1,6 @@
 import Item from "../../../dataclasses/item";
 
-const itemListModel: ListModel<Item> = {
+const itemListModel: GenericListModel<Item> = {
   items: [],
   loaded: false,
   selection: undefined,

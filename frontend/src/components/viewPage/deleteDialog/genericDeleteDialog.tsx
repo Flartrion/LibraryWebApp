@@ -1,20 +1,21 @@
 import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
-import itemDeleteController from "./itemDeleteController";
-import Item from "../../../../dataclasses/item";
+import GenericDeleteController from "./genericDeleteController";
 
-interface ItemDeleteDialogProps {
-  item: Item;
+interface GenericDeleteDialogProps<T extends Id> {
+  item: T;
+  deleteController: GenericDeleteController<T>;
   open: boolean;
   onCancel: ({}: any) => any;
 }
 
-function ItemDeleteDialog({
+function GenericDeleteDialog<T extends Id>({
   item,
+  deleteController,
   open,
   onCancel = () => {},
-}: ItemDeleteDialogProps) {
+}: GenericDeleteDialogProps<T>) {
   function handleConfirm() {
-    itemDeleteController.delete(item.id);
+    deleteController.delete(item.id);
   }
 
   return (
@@ -32,4 +33,4 @@ function ItemDeleteDialog({
   );
 }
 
-export default ItemDeleteDialog;
+export default GenericDeleteDialog;

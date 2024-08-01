@@ -7,7 +7,7 @@ import GenericListController from "./genericListController";
 interface GenericVirtualListProps<T extends Id> {
   renderRow: FC;
   listController: GenericListController<T>;
-  listModel: ListModel<T>;
+  listModel: GenericListModel<T>;
 }
 // TODO: Gotta replace this with virtualized grid or something eventually if I want to implement pictures or something like that.
 // Do I, though?
