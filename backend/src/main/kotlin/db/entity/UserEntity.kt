@@ -18,7 +18,7 @@ class UserEntity(id: EntityID<UUID>) : UUIDEntity(id) {
 
     fun entityToUser(): User = User(
         id = id.value.toString(),
-        role = role,
+        role = role.toString(),
         fullName = fullName,
         dob = dob.toString(),
         phoneNumber = phoneNumber,

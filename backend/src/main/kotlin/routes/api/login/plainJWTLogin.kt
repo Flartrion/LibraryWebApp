@@ -43,22 +43,30 @@ fun Route.plainJWTLogin(config: ApplicationConfig) {
                 .withIssuer(issuer)
                 .withClaim("username", user.fullName)
                 .withClaim("role", user.role)
+                .withClaim("id", user.id.toString())
                 .withExpiresAt(Date(System.currentTimeMillis() + 1000 * 3600))
                 .sign(Algorithm.HMAC256(secret))
 
+            val cookieSettings = "path=/; " + "Max-Age=7200; " + "Secure; " + "SameSite=Strict"
+
             call.response.headers.append(
-                HttpHeaders.SetCookie,
-                "JWTAuth=${token}; " +
-                        "path=/; " +
-                        "Max-Age=3600; " +
-                        "Secure; " +
-                        "HttpOnly; " +
-                        "SameSite=Strict"
+                HttpHeaders.SetCookie, "JWTAuth=${token}; " + "HttpOnly; " + cookieSettings
             )
-            call.response.cookies.append("userName", user.fullName, maxAge = 3600L, secure = true, path = "/")
-            call.response.cookies.append("userRole", user.role.toString(), maxAge = 3600L, secure = true, path = "/")
+            call.response.headers.append(
+                HttpHeaders.SetCookie, "userID=${user.id}; " + cookieSettings
+            )
+            call.response.headers.append(
+                HttpHeaders.SetCookie, "userName=${user.fullName}; " + cookieSettings
+            )
+            call.response.headers.append(
+                HttpHeaders.SetCookie, "userRole=${user.role}; " + cookieSettings
+            )
+
+
+//            Removed due to being unsatisfactory in lack of SameSite option
+//            call.response.cookies.append("userName", user.fullName, maxAge = 7200L, secure = true, path = "/")
+//            call.response.cookies.append("userRole", user.role.toString(), maxAge = 7200L, secure = true, path = "/")
             call.respond(HttpStatusCode.OK, "Authorized!")
-        } else
-            call.respond(HttpStatusCode.Unauthorized, "Login failed")
+        } else call.respond(HttpStatusCode.Unauthorized, "Login failed")
     }
 }

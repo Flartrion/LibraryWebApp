@@ -1,17 +1,19 @@
-import { FormEventHandler } from "react";
 import ListTab from "../../../listPages/support/listTab";
 import ReactGeneralController from "../../../support/reactGeneralController";
 
 class GenericDeleteController<T extends Id> {
+  postURL: string;
   viewModel: GenericViewModel<T>;
   listModel: GenericListModel<T>;
   pageController: ReactGeneralController<ListTab>;
 
   constructor(
+    postURL: string,
     viewModel: GenericViewModel<T>,
     listModel: GenericListModel<T>,
     pageController: ReactGeneralController<ListTab>
   ) {
+    this.postURL = postURL;
     this.viewModel = viewModel;
     this.listModel = listModel;
     this.pageController = pageController;
@@ -23,7 +25,7 @@ class GenericDeleteController<T extends Id> {
       method: "DELETE",
     };
     let responseStatus: number;
-    const request = new Request("items/" + id, options);
+    const request = new Request(this.postURL + "/" + id, options);
     fetch(request)
       .then((response) => {
         responseStatus = response.status;

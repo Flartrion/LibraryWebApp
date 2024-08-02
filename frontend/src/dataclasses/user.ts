@@ -1,5 +1,5 @@
 type User = Id & {
-  role: number;
+  role: string;
   fullName: string;
   dob: string;
   phoneNumber: string;
@@ -9,7 +9,7 @@ export default User;
 
 export function newUser(
   id?: string,
-  role?: number,
+  role?: string,
   fullName?: string,
   dob?: string,
   phoneNumber?: string,
@@ -17,7 +17,7 @@ export function newUser(
 ): User {
   const retval: User = {} as User;
   retval.id = id != undefined ? id : "";
-  retval.role = role != undefined ? role : null;
+  retval.role = role != undefined ? role : "";
   retval.fullName = fullName != undefined ? fullName : "";
   retval.dob = dob != undefined ? dob : "";
   retval.phoneNumber = phoneNumber != undefined ? phoneNumber : "";

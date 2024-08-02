@@ -1,12 +1,12 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import pageSelectorController from "../pageSelection/pageSelectorController";
-import { Alert, CircularProgress, Container } from "@mui/material";
+import { Alert, Container } from "@mui/material";
 import pageSelectorModel from "../pageSelection/pageSelectorModel";
 import PageSelection from "../pageSelection/pageEnum";
 import DefaultPageSuspence from "../support/defaultPageSuspence";
+const UserPage = lazy(() => import("../listPages/usersPage/userPage"));
 const ItemPage = lazy(() => import("../listPages/itemPage/itemPage"));
 const LoginPage = lazy(() => import("../login/loginPage"));
-// const UsersPage = lazy(() => import("../listPages/usersPage/usersPage"));
 
 function MainPage({}: any) {
   const [pageSelection, setPageSelection] = useState(
@@ -24,7 +24,7 @@ function MainPage({}: any) {
   switch (pageSelection) {
     case PageSelection.Items:
       output = (
-        <Suspense fallback={<CircularProgress sx={{ alignSelf: "center" }} />}>
+        <Suspense fallback={<DefaultPageSuspence />}>
           <ItemPage />
         </Suspense>
       );
@@ -41,7 +41,7 @@ function MainPage({}: any) {
     case PageSelection.Users:
       output = (
         <Suspense fallback={<DefaultPageSuspence />}>
-          <Alert severity="info">Users page W.I.P.</Alert>
+          <UserPage />
         </Suspense>
       );
       break;

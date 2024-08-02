@@ -4,17 +4,20 @@ import GenericListController from "../../listPage/genericListController";
 class GenericEditController<T extends Id> {
   subscribedPageDispatch: Dispatch<any>;
 
+  postURL: string;
   listModel: GenericListModel<T>;
   listController: GenericListController<T>;
   viewModel: GenericViewModel<T>;
   enum: any;
 
   constructor(
+    postURL: string,
     listModel: GenericListModel<T>,
     listController: GenericListController<T>,
     viewModel: GenericViewModel<T>,
     enumUsed: any
   ) {
+    this.postURL = postURL;
     this.listModel = listModel;
     this.listController = listController;
     this.viewModel = viewModel;
@@ -40,7 +43,7 @@ class GenericEditController<T extends Id> {
     };
 
     let responseStatus: number;
-    const request = new Request("items/update", options);
+    const request = new Request(this.postURL, options);
     fetch(request)
       .then((response) => {
         responseStatus = response.status;

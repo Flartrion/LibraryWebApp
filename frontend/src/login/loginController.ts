@@ -44,6 +44,7 @@ class LoginController extends ReactGeneralController<Boolean> {
       "userName=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     document.cookie =
       "userRole=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "userID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     document.cookie =
       "JWTAuth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   }
