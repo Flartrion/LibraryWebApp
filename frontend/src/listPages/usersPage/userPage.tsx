@@ -17,6 +17,8 @@ import UserTextFieldsAbstract from "./support/userTextFieldsAbstract";
 import userAddController from "./userAddPage/userAddController";
 import userAddModel from "./userAddPage/userAddModel";
 import addReducer from "./userAddPage/reducer";
+import ItemActionEnum from "../itemPage/support/itemActionEnum";
+import UserActionEnum from "./support/userActionEnum";
 const GenericAddPage = lazy(
   () => import("../../components/addPage/genericAddPage")
 );
@@ -24,7 +26,7 @@ const UserViewPage = lazy(() => import("./userViewPage/userViewPage"));
 
 function UsersPage() {
   const [tabSelection, setTabSelection] = useState(userPageModel.tabSelection);
-  const [viewedItem, setViewedItem] = useState(undefined);
+  const [viewedItem, setViewedItem] = useState(userViewModel.item);
 
   useEffect(() => {
     userListController.setViewedState = setViewedItem;
@@ -75,6 +77,7 @@ function UsersPage() {
               attachedModel={userAddModel}
               reducer={addReducer}
               textFieldGroup={UserTextFieldsAbstract}
+              enumUsed={UserActionEnum}
             />
           </Suspense>
         );

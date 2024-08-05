@@ -30,6 +30,7 @@ function UserTextFieldsAbstract({
           margin="normal"
           inputProps={{
             readOnly: idreadonly,
+            maxLength: 36,
           }}
           value={state != undefined ? state.id : ""}
           error={errField == UserActionEnum.id}
@@ -46,6 +47,9 @@ function UserTextFieldsAbstract({
         margin="normal"
         inputProps={{
           readOnly: readonly,
+          max: 1000,
+          maxLength: 1000,
+          min: 1,
         }}
         inputMode="numeric"
         required={requirements}
@@ -66,6 +70,7 @@ function UserTextFieldsAbstract({
         margin="normal"
         inputProps={{
           readOnly: readonly,
+          maxLength: 50,
         }}
         required={requirements}
         value={state.fullName}
@@ -81,8 +86,13 @@ function UserTextFieldsAbstract({
         type="date"
         variant="standard"
         margin="normal"
+        InputLabelProps={{
+          shrink: true,
+        }}
         inputProps={{
           readOnly: readonly,
+          min: "1900-01-01",
+          max: "2012-01-01",
         }}
         value={state.dob}
         error={errField == UserActionEnum.dob}
@@ -91,12 +101,13 @@ function UserTextFieldsAbstract({
       />
       <TextField
         label="Email"
-        name="title"
+        name="email"
         variant="standard"
         margin="normal"
         inputMode="email"
         inputProps={{
           readOnly: readonly,
+          maxLength: 40,
         }}
         required={requirements}
         value={state.email}
@@ -114,6 +125,7 @@ function UserTextFieldsAbstract({
         inputMode="tel"
         inputProps={{
           readOnly: readonly,
+          maxLength: 15,
         }}
         required={requirements}
         value={state.phoneNumber}

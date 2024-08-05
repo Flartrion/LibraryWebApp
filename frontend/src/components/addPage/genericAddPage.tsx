@@ -7,6 +7,7 @@ interface GenericAddPageProps<T extends Id> {
   addController: GenericAddController<T>;
   reducer: React.Reducer<any, any>;
   textFieldGroup: React.FC<any>;
+  enumUsed: any;
 }
 
 /**
@@ -21,6 +22,7 @@ function GenericAddPage<T extends Id>({
   addController,
   reducer,
   textFieldGroup,
+  enumUsed,
 }: GenericAddPageProps<T>) {
   const [state, dispatch] = useReducer(reducer, {
     processing: false,
@@ -30,8 +32,12 @@ function GenericAddPage<T extends Id>({
 
   useEffect(() => {
     addController.subscribedPageDispatch = dispatch;
+    addController.setProcessing = (newValue: boolean) => {
+      dispatch([enumUsed.processing, newValue]);
+    };
     return () => {
       addController.subscribedPageDispatch = null;
+      addController.setProcessing = () => {};
     };
   }, [addController]);
 

@@ -5,7 +5,7 @@
  * @returns Number of days between input dates
  */
 function dateDiffInDays(a: Date, b: Date): number {
-  if (a < b) {
+  if (a > b) {
     let c = b;
     b = a;
     a = c;

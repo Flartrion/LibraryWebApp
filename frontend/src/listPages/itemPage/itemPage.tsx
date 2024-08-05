@@ -17,6 +17,7 @@ import GenericVirtualList from "../../components/listPage/genericList";
 import renderRow from "./itemList/renderRow";
 import itemListModel from "./itemList/itemListModel";
 import Item from "../../dataclasses/item";
+import ItemActionEnum from "./support/itemActionEnum";
 const GeneralAddPage = lazy(
   () => import("../../components/addPage/genericAddPage")
 );
@@ -27,7 +28,7 @@ const ItemViewPage = lazy(() => import("./itemViewPage/ItemViewPage"));
 
 function ItemPage() {
   const [tabSelection, setTabSelection] = useState(itemPageModel.tabSelection);
-  const [viewedItem, setViewedState] = useState<Item>(undefined);
+  const [viewedItem, setViewedState] = useState<Item>(itemViewModel.item);
 
   useEffect(() => {
     itemListController.setViewedState = setViewedState;
@@ -80,6 +81,7 @@ function ItemPage() {
               attachedModel={itemAddModel}
               reducer={addReducer}
               textFieldGroup={ItemTextFieldsAbstract}
+              enumUsed={ItemActionEnum}
             ></GeneralAddPage>
           </Suspense>
         );

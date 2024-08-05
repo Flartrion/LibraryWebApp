@@ -17,10 +17,12 @@ import org.jetbrains.exposed.sql.or
 fun Route.userCreate() {
     post("/new") {
         val principal = call.principal<JWTPrincipal>()
-        if (principal == null)
+        if (principal == null) {
             call.respond(HttpStatusCode.Unauthorized, "User ID failed")
+            return@post
+        }
 
-        val role = principal!!.payload.getClaim("role").asInt()
+        val role = principal.payload.getClaim("role").asInt()
         if (role >= 5) {
             call.respond(HttpStatusCode.Unauthorized, "Not enough privilege")
             return@post
@@ -38,6 +40,8 @@ fun Route.userCreate() {
                             (Users.email eq newEntity.email)
                 }.empty()
             }
+//            println("Pre-parse string: ${newEntity.dob!!}")
+//            println("Post-parse string: ${LocalDate.parse(newEntity.dob)}")
             if (noSimilar) {
                 dbQuery {
                     UserEntity.new {
@@ -48,6 +52,8 @@ fun Route.userCreate() {
                         this.dob = LocalDate.parse(newEntity.dob!!)
                     }
                 }
+                call.respond(HttpStatusCode.Created, "Item added to database")
+                return@post
             } else {
                 call.respond(HttpStatusCode.BadRequest, "User already exists")
                 return@post
@@ -58,7 +64,7 @@ fun Route.userCreate() {
             call.respond(HttpStatusCode.InternalServerError, "Unknown error")
             return@post
         }
-        call.respond(HttpStatusCode.Created, "Item added to database")
+        call.respond(HttpStatusCode.OK, "end of pipeline")
         return@post
     }
 }

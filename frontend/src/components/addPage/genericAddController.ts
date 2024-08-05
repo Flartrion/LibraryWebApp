@@ -1,4 +1,3 @@
-import ItemActionEnum from "../../listPages/itemPage/support/itemActionEnum";
 import GenericListController from "../listPage/genericListController";
 
 /**
@@ -14,9 +13,9 @@ class GenericAddController<T extends Id> {
    * would be loaded after next visit to list page */
   listController: GenericListController<T>;
   subscribedPageDispatch: React.Dispatch<any>;
-  protected setProcessing(newValue: boolean) {
-    this.subscribedPageDispatch([ItemActionEnum.processing, newValue]);
-  }
+  setProcessing = (newValue: boolean) => {
+
+  };
 
   /**
    *

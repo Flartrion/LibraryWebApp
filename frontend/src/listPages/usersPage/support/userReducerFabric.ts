@@ -21,7 +21,14 @@ const userReducerFabric = (attachedModel: any) => {
         } else newState.errField = actionName;
         return newState;
       case UserActionEnum.dob:
-        if (dateDiffInDays(new Date(), payload as Date) < 12 * 365) {
+        console.log(payload);
+        console.log(new Date(Date.parse(payload)));
+        const dateDiff = dateDiffInDays(
+          new Date(),
+          new Date(Date.parse(payload))
+        );
+        console.log(dateDiff);
+        if (150 * 365 > dateDiff || dateDiff > 12 * 365) {
           newState.errField = undefined;
           newState.dob = payload;
           if (attachedModel != null) attachedModel.dob = payload;
@@ -42,9 +49,10 @@ const userReducerFabric = (attachedModel: any) => {
         } else newState.errField = actionName;
         return newState;
       case UserActionEnum.role:
-        if (payload > 0) {
+        const parseVal = Number.parseInt(payload);
+        if (parseVal > 0 || payload == "") {
           newState.errField = undefined;
-          newState.errField = payload;
+          newState.role = payload;
           if (attachedModel != null) attachedModel.role = payload;
         } else newState.errField = actionName;
         return newState;
