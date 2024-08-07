@@ -21,18 +21,23 @@ const userReducerFabric = (attachedModel: any) => {
         } else newState.errField = actionName;
         return newState;
       case UserActionEnum.dob:
-        console.log(payload);
-        console.log(new Date(Date.parse(payload)));
+        // console.log(payload);
+        // console.log(new Date(Date.parse(payload)));
         const dateDiff = dateDiffInDays(
           new Date(),
           new Date(Date.parse(payload))
         );
-        console.log(dateDiff);
+        // console.log(dateDiff);
         if (150 * 365 > dateDiff || dateDiff > 12 * 365) {
           newState.errField = undefined;
           newState.dob = payload;
           if (attachedModel != null) attachedModel.dob = payload;
-        } else newState.errField = actionName;
+        } else {
+          // console.error("trigger error?")
+          newState.errField = actionName;
+          newState.dob = payload;
+          if (attachedModel != null) attachedModel.dob = payload;
+        }
         return newState;
       case UserActionEnum.email:
         if (payload.length <= 40) {
