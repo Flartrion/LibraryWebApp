@@ -43,7 +43,10 @@ class GenericEditController<T extends Id> {
     };
 
     let responseStatus: number;
-    const request = new Request(this.postURL, options);
+    const request = new Request(
+      this.postURL + "/" + data.get("id").toString(),
+      options
+    );
     fetch(request)
       .then((response) => {
         responseStatus = response.status;
@@ -57,7 +60,7 @@ class GenericEditController<T extends Id> {
             this.listController.setViewedState(editedItem);
           this.listModel.items[this.listModel.selection] = editedItem;
           this.viewModel.item = editedItem;
-        }
+        } else this.setProcessing(false);
       })
       .catch((reason) => {
         console.log(reason);

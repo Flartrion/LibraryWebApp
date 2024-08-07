@@ -48,7 +48,6 @@ function UserTextFieldsAbstract({
         inputProps={{
           readOnly: readonly,
           max: 1000,
-          maxLength: 1000,
           min: 1,
         }}
         inputMode="numeric"

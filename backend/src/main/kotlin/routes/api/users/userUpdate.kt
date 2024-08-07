@@ -14,7 +14,7 @@ import kotlinx.datetime.LocalDate
 import java.util.*
 
 fun Route.userUpdate() {
-    post("update") {
+    post("update/{id}") {
         val principal = call.principal<JWTPrincipal>()
         if (principal == null) {
             call.respond(HttpStatusCode.Unauthorized, "User ID failed")

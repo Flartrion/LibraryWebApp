@@ -5,6 +5,7 @@ import ItemActionEnum from "../../support/itemActionEnum";
 import GenericEditController from "../../../../components/viewPage/editPage/genericEditController";
 
 const itemEditController = new GenericEditController(
+  "items/update",
   itemListModel,
   itemListController,
   itemViewModel,

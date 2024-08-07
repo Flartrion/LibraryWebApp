@@ -13,7 +13,7 @@ import io.ktor.server.routing.*
 import java.util.*
 
 fun Route.itemUpdate() {
-    post("update") {
+    post("update/{id}") {
         val principal = call.principal<JWTPrincipal>()
         if (principal == null) {
             call.respond(HttpStatusCode.Unauthorized, "User ID failed")
