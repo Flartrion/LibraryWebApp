@@ -1,12 +1,13 @@
 import cookieWorker from "./cookieWorker";
 
 /**
- * Storage for user data extracted from cookies, 
- * for the purpose of reducing unneccessary regexp operations 
+ * Storage for user data extracted from cookies,
+ * for the purpose of reducing unneccessary regexp operations
  */
 class UserDataModel {
-  userName: String;
+  userName: string;
   userRole: number;
+  userID: string;
   userTheme: number;
 
   constructor() {
@@ -15,6 +16,7 @@ class UserDataModel {
 
   update() {
     this.userName = cookieWorker.extractCookie("userName");
+    this.userID = cookieWorker.extractCookie("userID");
 
     let userRole = parseInt(cookieWorker.extractCookie("userRole"));
     if (!Number.isNaN(userRole)) this.userRole = userRole;

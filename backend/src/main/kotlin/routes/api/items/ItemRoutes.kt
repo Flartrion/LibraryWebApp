@@ -4,7 +4,7 @@ import io.ktor.server.auth.*
 import io.ktor.server.routing.*
 
 fun Route.itemRoutes() {
-    route("/items") {
+    route("items") {
         itemGetFiltered()
         itemGet()
         authenticate("auth-jwt") {

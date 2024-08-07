@@ -4,16 +4,25 @@ import db.DatabaseSingleton.dbQuery
 import db.entity.StorageEntity
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import java.util.UUID
+import java.util.*
 
 fun Route.storageDelete() {
     delete("/{id}") {
-        if (call.request.cookies["role"] != "admin") return@delete call.respondText(
-            "Access is forbidden",
-            status = HttpStatusCode.Forbidden
-        )
+        val principal = call.principal<JWTPrincipal>()
+        if (principal == null) {
+            call.respond(HttpStatusCode.Unauthorized, "User ID failed")
+            return@delete
+        }
+
+        val role = principal.payload.getClaim("role").asInt()
+        if (role >= 5) {
+            call.respond(HttpStatusCode.Unauthorized, "Not enough privilege")
+            return@delete
+        }
         val id = call.parameters["id"] ?: return@delete call.respondText(
             "Missing or malformed id",
             status = HttpStatusCode.BadRequest
@@ -24,8 +33,8 @@ fun Route.storageDelete() {
         }
 
         if (success != null)
-            call.respond(HttpStatusCode.OK)
+            call.respond(HttpStatusCode.OK, "Storage deleted!")
         else
-            call.respond(HttpStatusCode.NotFound)
+            call.respond(HttpStatusCode.BadRequest, "Storage not found!")
     }
 }

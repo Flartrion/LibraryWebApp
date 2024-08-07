@@ -6,6 +6,7 @@ import PageSelection from "../pageSelection/pageEnum";
 import DefaultPageSuspence from "../support/defaultPageSuspence";
 const UserPage = lazy(() => import("../listPages/usersPage/userPage"));
 const ItemPage = lazy(() => import("../listPages/itemPage/itemPage"));
+const StoragePage = lazy(() => import("../listPages/storagePage/storagePage"));
 const LoginPage = lazy(() => import("../login/loginPage"));
 
 function MainPage({}: any) {
@@ -32,9 +33,9 @@ function MainPage({}: any) {
 
     case PageSelection.Storages:
       output = (
-        <Container>
-          <Alert severity="info">Storages page W.I.P.</Alert>
-        </Container>
+        <Suspense fallback={<DefaultPageSuspence />}>
+          <StoragePage />
+        </Suspense>
       );
       break;
 

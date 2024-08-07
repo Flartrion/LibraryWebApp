@@ -11,27 +11,39 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import support.filterWrap
 
 fun Route.storageGetFiltered() {
-    get {
-        if (call.request.cookies["role"] != "admin" && call.request.cookies["role"] != "user") return@get call.respondText(
-            "Access is forbidden",
-            status = HttpStatusCode.Forbidden
-        )
+    post("get") {
+        try {
+            val search = call.receive<Storage>()
+            val searchFilter = search.copy(
+//                id = filterWrap(search.id),
+                address = filterWrap(search.address),
+            )
 
-        val search = call.receive<Storage>()
-        val resultSet = dbQuery {
-            StorageEntity.find {
-                Storages.address like search.address
-            }.sortedByDescending { it.address }
+            val resultSet = dbQuery {
+                StorageEntity.find {
+                    (Storages.address like searchFilter.address)
+                }.sortedByDescending { it.address }
+            }
+
+            if (resultSet.isNotEmpty()) {
+                call.respondText(
+                    Json.encodeToString(resultSet.map { it.entityToStorage() }),
+                    ContentType.Application.Json,
+                    HttpStatusCode.OK
+                )
+                return@post
+            } else {
+                call.respond(HttpStatusCode.NotFound, "No such items found in database")
+                return@post
+            }
+        } catch (e: Exception) {
+            println(e.message)
+            e.printStackTrace()
+            call.respond(HttpStatusCode.InternalServerError, "Unknown error")
+            return@post
         }
-
-        if (resultSet.isNotEmpty())
-            call.respondText(
-                Json.encodeToString(resultSet.map { it.entityToStorage() }),
-                ContentType.Application.Json,
-                HttpStatusCode.OK
-            ) else
-            call.respond(HttpStatusCode.NotFound)
     }
 }
