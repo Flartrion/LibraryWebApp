@@ -73,7 +73,7 @@ kotlin {
 }
 
 dependencies {
-    implementation(project.parent!!.childProjects["frontend"]!!)
+
 }
 
 application {
@@ -92,6 +92,23 @@ tasks.withType<JavaCompile> {
     sourceCompatibility = "1.8"
 }
 
+tasks.register<Delete>("cleanPreviousBack") {
+    group = "cleanup"
+
+    val jsRegex = Regex("(.*)(?>\\.js)(?>\\.map){0,1}")
+
+
+    outputs.upToDateWhen { false }
+    setOnlyIf { true }
+
+    doFirst {
+        delete(File(project.projectDir.toString() + ("/src/main/resources/static")).listFiles { it ->
+            jsRegex.matches(it.name)
+        })
+    }
+}
+
+
 
 tasks.getByName<Jar>("jar") {
 //    dependsOn(tasks.getByName("jsBrowserProductionWebpack"))
@@ -101,7 +118,7 @@ tasks.getByName<Jar>("jar") {
 
 tasks.getByName<Copy>("processResources") {
     duplicatesStrategy = DuplicatesStrategy.WARN
-//    dependsOn(project.childProjects["frontend"]!!.tasks.named("elevateOutputsFront"))
+    dependsOn(parent!!.tasks.named("elevateOutputsFront"))
 }
 
 tasks.register<Copy>("elevateOutputsBack") {

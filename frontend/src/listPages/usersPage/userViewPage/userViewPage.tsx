@@ -67,8 +67,12 @@ function UserViewPage({ user }: UserViewPageProps) {
           <>
             <Button onClick={handleEdit}>Edit</Button>
             <Button onClick={handleDelete}>Delete</Button>
+            {/* TODO: Functionality */}
+            <Button>Balance</Button>
           </>
         ) : null}
+        {/* TODO: Functionality */}
+        <Button>Book rent</Button>
         <GenericDeleteDialog
           deleteController={userDeleteController}
           item={user}

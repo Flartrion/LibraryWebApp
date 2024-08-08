@@ -16,23 +16,26 @@ node {
     download = true
 }
 
+
 tasks.register<NpmTask>("jsStatic") {
     group = "build"
-    args = listOf("run", "build:dev")
+    args = listOf("run", "build")
+    dependsOn(tasks.named("cleanPreviousFront"))
 }
 
-tasks.register<Copy>("elevateOutputsFront") {
-    group = "build"
-    duplicatesStrategy = DuplicatesStrategy.WARN
-    dependsOn(tasks.getByName("jsStatic"))
-    from("out/") {
-//        include("index*")
-        include("*.js*")
+tasks.register<Delete>("cleanPreviousFront") {
+    group = "cleanup"
+
+    val jsRegex = Regex("(.*)(?>\\.js)(?>\\.map){0,1}")
+
+//    outputs.upToDateWhen { false }
+//    setOnlyIf { true }
+
+    doFirst {
+        delete(File(project.projectDir.toString() + ("/out")).listFiles { it ->
+            jsRegex.matches(it.name)
+        })
     }
-    from(".") {
-        include("index*")
-    }
-//    into(project.relativeProjectPath("../out/static"))
-    // Not elegant at all, but whatever, it does the job of throwing static files to server compilation.
-    into(project.relativeProjectPath("../backend/src/main/resources/static"))
 }
+
+

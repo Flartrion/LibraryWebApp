@@ -5,8 +5,6 @@ import storagePageModel from "./storagePageModel";
 import userDataModel from "../../support/userDataModel";
 import DefaultPageSuspence from "../../support/defaultPageSuspence";
 import ListTab from "../support/listTab";
-import GenericVirtualList from "../../components/listPage/genericList";
-import GenericFilterPage from "../../components/filterPage/genericFIlterPage";
 import storageViewModel from "./storageViewPage/storageViewModel";
 import storageListController from "./storageListPage/storageListController";
 import storageListModel from "./storageListPage/storageListModel";
@@ -19,6 +17,12 @@ import storageAddModel from "./storageAddPage/storageAddModel";
 import storageAddReducer from "./storageAddPage/storageAddReducer";
 import StorageActionEnum from "./support/storageActionEnum";
 
+const GenericFilterPage = lazy(
+  () => import("../../components/filterPage/genericFIlterPage")
+);
+const GenericVirtualList = lazy(
+  () => import("../../components/listPage/genericList")
+);
 const GenericAddPage = lazy(
   () => import("../../components/addPage/genericAddPage")
 );
@@ -50,20 +54,24 @@ function StoragePage() {
     switch (pageSelection) {
       case ListTab.Items:
         return (
-          <GenericVirtualList
-            listController={storageListController}
-            listModel={storageListModel}
-            renderRow={renderRow}
-          />
+          <Suspense fallback={<DefaultPageSuspence />}>
+            <GenericVirtualList
+              listController={storageListController}
+              listModel={storageListModel}
+              renderRow={renderRow}
+            />
+          </Suspense>
         );
       case ListTab.Filters:
         return (
-          <GenericFilterPage
-            attachedModel={storageFilterModel}
-            listController={storageListController}
-            reducer={storageFilterReducer}
-            textFieldGroup={StorageTextFieldsAbstract}
-          />
+          <Suspense fallback={<DefaultPageSuspence />}>
+            <GenericFilterPage
+              attachedModel={storageFilterModel}
+              listController={storageListController}
+              reducer={storageFilterReducer}
+              textFieldGroup={StorageTextFieldsAbstract}
+            />
+          </Suspense>
         );
       case ListTab.View:
         return (

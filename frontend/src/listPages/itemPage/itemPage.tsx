@@ -13,11 +13,13 @@ import addReducer from "./itemAddPage/reducer";
 import ItemTextFieldsAbstract from "./support/itemTextFieldsAbstract";
 import itemFilterModel from "./itemFilterPage/itemFilterModel";
 import filterReducer from "./itemFilterPage/reducer";
-import GenericVirtualList from "../../components/listPage/genericList";
 import renderRow from "./itemList/renderRow";
 import itemListModel from "./itemList/itemListModel";
 import Item from "../../dataclasses/item";
 import ItemActionEnum from "./support/itemActionEnum";
+const GenericVirtualList = lazy(
+  () => import("../../components/listPage/genericList")
+);
 const GeneralAddPage = lazy(
   () => import("../../components/addPage/genericAddPage")
 );
@@ -50,11 +52,13 @@ function ItemPage() {
     switch (pageSelection) {
       case ListTab.Items:
         return (
-          <GenericVirtualList
-            renderRow={renderRow}
-            listController={itemListController}
-            listModel={itemListModel}
-          />
+          <Suspense fallback={<DefaultPageSuspence />}>
+            <GenericVirtualList
+              renderRow={renderRow}
+              listController={itemListController}
+              listModel={itemListModel}
+            />
+          </Suspense>
         );
       case ListTab.Filters:
         return (

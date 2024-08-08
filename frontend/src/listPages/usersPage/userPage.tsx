@@ -7,10 +7,8 @@ import userViewModel from "./userViewPage/userViewModel";
 import DefaultPageSuspence from "../../support/defaultPageSuspence";
 import userListController from "./userList/userListController";
 import ListTab from "../support/listTab";
-import GenericVirtualList from "../../components/listPage/genericList";
 import userListModel from "./userList/userListModel";
 import renderRow from "./userList/renderRow";
-import GenericFilterPage from "../../components/filterPage/genericFIlterPage";
 import userFilterModel from "./userFilterPage/userFilterModel";
 import filterReducer from "./userFilterPage/reducer";
 import UserTextFieldsAbstract from "./support/userTextFieldsAbstract";
@@ -18,6 +16,12 @@ import userAddController from "./userAddPage/userAddController";
 import userAddModel from "./userAddPage/userAddModel";
 import addReducer from "./userAddPage/reducer";
 import UserActionEnum from "./support/userActionEnum";
+const GenericFilterPage = lazy(
+  () => import("../../components/filterPage/genericFIlterPage")
+);
+const GenericVirtualList = lazy(
+  () => import("../../components/listPage/genericList")
+);
 const GenericAddPage = lazy(
   () => import("../../components/addPage/genericAddPage")
 );
@@ -47,20 +51,24 @@ function UsersPage() {
     switch (pageSelection) {
       case ListTab.Items:
         return (
-          <GenericVirtualList
-            listController={userListController}
-            listModel={userListModel}
-            renderRow={renderRow}
-          />
+          <Suspense fallback={<DefaultPageSuspence />}>
+            <GenericVirtualList
+              listController={userListController}
+              listModel={userListModel}
+              renderRow={renderRow}
+            />
+          </Suspense>
         );
       case ListTab.Filters:
         return (
-          <GenericFilterPage
-            attachedModel={userFilterModel}
-            listController={userListController}
-            reducer={filterReducer}
-            textFieldGroup={UserTextFieldsAbstract}
-          />
+          <Suspense fallback={<DefaultPageSuspence />}>
+            <GenericFilterPage
+              attachedModel={userFilterModel}
+              listController={userListController}
+              reducer={filterReducer}
+              textFieldGroup={UserTextFieldsAbstract}
+            />
+          </Suspense>
         );
       case ListTab.View:
         return (

@@ -1,17 +1,21 @@
 import { CssBaseline } from "@mui/material";
 import { createRoot } from "react-dom/client";
-import SiteHeader from "./header/siteHeader";
-import SitePageSelector from "./pageSelection/sitePageSelector";
 import MainPage from "./components/mainPage";
 import ThemeChangeObserver from "./theming/ThemeChangeObserver";
+import { lazy, Suspense } from "react";
+import DefaultPageSuspence from "./support/defaultPageSuspence";
+const SiteHeader = lazy(() => import("./header/siteHeader"));
+const SitePageSelector = lazy(() => import("./pageSelection/sitePageSelector"));
 
 const container = document.getElementById("root");
 const root = createRoot(container!);
 root.render(
   <ThemeChangeObserver>
     <CssBaseline />
-    <SiteHeader siteName={document.title} />
-    <SitePageSelector />
+    <Suspense fallback={<DefaultPageSuspence />}>
+      <SiteHeader siteName={document.title} />
+      <SitePageSelector />
+    </Suspense>
     <MainPage />
   </ThemeChangeObserver>
 );
