@@ -31,8 +31,8 @@ tasks.register<DefaultTask>("prebuildClean") {
 tasks.register<Copy>("elevateOutputsFront") {
     group = "build"
     duplicatesStrategy = DuplicatesStrategy.WARN
+    dependsOn(tasks.named("prebuildClean"))
     dependsOn(childProjects["frontend"]!!.tasks.named("jsStatic"))
-    dependsOn(childProjects["frontend"]!!.tasks.named("cleanPreviousFront"))
     from(childProjects["frontend"]!!.projectDir.toString() + "/out/") {
 //        include("index*")
         include("*.js*")
