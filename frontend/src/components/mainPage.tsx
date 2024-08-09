@@ -3,7 +3,7 @@ import pageSelectorController from "../pageSelection/pageSelectorController";
 import { Alert, Container } from "@mui/material";
 import pageSelectorModel from "../pageSelection/pageSelectorModel";
 import PageSelection from "../pageSelection/pageEnum";
-import DefaultPageSuspence from "../support/defaultPageSuspence";
+import DefaultFallback from "../support/fallbacks/defaultFallback";
 const UserPage = lazy(() => import("../listPages/usersPage/userPage"));
 const ItemPage = lazy(() => import("../listPages/itemPage/itemPage"));
 const StoragePage = lazy(() => import("../listPages/storagePage/storagePage"));
@@ -25,7 +25,7 @@ function MainPage({}: any) {
   switch (pageSelection) {
     case PageSelection.Items:
       output = (
-        <Suspense fallback={<DefaultPageSuspence />}>
+        <Suspense fallback={<DefaultFallback />}>
           <ItemPage />
         </Suspense>
       );
@@ -33,7 +33,7 @@ function MainPage({}: any) {
 
     case PageSelection.Storages:
       output = (
-        <Suspense fallback={<DefaultPageSuspence />}>
+        <Suspense fallback={<DefaultFallback />}>
           <StoragePage />
         </Suspense>
       );
@@ -41,7 +41,7 @@ function MainPage({}: any) {
 
     case PageSelection.Users:
       output = (
-        <Suspense fallback={<DefaultPageSuspence />}>
+        <Suspense fallback={<DefaultFallback />}>
           <UserPage />
         </Suspense>
       );
@@ -49,7 +49,7 @@ function MainPage({}: any) {
 
     case PageSelection.Login:
       output = (
-        <Suspense fallback={<DefaultPageSuspence />}>
+        <Suspense fallback={<DefaultFallback />}>
           <LoginPage />
         </Suspense>
       );

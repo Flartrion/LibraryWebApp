@@ -4,7 +4,7 @@ import itemPageController from "./itemPageController";
 import itemPageModel from "./itemPageModel";
 import userDataModel from "../../support/userDataModel";
 import itemViewModel from "./itemViewPage/itemViewModel";
-import DefaultPageSuspence from "../../support/defaultPageSuspence";
+import DefaultFallback from "../../support/fallbacks/defaultFallback";
 import itemListController from "./itemList/itemListController";
 import ListTab from "../support/listTab";
 import itemAddController from "./itemAddPage/itemAddController";
@@ -52,7 +52,7 @@ function ItemPage() {
     switch (pageSelection) {
       case ListTab.Items:
         return (
-          <Suspense fallback={<DefaultPageSuspence />}>
+          <Suspense fallback={<DefaultFallback />}>
             <GenericVirtualList
               renderRow={renderRow}
               listController={itemListController}
@@ -62,7 +62,7 @@ function ItemPage() {
         );
       case ListTab.Filters:
         return (
-          <Suspense fallback={<DefaultPageSuspence />}>
+          <Suspense fallback={<DefaultFallback />}>
             <GenericFilterPage
               attachedModel={itemFilterModel}
               listController={itemListController}
@@ -73,13 +73,13 @@ function ItemPage() {
         );
       case ListTab.View:
         return (
-          <Suspense fallback={<DefaultPageSuspence />}>
+          <Suspense fallback={<DefaultFallback />}>
             <ItemViewPage item={viewedItem}></ItemViewPage>;
           </Suspense>
         );
       case ListTab.Add:
         return (
-          <Suspense fallback={<DefaultPageSuspence />}>
+          <Suspense fallback={<DefaultFallback />}>
             <GeneralAddPage
               addController={itemAddController}
               attachedModel={itemAddModel}

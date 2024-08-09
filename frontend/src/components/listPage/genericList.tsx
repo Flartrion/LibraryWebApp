@@ -3,7 +3,7 @@ import ReactVirtualizedAutoSizer from "react-virtualized-auto-sizer";
 import { FixedSizeList } from "react-window";
 import { FC, useEffect, useMemo, useState } from "react";
 import GenericListController from "./genericListController";
-import DefaultPageSuspence from "../../support/defaultPageSuspence";
+import DefaultFallback from "../../support/fallbacks/defaultFallback";
 
 interface GenericVirtualListProps<T extends Id> {
   renderRow: FC;
@@ -58,7 +58,7 @@ function GenericVirtualList<T extends Id>({
             {renderRow}
           </FixedSizeList>
         ) : (
-          <DefaultPageSuspence />
+          <DefaultFallback />
         )
       }
     </ReactVirtualizedAutoSizer>

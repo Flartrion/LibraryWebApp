@@ -1,6 +1,6 @@
 import { CircularProgress, Container } from "@mui/material";
 
-function DefaultPageSuspence() {
+function DefaultFallback() {
   return (
     <Container
       sx={{
@@ -15,4 +15,4 @@ function DefaultPageSuspence() {
   );
 }
 
-export default DefaultPageSuspence;
+export default DefaultFallback;

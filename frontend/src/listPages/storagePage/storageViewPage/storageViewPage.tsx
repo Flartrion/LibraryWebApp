@@ -1,14 +1,17 @@
 import { Box, Button, Container } from "@mui/material";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import userDataModel from "../../../support/userDataModel";
 
-import DefaultPageSuspence from "../../../support/defaultPageSuspence";
-import GenericDeleteDialog from "../../../components/viewPage/deleteDialog/genericDeleteDialog";
+import DefaultFallback from "../../../support/fallbacks/defaultFallback";
 import Storage from "../../../dataclasses/storage";
 import storageDeleteController from "./storageDeleteDialog/storageDeleteController";
 import StorageTextFieldsAbstract from "../support/storageTextFieldsAbstract";
 import storageEditController from "./storageEditPage/storageEditController";
 import storageEditReducer from "./storageEditPage/storageEditReducer";
+import BackdropFallback from "../../../support/fallbacks/backdropFallback";
+const GenericDeleteDialog = lazy(
+  () => import("../../../components/viewPage/deleteDialog/genericDeleteDialog")
+);
 const GenericEditPage = lazy(
   () => import("../../../components/viewPage/editPage/genericEditPage")
 );
@@ -20,8 +23,10 @@ interface StorageViewPageProps {
 function StorageViewPage({ storage: user }: StorageViewPageProps) {
   const [editState, setEditState] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const deleteFirstOpen = useRef(false);
 
   function handleDelete(e: React.MouseEvent<HTMLButtonElement>) {
+    deleteFirstOpen.current = true;
     setDeleteOpen(true);
   }
 
@@ -70,16 +75,20 @@ function StorageViewPage({ storage: user }: StorageViewPageProps) {
             <Button onClick={handleDelete}>Delete</Button>
           </>
         ) : null}
-        <GenericDeleteDialog
-          deleteController={storageDeleteController}
-          item={user}
-          open={deleteOpen}
-          onCancel={handleDeleteCancel}
-        />
+        {deleteFirstOpen.current ?? (
+          <Suspense fallback={<BackdropFallback />}>
+            <GenericDeleteDialog
+              deleteController={storageDeleteController}
+              item={user}
+              open={deleteOpen}
+              onCancel={handleDeleteCancel}
+            />
+          </Suspense>
+        )}
       </Box>
     </Container>
   ) : (
-    <Suspense fallback={<DefaultPageSuspence />}>
+    <Suspense fallback={<DefaultFallback />}>
       <GenericEditPage
         item={user}
         editController={storageEditController}

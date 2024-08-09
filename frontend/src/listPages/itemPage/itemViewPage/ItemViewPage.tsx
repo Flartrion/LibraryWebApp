@@ -1,13 +1,27 @@
 import { Box, Button, Container } from "@mui/material";
-import { lazy, Suspense, useEffect, useState } from "react";
+import {
+  lazy,
+  MutableRefObject,
+  Suspense,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import userDataModel from "../../../support/userDataModel";
 import itemDeleteController from "./itemDeleteDialog/itemDeleteController";
 import ItemTextFieldsAbstract from "../support/itemTextFieldsAbstract";
-import DefaultPageSuspence from "../../../support/defaultPageSuspence";
+import DefaultFallback from "../../../support/fallbacks/defaultFallback";
 import Item from "../../../dataclasses/item";
 import itemEditController from "./itemEditPage/itemEditController";
 import editReducer from "./itemEditPage/reducer";
-import GenericDeleteDialog from "../../../components/viewPage/deleteDialog/genericDeleteDialog";
+import BackdropFallback from "../../../support/fallbacks/backdropFallback";
+
+const ItemBalanceDialog = lazy(
+  () => import("./itemBalanceDialog/itemBalanceDialog")
+);
+const GenericDeleteDialog = lazy(
+  () => import("../../../components/viewPage/deleteDialog/genericDeleteDialog")
+);
 const GenericEditPage = lazy(
   () => import("../../../components/viewPage/editPage/genericEditPage")
 );
@@ -19,8 +33,12 @@ interface ItemViewPageProps {
 function ItemViewPage({ item }: ItemViewPageProps) {
   const [editState, setEditState] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const deleteFirstOpen: MutableRefObject<boolean> = useRef(null);
+  const [balanceOpen, setBalanceOpen] = useState(false);
+  const balanceFirstOpen: MutableRefObject<boolean> = useRef(null);
 
   function handleDelete(e: React.MouseEvent<HTMLButtonElement>) {
+    deleteFirstOpen.current = true;
     setDeleteOpen(true);
   }
 
@@ -28,8 +46,16 @@ function ItemViewPage({ item }: ItemViewPageProps) {
     setEditState(true);
   }
 
+  function handleBalance(e: React.MouseEvent<HTMLButtonElement>) {
+    balanceFirstOpen.current = true;
+    setBalanceOpen(true);
+  }
+
   function handleDeleteCancel(e: React.MouseEvent<HTMLButtonElement>) {
     setDeleteOpen(false);
+  }
+  function handleBalanceCancel(e: React.MouseEvent<HTMLButtonElement>) {
+    setBalanceOpen(false);
   }
   function handleDeleteSuccess() {
     setDeleteOpen(false);
@@ -65,20 +91,42 @@ function ItemViewPage({ item }: ItemViewPageProps) {
       >
         {userDataModel.userRole <= 5 ? (
           <>
-            <Button onClick={handleEdit}>Edit</Button>
-            <Button onClick={handleDelete}>Delete</Button>
+            <Button variant="contained" onClick={handleEdit}>
+              Edit
+            </Button>
+            <Button variant="contained" onClick={handleDelete}>
+              Delete
+            </Button>
+            <Button variant="contained" onClick={handleBalance}>
+              Balance
+            </Button>
           </>
         ) : null}
-        <GenericDeleteDialog
-          deleteController={itemDeleteController}
-          item={item}
-          open={deleteOpen}
-          onCancel={handleDeleteCancel}
-        />
+        {/* TODO: Functionality */}
+        <Button variant="contained">Book rent</Button>
+        {deleteFirstOpen.current && (
+          <Suspense fallback={<BackdropFallback />}>
+            <GenericDeleteDialog
+              deleteController={itemDeleteController}
+              item={item}
+              open={deleteOpen}
+              onCancel={handleDeleteCancel}
+            />
+          </Suspense>
+        )}
+        {balanceFirstOpen.current && (
+          <Suspense fallback={<BackdropFallback />}>
+            <ItemBalanceDialog
+              item={item}
+              onCancel={handleBalanceCancel}
+              open={balanceOpen}
+            />
+          </Suspense>
+        )}
       </Box>
     </Container>
   ) : (
-    <Suspense fallback={<DefaultPageSuspence />}>
+    <Suspense fallback={<DefaultFallback />}>
       <GenericEditPage
         editController={itemEditController}
         reducer={editReducer}

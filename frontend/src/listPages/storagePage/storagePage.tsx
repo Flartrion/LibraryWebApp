@@ -3,7 +3,7 @@ import { lazy, Suspense, useEffect, useState } from "react";
 import storagePageController from "./storagePageController";
 import storagePageModel from "./storagePageModel";
 import userDataModel from "../../support/userDataModel";
-import DefaultPageSuspence from "../../support/defaultPageSuspence";
+import DefaultFallback from "../../support/fallbacks/defaultFallback";
 import ListTab from "../support/listTab";
 import storageViewModel from "./storageViewPage/storageViewModel";
 import storageListController from "./storageListPage/storageListController";
@@ -54,7 +54,7 @@ function StoragePage() {
     switch (pageSelection) {
       case ListTab.Items:
         return (
-          <Suspense fallback={<DefaultPageSuspence />}>
+          <Suspense fallback={<DefaultFallback />}>
             <GenericVirtualList
               listController={storageListController}
               listModel={storageListModel}
@@ -64,7 +64,7 @@ function StoragePage() {
         );
       case ListTab.Filters:
         return (
-          <Suspense fallback={<DefaultPageSuspence />}>
+          <Suspense fallback={<DefaultFallback />}>
             <GenericFilterPage
               attachedModel={storageFilterModel}
               listController={storageListController}
@@ -75,13 +75,13 @@ function StoragePage() {
         );
       case ListTab.View:
         return (
-          <Suspense fallback={<DefaultPageSuspence />}>
+          <Suspense fallback={<DefaultFallback />}>
             <StorageViewPage storage={viewedItem} />
           </Suspense>
         );
       case ListTab.Add:
         return (
-          <Suspense fallback={<DefaultPageSuspence />}>
+          <Suspense fallback={<DefaultFallback />}>
             <GenericAddPage
               addController={storageAddController}
               attachedModel={storageAddModel}
