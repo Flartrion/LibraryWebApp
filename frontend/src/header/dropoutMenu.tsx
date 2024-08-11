@@ -17,6 +17,7 @@ import loginController from "../login/loginController";
 import userDataModel from "../support/userDataModel";
 import itemPageController from "../listPages/itemPage/itemPageController";
 import ListTab from "../listPages/support/listTab";
+import storagePageController from "../listPages/storagePage/storagePageController";
 
 function HeaderMenu() {
   const [headerMenuAnchor, setAnchor] = useState(null);
@@ -80,6 +81,7 @@ function HeaderMenu() {
               pageSelectorController.updateModel(PageSelection.Login);
               // TODO: When storage page is implemented, switch the page to storage list over there also
               itemPageController.updateModel(ListTab.Items);
+              storagePageController.updateModel(ListTab.Items);
               loginController.logout();
               userDataModel.update();
             }}

@@ -11,7 +11,6 @@ import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import support.filterWrap
 
 fun Route.storageCreate() {
     post("/new") {
@@ -29,7 +28,7 @@ fun Route.storageCreate() {
             val newEntity = call.receive<Storage>()
             val noSimilar = dbQuery {
                 StorageEntity.find {
-                    Storages.address eq filterWrap(newEntity.address)
+                    Storages.address eq newEntity.address
                 }.empty()
             }
             if (noSimilar) {

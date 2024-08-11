@@ -1,7 +1,10 @@
+import Storage from "../../../../dataclasses/storage";
+
 const itemBalanceModel: {
   storages: Storage[];
-  storagesLoaded: boolean;
+  loaded: boolean;
 } = {
   storages: undefined,
-  storagesLoaded: false,
+  loaded: false,
 };
+export default itemBalanceModel;

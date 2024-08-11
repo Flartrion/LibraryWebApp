@@ -75,7 +75,7 @@ function StorageViewPage({ storage: user }: StorageViewPageProps) {
             <Button onClick={handleDelete}>Delete</Button>
           </>
         ) : null}
-        {deleteFirstOpen.current ?? (
+        {deleteFirstOpen.current && (
           <Suspense fallback={<BackdropFallback />}>
             <GenericDeleteDialog
               deleteController={storageDeleteController}
