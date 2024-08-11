@@ -37,7 +37,7 @@ fun Route.userGet() {
             val user = dbQuery { UserEntity.findById(UUID.fromString(id)) }
             if (user != null) {
                 call.respondText(
-                    Json.encodeToString(user.entityToUser()),
+                    Json.encodeToString(user.toDataclass()),
                     ContentType.Application.Json,
                     HttpStatusCode.OK
                 )

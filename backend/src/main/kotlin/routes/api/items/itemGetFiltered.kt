@@ -44,7 +44,7 @@ fun Route.itemGetFiltered() {
 
             if (resultSet.isNotEmpty()) {
                 call.respondText(
-                    Json.encodeToString(resultSet.map { it.entityToItem() }),
+                    Json.encodeToString(resultSet.map { it.toDataclass() }),
                     ContentType.Application.Json,
                     HttpStatusCode.OK
                 )

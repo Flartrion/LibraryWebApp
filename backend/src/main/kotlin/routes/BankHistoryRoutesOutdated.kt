@@ -9,7 +9,7 @@ import io.ktor.server.routing.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-fun Route.bankHistoryRouting() {
+fun Route.bankHistoryRoutingOutdated() {
     route("/bankHistory") {
         TODO("Pending redesign. Careful here, since it's 2 entities that get updated on creation and deletion")
         get {
@@ -92,16 +92,12 @@ fun Route.bankHistoryRouting() {
                 "Missing or malformed id_item",
                 status = HttpStatusCode.BadRequest
             )
-            val change = parameters["change"] ?: return@post call.respondText(
-                "Missing or malformed change",
-                status = HttpStatusCode.BadRequest
-            )
-            val date = parameters["date"] ?: return@post call.respondText(
-                "Missing or malformed date",
-                status = HttpStatusCode.BadRequest
-            )
             val idStorage = parameters["id_storage"] ?: return@post call.respondText(
                 "Missing or malformed id_storage",
+                status = HttpStatusCode.BadRequest
+            )
+            val change = parameters["change"] ?: return@post call.respondText(
+                "Missing or malformed change",
                 status = HttpStatusCode.BadRequest
             )
 

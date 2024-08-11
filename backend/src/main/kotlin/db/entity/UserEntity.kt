@@ -7,7 +7,7 @@ import org.jetbrains.exposed.dao.UUIDEntity
 import org.jetbrains.exposed.dao.id.EntityID
 import java.util.*
 
-class UserEntity(id: EntityID<UUID>) : UUIDEntity(id) {
+class UserEntity(id: EntityID<UUID>) : UUIDEntity(id), DataClassable<User> {
     companion object : EntityClass<UUID, UserEntity>(Users)
 
     var role by Users.role
@@ -16,7 +16,7 @@ class UserEntity(id: EntityID<UUID>) : UUIDEntity(id) {
     var phoneNumber by Users.phoneNumber
     var email by Users.email
 
-    fun entityToUser(): User = User(
+    override fun toDataclass(): User = User(
         id = id.value.toString(),
         role = role.toString(),
         fullName = fullName,

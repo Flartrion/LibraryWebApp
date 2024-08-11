@@ -20,7 +20,7 @@ fun Route.storageGet() {
             val item = dbQuery { StorageEntity.findById(UUID.fromString(id)) }
             if (item != null) {
                 call.respondText(
-                    Json.encodeToString(item.entityToStorage()),
+                    Json.encodeToString(item.toDataclass()),
                     ContentType.Application.Json,
                     HttpStatusCode.OK
                 )

@@ -30,7 +30,7 @@ fun Route.storageGetFiltered() {
 
             if (resultSet.isNotEmpty()) {
                 call.respondText(
-                    Json.encodeToString(resultSet.map { it.entityToStorage() }),
+                    Json.encodeToString(resultSet.map { it.toDataclass() }),
                     ContentType.Application.Json,
                     HttpStatusCode.OK
                 )

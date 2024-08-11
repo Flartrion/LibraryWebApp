@@ -13,9 +13,7 @@ class GenericAddController<T extends Id> {
    * would be loaded after next visit to list page */
   listController: GenericListController<T>;
   subscribedPageDispatch: React.Dispatch<any>;
-  setProcessing = (newValue: boolean) => {
-
-  };
+  setProcessing = (newValue: boolean) => {};
 
   /**
    *
@@ -37,6 +35,7 @@ class GenericAddController<T extends Id> {
   submit(data: FormData) {
     this.setProcessing(true);
     data.append("id", "0");
+    // console.log("Sending: " + JSON.stringify(Object.fromEntries(data)));
     const options = {
       method: "POST",
       headers: {

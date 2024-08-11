@@ -20,7 +20,7 @@ fun Route.itemGet() {
             val item = dbQuery { ItemEntity.findById(UUID.fromString(id)) }
             if (item != null) {
                 call.respondText(
-                    Json.encodeToString(item.entityToItem()),
+                    Json.encodeToString(item.toDataclass()),
                     ContentType.Application.Json,
                     HttpStatusCode.OK
                 )

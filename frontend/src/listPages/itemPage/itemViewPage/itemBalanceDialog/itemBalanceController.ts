@@ -48,6 +48,7 @@ const itemBalanceController: {
   },
 
   newBalanceEntry(data: FormData) {
+    // console.log("Sending: " + JSON.stringify(Object.fromEntries(data)));
     const options = {
       method: "POST",
       headers: {
@@ -57,7 +58,7 @@ const itemBalanceController: {
       body: JSON.stringify(Object.fromEntries(data)),
     };
     let responseStatus: number;
-    const request = new Request("storages/new", options);
+    const request = new Request("bankHistory/new", options);
     fetch(request)
       .then((response) => {
         responseStatus = response.status;

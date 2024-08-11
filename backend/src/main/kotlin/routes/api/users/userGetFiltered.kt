@@ -76,7 +76,7 @@ fun Route.userGetFiltered() {
 
             if (resultSet.isNotEmpty()) {
                 call.respondText(
-                    Json.encodeToString(resultSet.map { it.entityToUser() }),
+                    Json.encodeToString(resultSet.map { it.toDataclass() }),
                     ContentType.Application.Json,
                     HttpStatusCode.OK
                 )

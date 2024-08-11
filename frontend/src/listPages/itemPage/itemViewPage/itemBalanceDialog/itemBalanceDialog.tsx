@@ -67,14 +67,14 @@ function ItemBalanceDialog({ item, open, onCancel }: ItemBalanceProps) {
             {storagesLoaded ? (
               <>
                 <Input
-                  name="id_entry"
-                  value=""
+                  name="id"
+                  value="0"
                   readOnly
                   sx={{ display: "none" }}
                 />
                 <TextField
                   label="Item ID"
-                  name="id_item"
+                  name="idItem"
                   value={item.id}
                   inputProps={{ readOnly: true }}
                   margin="normal"
@@ -82,7 +82,7 @@ function ItemBalanceDialog({ item, open, onCancel }: ItemBalanceProps) {
                 <TextField
                   select
                   id="storageSelectionTextfield"
-                  name="id_storage"
+                  name="idStorage"
                   label="Storage"
                   SelectProps={{ autoWidth: true }}
                   margin="normal"
