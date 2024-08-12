@@ -95,7 +95,15 @@ function StoragePage() {
   }
 
   return (
-    <Box height={"80vh"}>
+    <Box
+      display="flex"
+      flexBasis={"auto"}
+      minHeight={0}
+      maxHeight={"fill-available"}
+      flexGrow={1}
+      flexShrink={0}
+      flexDirection="column"
+    >
       <Tabs value={tabSelection} onChange={handleSelection} variant="fullWidth">
         <Tab label="Results" value={ListTab.Items} />
         <Tab label="Filters" value={ListTab.Filters} />
