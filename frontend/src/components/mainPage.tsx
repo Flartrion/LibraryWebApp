@@ -63,6 +63,7 @@ function MainPage({}: any) {
           </Alert>
         </Container>
       )
+      break
   }
 
   // return <Box>{output}</Box>

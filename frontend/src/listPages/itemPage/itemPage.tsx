@@ -96,6 +96,8 @@ function ItemPage() {
     <Box
       display="flex"
       flexBasis={"auto"}
+      minHeight={0}
+      maxHeight={"fill-available"}
       flexGrow={1}
       flexShrink={0}
       flexDirection="column"

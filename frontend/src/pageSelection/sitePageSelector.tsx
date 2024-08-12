@@ -20,7 +20,13 @@ function SitePageSelector() {
   })
 
   return (
-    <Box>
+    <Box
+      sx={{
+        flexGrow: 0,
+        flexShrink: 0,
+        flexBasis: "auto",
+      }}
+    >
       <Divider />
       <Tabs value={selection} onChange={handleSelection} variant="fullWidth">
         <Tab label="Items" value={PageEnum.Items} />
