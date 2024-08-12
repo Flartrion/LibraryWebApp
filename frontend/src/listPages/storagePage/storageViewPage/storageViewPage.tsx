@@ -69,14 +69,27 @@ function StorageViewPage({ storage: user }: StorageViewPageProps) {
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-evenly",
+          gap: "10px",
         }}
       >
-        {userDataModel.userRole <= 5 ? (
+        {userDataModel.userRole <= 5 && (
           <>
-            <Button onClick={handleEdit}>Edit</Button>
-            <Button onClick={handleDelete}>Delete</Button>
+            <Button
+              onClick={handleEdit}
+              sx={{ flex: "1 1 auto" }}
+              variant="contained"
+            >
+              Edit
+            </Button>
+            <Button
+              onClick={handleDelete}
+              sx={{ flex: "1 1 auto" }}
+              variant="outlined"
+            >
+              Delete
+            </Button>
           </>
-        ) : null}
+        )}
         {deleteFirstOpen.current && (
           <Suspense fallback={<BackdropFallback />}>
             <GenericDeleteDialog

@@ -100,6 +100,7 @@ function ItemViewPage({ item }: ItemViewPageProps) {
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-evenly",
+              gap: "10px",
             }}
           >
             {userDataModel.userRole <= 5 && (

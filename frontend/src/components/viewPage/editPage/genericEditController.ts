@@ -4,11 +4,11 @@ import GenericListController from "../../listPage/genericListController"
 class GenericEditController<T extends Id> {
   subscribedPageDispatch: Dispatch<any>
 
-  postURL: string
-  listModel: GenericListModel<T>
-  listController: GenericListController<T>
-  viewModel: GenericViewModel<T>
-  enum: any
+  protected postURL: string
+  protected listModel: GenericListModel<T>
+  protected listController: GenericListController<T>
+  protected viewModel: GenericViewModel<T>
+  protected enum: any
 
   constructor(
     postURL: string,
@@ -24,7 +24,7 @@ class GenericEditController<T extends Id> {
     this.enum = enumUsed
   }
 
-  private setProcessing = (newValue: boolean) => {
+  protected setProcessing = (newValue: boolean) => {
     this.subscribedPageDispatch([this.enum.processing, newValue])
   }
 

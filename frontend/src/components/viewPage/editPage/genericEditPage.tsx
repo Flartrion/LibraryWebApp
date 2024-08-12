@@ -6,12 +6,13 @@ import {
   Container,
 } from "@mui/material"
 import { createElement, FC, Reducer, useEffect, useReducer } from "react"
+import GenericEditController from "./genericEditController"
 
 interface GenericEditPageProps<T extends Id> {
   item: T
   toView: () => void
   // TODO: Replace with class
-  editController: any
+  editController: GenericEditController<T>
   reducer: Reducer<any, any>
   textFieldGroup: FC<any>
 }
@@ -60,13 +61,22 @@ function GenericEditPage<T extends Id>({
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-evenly",
+            gap: "10px"
           }}
         >
-          <Button type="submit" variant="contained">
+          <Button sx={{ flex: "1 1 auto" }} variant="contained" type="submit">
             Submit
           </Button>
-          <Button disabled>Reset</Button>
-          <Button onClick={() => toView()}>Cancel</Button>
+          <Button sx={{ flex: "1 1 auto" }} variant="outlined" disabled>
+            Reset
+          </Button>
+          <Button
+            sx={{ flex: "1 1 auto" }}
+            variant="outlined"
+            onClick={() => toView()}
+          >
+            Cancel
+          </Button>
         </Box>
         <Backdrop open={state.processing}>
           <CircularProgress />
