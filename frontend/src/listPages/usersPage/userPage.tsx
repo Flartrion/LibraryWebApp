@@ -94,21 +94,14 @@ function UsersPage() {
   return (
     <Box height={"80vh"}>
       <Tabs value={tabSelection} onChange={handleSelection} variant="fullWidth">
-        <Tab label="Results" tabIndex={ListTab.Items} />
-        <Tab label="Filters" tabIndex={ListTab.Filters} />
-        {/* BUG: Apparently not displaying one Tab shifts indexes (God, why?) of all tabs after that,
-         so I can not just hide it, I have to go out of my way to disable it. Why can't the numbering 
-         just remain consistent?*/}
-        <Tab
-          disabled={userViewModel.item == undefined}
-          label="User"
-          tabIndex={ListTab.View}
-        />
-        <Tab
-          disabled={(userDataModel.userRole ?? 999) > 5}
-          label="Add User"
-          tabIndex={ListTab.Add}
-        />
+        <Tab label="Results" value={ListTab.Items} />
+        <Tab label="Filters" value={ListTab.Filters} />
+        {userViewModel.item != undefined && (
+          <Tab label="User" value={ListTab.View} />
+        )}
+        {(userDataModel.userRole ?? 999) <= 5 && (
+          <Tab label="Add User" value={ListTab.Add} />
+        )}
       </Tabs>
       <Divider />
       <SelectedPage pageSelection={tabSelection} />

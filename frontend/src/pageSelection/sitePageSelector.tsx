@@ -23,21 +23,13 @@ function SitePageSelector() {
     <Box>
       <Divider />
       <Tabs value={selection} onChange={handleSelection} variant="fullWidth">
-        <Tab label="Items" value={PageEnum.Items} tabIndex={PageEnum.Items} />
-        <Tab
-          label="Storages"
-          value={PageEnum.Storages}
-          tabIndex={PageEnum.Storages}
-        />
-        {userDataModel.userRole < 5 ? (
-          <Tab label="Users" value={PageEnum.Users} tabIndex={PageEnum.Users} />
-        ) : (
-          ""
+        <Tab label="Items" value={PageEnum.Items} />
+        <Tab label="Storages" value={PageEnum.Storages} />
+        {(userDataModel.userRole ?? 999) <= 5 && (
+          <Tab label="Users" value={PageEnum.Users} />
         )}
-        {selection === PageEnum.Login ? (
-          <Tab label="Login" value={PageEnum.Login} tabIndex={PageEnum.Login} />
-        ) : (
-          ""
+        {selection === PageEnum.Login && (
+          <Tab label="Login" value={PageEnum.Login} />
         )}
       </Tabs>
       <Divider />

@@ -78,12 +78,7 @@ function HeaderMenu() {
         ) : (
           <MenuItem
             onClick={() => {
-              pageSelectorController.updateModel(PageSelection.Login)
-              // TODO: When storage page is implemented, switch the page to storage list over there also
-              itemPageController.updateModel(ListTab.Items)
-              storagePageController.updateModel(ListTab.Items)
               loginController.logout()
-              userDataModel.update()
             }}
           >
             Logout

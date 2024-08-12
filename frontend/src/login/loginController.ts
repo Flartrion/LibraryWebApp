@@ -1,3 +1,6 @@
+import itemPageController from "../listPages/itemPage/itemPageController"
+import storagePageController from "../listPages/storagePage/storagePageController"
+import ListTab from "../listPages/support/listTab"
 import PageSelection from "../pageSelection/pageEnum"
 import pageSelectorController from "../pageSelection/pageSelectorController"
 import ReactGeneralController from "../support/reactGeneralController"
@@ -35,7 +38,7 @@ class LoginController extends ReactGeneralController<Boolean> {
         if (responseStatus === 200) {
           pageSelectorController.updateModel(PageSelection.Items)
           userDataModel.update()
-        } else if (responseStatus === 401) loginController.updateModel(false)
+        } else if (responseStatus === 401) this.updateModel(false)
       })
   }
 
@@ -46,6 +49,11 @@ class LoginController extends ReactGeneralController<Boolean> {
       "userRole=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
     document.cookie = "userID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
     document.cookie = "JWTAuth=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;"
+
+    pageSelectorController.updateModel(PageSelection.Login)
+    itemPageController.updateModel(ListTab.Items)
+    storagePageController.updateModel(ListTab.Items)
+    userDataModel.update()
   }
 }
 

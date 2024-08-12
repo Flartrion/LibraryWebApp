@@ -1,4 +1,4 @@
-import { CircularProgress } from "@mui/material"
+import { Box, CircularProgress } from "@mui/material"
 import ReactVirtualizedAutoSizer from "react-virtualized-auto-sizer"
 import { FixedSizeList } from "react-window"
 import { FC, useEffect, useMemo, useState } from "react"
@@ -37,31 +37,33 @@ function GenericVirtualList<T extends Id>({
   }, [listController])
 
   return (
-    <ReactVirtualizedAutoSizer>
-      {({ height, width }: any) =>
-        itemsLoaded ? (
-          <FixedSizeList
-            className="List"
-            height={height}
-            width={width}
-            itemData={data}
-            itemCount={listModel.items.length}
-            itemSize={50}
-            itemKey={(index, data) => {
-              return data[1][index].id
-            }}
-            onScroll={(props) => {
-              listModel.scrollOffset = props.scrollOffset
-            }}
-            initialScrollOffset={listModel.scrollOffset}
-          >
-            {renderRow}
-          </FixedSizeList>
-        ) : (
-          <DefaultFallback />
-        )
-      }
-    </ReactVirtualizedAutoSizer>
+    <Box minHeight={"15vh"} flexBasis={"auto"} flexGrow={1} flexShrink={0}>
+      <ReactVirtualizedAutoSizer>
+        {({ height, width }: any) =>
+          itemsLoaded ? (
+            <FixedSizeList
+              className="List"
+              height={height}
+              width={width}
+              itemData={data}
+              itemCount={listModel.items.length}
+              itemSize={50}
+              itemKey={(index, data) => {
+                return data[1][index].id
+              }}
+              onScroll={(props) => {
+                listModel.scrollOffset = props.scrollOffset
+              }}
+              initialScrollOffset={listModel.scrollOffset}
+            >
+              {renderRow}
+            </FixedSizeList>
+          ) : (
+            <DefaultFallback />
+          )
+        }
+      </ReactVirtualizedAutoSizer>
+    </Box>
   )
 }
 export default GenericVirtualList

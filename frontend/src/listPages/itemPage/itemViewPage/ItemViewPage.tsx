@@ -104,23 +104,41 @@ function ItemViewPage({ item }: ItemViewPageProps) {
           >
             {userDataModel.userRole <= 5 && (
               <>
-                <Button variant="contained" onClick={handleEdit}>
+                <Button
+                  sx={{ flex: 1 }}
+                  variant="contained"
+                  onClick={handleEdit}
+                >
                   Edit
                 </Button>
-                <Button variant="contained" onClick={handleDelete}>
+                <Button
+                  sx={{ flex: 1 }}
+                  variant="contained"
+                  onClick={handleDelete}
+                >
                   Delete
                 </Button>
-                <Button variant="contained" onClick={handleEditBalance}>
+                <Button
+                  sx={{ flex: 1 }}
+                  variant="contained"
+                  onClick={handleEditBalance}
+                >
                   Edit Balance
                 </Button>
-                <Button variant="contained" onClick={handleViewBalance}>
+                <Button
+                  sx={{ flex: 1 }}
+                  variant="contained"
+                  onClick={handleViewBalance}
+                >
                   View Balance
                 </Button>
               </>
             )}
             {/* TODO: Functionality */}
             {userDataModel.userRole != undefined && (
-              <Button variant="contained">Book rent</Button>
+              <Button sx={{ flex: 1 }} variant="contained">
+                Book rent
+              </Button>
             )}
             {deleteFirstOpen.current && (
               <Suspense fallback={<BackdropFallback />}>

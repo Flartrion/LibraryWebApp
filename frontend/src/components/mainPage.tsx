@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useState } from "react"
 import pageSelectorController from "../pageSelection/pageSelectorController"
-import { Alert, Container } from "@mui/material"
+import { Alert, Box, Container } from "@mui/material"
 import pageSelectorModel from "../pageSelection/pageSelectorModel"
 import PageSelection from "../pageSelection/pageEnum"
 import DefaultFallback from "../support/fallbacks/defaultFallback"
@@ -65,6 +65,7 @@ function MainPage({}: any) {
       )
   }
 
+  // return <Box>{output}</Box>
   return output
 }
 export default MainPage

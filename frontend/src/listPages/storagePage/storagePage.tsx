@@ -97,21 +97,14 @@ function StoragePage() {
   return (
     <Box height={"80vh"}>
       <Tabs value={tabSelection} onChange={handleSelection} variant="fullWidth">
-        <Tab label="Results" tabIndex={ListTab.Items} />
-        <Tab label="Filters" tabIndex={ListTab.Filters} />
-        {/* BUG: Apparently not displaying one Tab shifts indexes (God, why?) of all tabs after that,
-         so I can not just hide it, I have to go out of my way to disable it. Why can't the numbering 
-         just remain consistent?*/}
-        <Tab
-          disabled={storageViewModel.item == undefined}
-          label="Storage"
-          tabIndex={ListTab.View}
-        />
-        <Tab
-          disabled={(userDataModel.userRole ?? 999) > 5}
-          label="Add Storage"
-          tabIndex={ListTab.Add}
-        />
+        <Tab label="Results" value={ListTab.Items} />
+        <Tab label="Filters" value={ListTab.Filters} />
+        {storageViewModel.item != undefined && (
+          <Tab label="Storage" value={ListTab.View} />
+        )}
+        {(userDataModel.userRole ?? 999) <= 5 && (
+          <Tab label="Add Storage" value={ListTab.Add} />
+        )}
       </Tabs>
       <Divider />
       <SelectedPage pageSelection={tabSelection} />

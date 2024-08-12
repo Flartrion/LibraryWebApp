@@ -93,25 +93,22 @@ function ItemPage() {
   }
 
   return (
-    <Box height={"80vh"}>
+    <Box
+      display="flex"
+      flexBasis={"auto"}
+      flexGrow={1}
+      flexShrink={0}
+      flexDirection="column"
+    >
       <Tabs value={tabSelection} onChange={handleSelection} variant="fullWidth">
-        <Tab label="Results" key={ListTab.Items} tabIndex={ListTab.Items} />
-        <Tab label="Filters" key={ListTab.Filters} tabIndex={ListTab.Filters} />
-        {/* BUG: Apparently not displaying one Tab shifts indexes (God, why?) of all tabs after that,
-         so I can not just hide it, I have to go out of my way to disable it. Why can't the numbering 
-         just remain consistent?*/}
-        <Tab
-          disabled={itemViewModel.item == undefined}
-          label="Item"
-          key={ListTab.View}
-          tabIndex={ListTab.View}
-        />
-        <Tab
-          disabled={(userDataModel.userRole ?? 999) > 5}
-          label="Add Item"
-          key={ListTab.Add}
-          tabIndex={ListTab.Add}
-        />
+        <Tab label="Results" key={ListTab.Items} value={ListTab.Items} />
+        <Tab label="Filters" key={ListTab.Filters} value={ListTab.Filters} />
+        {itemViewModel.item != undefined && (
+          <Tab label="Item" key={ListTab.View} value={ListTab.View} />
+        )}
+        {(userDataModel.userRole ?? 999) <= 5 && (
+          <Tab label="Add Item" key={ListTab.Add} value={ListTab.Add} />
+        )}
       </Tabs>
       <Divider />
       <SelectedPage pageSelection={tabSelection} />
