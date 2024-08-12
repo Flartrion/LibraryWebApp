@@ -1,4 +1,4 @@
-import { createElement, useReducer } from "react";
+import { createElement, useReducer } from "react"
 import {
   Button,
   Container,
@@ -7,14 +7,14 @@ import {
   FormLabel,
   Radio,
   RadioGroup,
-} from "@mui/material";
-import GenericListController from "../listPage/genericListController";
+} from "@mui/material"
+import GenericListController from "../listPage/genericListController"
 
 interface GenericFilterPageProps<T extends Id> {
-  attachedModel: GenericFieldModel<T>;
-  listController: GenericListController<T>;
-  reducer: React.Reducer<any, any>;
-  textFieldGroup: React.FC<any>;
+  attachedModel: GenericFieldModel<T>
+  listController: GenericListController<T>
+  reducer: React.Reducer<any, any>
+  textFieldGroup: React.FC<any>
 }
 
 function GenericFilterPage<T extends Id>({
@@ -27,21 +27,21 @@ function GenericFilterPage<T extends Id>({
     ...attachedModel,
     errField: null,
     processing: false,
-  });
+  })
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    const data = new FormData(e.currentTarget);
-    e.preventDefault();
-    const submitType = data.get("selectedFilter");
-    data.delete("selectedFilter");
+    const data = new FormData(e.currentTarget)
+    e.preventDefault()
+    const submitType = data.get("selectedFilter")
+    data.delete("selectedFilter")
     // console.log(submitType);
     // data.forEach((value, key, parent) => {
     //   console.log(key + ": " + value);
     // });
     if (submitType == "general") {
-      listController.getFiltered(Object.fromEntries(data) as T);
+      listController.getFiltered(Object.fromEntries(data) as T)
     } else if (submitType == "id") {
-      listController.getFilteredID(data.get("id").toString());
+      listController.getFilteredID(data.get("id").toString())
     }
   }
 
@@ -94,7 +94,7 @@ function GenericFilterPage<T extends Id>({
         </Button>
       </Container>
     </form>
-  );
+  )
 }
 
-export default GenericFilterPage;
+export default GenericFilterPage

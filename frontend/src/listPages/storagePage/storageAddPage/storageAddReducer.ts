@@ -1,5 +1,5 @@
-import storageReducerFabric from "../support/storageReducerFabric";
-import storageAddModel from "./storageAddModel";
+import storageReducerFabric from "../support/storageReducerFabric"
+import storageAddModel from "./storageAddModel"
 
-const storageAddReducer = storageReducerFabric(storageAddModel);
-export default storageAddReducer;
+const storageAddReducer = storageReducerFabric(storageAddModel)
+export default storageAddReducer

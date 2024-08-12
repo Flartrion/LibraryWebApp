@@ -1,8 +1,8 @@
-import Storage from "../../../dataclasses/storage";
+import Storage from "../../../dataclasses/storage"
 
 const storageViewModel: GenericViewModel<Storage> = {
   index: undefined,
   item: undefined,
-};
+}
 
-export default storageViewModel;
+export default storageViewModel

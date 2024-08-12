@@ -12,4 +12,4 @@ enum UserActionEnum {
   processing,
 }
 
-export default UserActionEnum;
+export default UserActionEnum

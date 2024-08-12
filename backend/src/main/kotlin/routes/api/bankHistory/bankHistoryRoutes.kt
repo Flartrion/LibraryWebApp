@@ -7,7 +7,7 @@ fun Route.bankHistoryRoutes() {
     authenticate("auth-jwt") {
         route("bankHistory") {
             bankHistoryAdd()
-
+            bankHistoryGetFiltered()
         }
     }
 }

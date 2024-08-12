@@ -1,23 +1,23 @@
-import { Box, Divider, Tab } from "@mui/material";
-import Tabs from "@mui/material/Tabs";
-import { useEffect, useState } from "react";
-import pageSelectorModel from "./pageSelectorModel";
-import PageEnum from "./pageEnum";
-import pageSelectorController from "./pageSelectorController";
-import userDataModel from "../support/userDataModel";
+import { Box, Divider, Tab } from "@mui/material"
+import Tabs from "@mui/material/Tabs"
+import { useEffect, useState } from "react"
+import pageSelectorModel from "./pageSelectorModel"
+import PageEnum from "./pageEnum"
+import pageSelectorController from "./pageSelectorController"
+import userDataModel from "../support/userDataModel"
 
 function SitePageSelector() {
-  const [selection, setSelection] = useState(pageSelectorModel.pageSelection);
+  const [selection, setSelection] = useState(pageSelectorModel.pageSelection)
   function handleSelection(e: React.SyntheticEvent, newValue: number) {
-    setSelection(newValue);
-    pageSelectorController.updateModel(newValue);
+    setSelection(newValue)
+    pageSelectorController.updateModel(newValue)
   }
   useEffect(() => {
-    pageSelectorController.subscribeView("pageSelector", setSelection);
+    pageSelectorController.subscribeView("pageSelector", setSelection)
     return () => {
-      pageSelectorController.unsubscribeView("pageSelector");
-    };
-  });
+      pageSelectorController.unsubscribeView("pageSelector")
+    }
+  })
 
   return (
     <Box>
@@ -42,6 +42,6 @@ function SitePageSelector() {
       </Tabs>
       <Divider />
     </Box>
-  );
+  )
 }
-export default SitePageSelector;
+export default SitePageSelector

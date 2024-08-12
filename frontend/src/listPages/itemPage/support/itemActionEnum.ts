@@ -14,4 +14,4 @@ enum ItemActionEnum {
   processing,
 }
 
-export default ItemActionEnum;
+export default ItemActionEnum

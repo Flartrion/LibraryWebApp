@@ -1,4 +1,4 @@
-import Item from "../../../dataclasses/item";
+import Item from "../../../dataclasses/item"
 
 const itemAddModel: GenericFieldModel<Item> = {
   id: "",
@@ -9,5 +9,5 @@ const itemAddModel: GenericFieldModel<Item> = {
   type: "",
   language: "",
   details: "",
-};
-export default itemAddModel;
+}
+export default itemAddModel

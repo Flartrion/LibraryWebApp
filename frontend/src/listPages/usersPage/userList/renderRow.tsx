@@ -1,12 +1,12 @@
-import { memo } from "react";
-import { areEqual } from "react-window";
-import { ListItemButton, ListItemText } from "@mui/material";
-import User from "../../../dataclasses/user";
-import userListController from "./userListController";
+import { memo } from "react"
+import { areEqual } from "react-window"
+import { ListItemButton, ListItemText } from "@mui/material"
+import User from "../../../dataclasses/user"
+import userListController from "./userListController"
 
 const renderRow = memo(({ data, index, style }: any) => {
-  const [userSelection, users] = data;
-  const user: User = users[index];
+  const [userSelection, users] = data
+  const user: User = users[index]
   // console.log(
   //   "I'm item " +
   //     index +
@@ -20,8 +20,8 @@ const renderRow = memo(({ data, index, style }: any) => {
       key={index}
       divider={true}
       onClick={(event) => {
-        event.stopPropagation();
-        userListController.changeSelection(index);
+        event.stopPropagation()
+        userListController.changeSelection(index)
       }}
       selected={userSelection === index}
     >
@@ -33,7 +33,7 @@ const renderRow = memo(({ data, index, style }: any) => {
         secondary={"Privilege level: " + user.role}
       />
     </ListItemButton>
-  );
-}, areEqual);
+  )
+}, areEqual)
 
-export default renderRow;
+export default renderRow

@@ -8,4 +8,4 @@ enum StorageActionEnum {
   processing,
 }
 
-export default StorageActionEnum;
+export default StorageActionEnum

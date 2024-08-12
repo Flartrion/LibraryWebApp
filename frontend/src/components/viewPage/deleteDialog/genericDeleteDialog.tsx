@@ -1,11 +1,11 @@
-import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material";
-import GenericDeleteController from "./genericDeleteController";
+import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material"
+import GenericDeleteController from "./genericDeleteController"
 
 interface GenericDeleteDialogProps<T extends Id> {
-  item: T;
-  deleteController: GenericDeleteController<T>;
-  open: boolean;
-  onCancel: ({}: any) => any;
+  item: T
+  deleteController: GenericDeleteController<T>
+  open: boolean
+  onCancel: ({}: any) => any
 }
 
 function GenericDeleteDialog<T extends Id>({
@@ -15,7 +15,7 @@ function GenericDeleteDialog<T extends Id>({
   onCancel = () => {},
 }: GenericDeleteDialogProps<T>) {
   function handleConfirm() {
-    deleteController.delete(item.id);
+    deleteController.delete(item.id)
   }
 
   return (
@@ -30,7 +30,7 @@ function GenericDeleteDialog<T extends Id>({
         </Button>
       </DialogActions>
     </Dialog>
-  );
+  )
 }
 
-export default GenericDeleteDialog;
+export default GenericDeleteDialog

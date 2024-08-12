@@ -1,13 +1,13 @@
-import { Backdrop, Button, CircularProgress, Container } from "@mui/material";
-import { createElement, useEffect, useReducer } from "react";
-import GenericAddController from "./genericAddController";
+import { Backdrop, Button, CircularProgress, Container } from "@mui/material"
+import { createElement, useEffect, useReducer } from "react"
+import GenericAddController from "./genericAddController"
 
 interface GenericAddPageProps<T extends Id> {
-  attachedModel: GenericFieldModel<T>;
-  addController: GenericAddController<T>;
-  reducer: React.Reducer<any, any>;
-  textFieldGroup: React.FC<any>;
-  enumUsed: any;
+  attachedModel: GenericFieldModel<T>
+  addController: GenericAddController<T>
+  reducer: React.Reducer<any, any>
+  textFieldGroup: React.FC<any>
+  enumUsed: any
 }
 
 /**
@@ -28,29 +28,29 @@ function GenericAddPage<T extends Id>({
     processing: false,
     errField: null,
     ...attachedModel,
-  });
+  })
 
   useEffect(() => {
-    addController.subscribedPageDispatch = dispatch;
+    addController.subscribedPageDispatch = dispatch
     addController.setProcessing = (newValue: boolean) => {
-      dispatch([enumUsed.processing, newValue]);
-    };
+      dispatch([enumUsed.processing, newValue])
+    }
     return () => {
-      addController.subscribedPageDispatch = null;
-      addController.setProcessing = () => {};
-    };
-  }, [addController]);
+      addController.subscribedPageDispatch = null
+      addController.setProcessing = () => {}
+    }
+  }, [addController])
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (
     event: React.FormEvent<HTMLFormElement>
   ) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    event.preventDefault()
+    const data = new FormData(event.currentTarget)
     // data.forEach((value, key, parent) => {
     //   console.log(key + ": " + value);
     // });
-    addController.submit(data);
-  };
+    addController.submit(data)
+  }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -80,7 +80,7 @@ function GenericAddPage<T extends Id>({
         </Backdrop>
       </Container>
     </form>
-  );
+  )
 }
 
-export default GenericAddPage;
+export default GenericAddPage

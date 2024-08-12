@@ -1,7 +1,7 @@
-import { Theme } from "@emotion/react";
-import { createTheme } from "@mui/material/styles";
+import { Theme } from "@emotion/react"
+import { createTheme } from "@mui/material/styles"
 
-type NamedTheme = [string, Theme];
+type NamedTheme = [string, Theme]
 
 const projectThemesArray: NamedTheme[] = [
   [
@@ -68,5 +68,5 @@ const projectThemesArray: NamedTheme[] = [
       },
     }),
   ],
-];
-export default projectThemesArray;
+]
+export default projectThemesArray

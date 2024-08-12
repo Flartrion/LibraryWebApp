@@ -1,4 +1,4 @@
-import stateSubscriberEntry from "./stateSubscriberEntry";
+import stateSubscriberEntry from "./stateSubscriberEntry"
 
 /**
  * Just general properties any single useState controller would need.
@@ -6,10 +6,10 @@ import stateSubscriberEntry from "./stateSubscriberEntry";
  * as long as they subscribe to controller on mount
  * */
 abstract class ReactGeneralController<T> {
-  protected subscribers: stateSubscriberEntry<T>[];
+  protected subscribers: stateSubscriberEntry<T>[]
   protected updateView(newValue: T): void {
     for (let subscribers of this.subscribers) {
-      subscribers[1](newValue);
+      subscribers[1](newValue)
     }
   }
   /**
@@ -17,7 +17,7 @@ abstract class ReactGeneralController<T> {
    * @param {T} newValue new state value
    */
   updateModel(newValue: T) {
-    this.updateView(newValue);
+    this.updateView(newValue)
   }
   /**
    * Attaches the observing component to this controller
@@ -28,7 +28,7 @@ abstract class ReactGeneralController<T> {
     name: string,
     stateFun: React.Dispatch<React.SetStateAction<T>>
   ): void {
-    this.subscribers.push([name, stateFun]);
+    this.subscribers.push([name, stateFun])
   }
   /**
    * Detaches the observing component
@@ -36,13 +36,13 @@ abstract class ReactGeneralController<T> {
    */
   unsubscribeView(name: string) {
     const indexToRemove = this.subscribers.findIndex((entry) => {
-      entry[0] === name;
-    });
-    if (indexToRemove > -1) this.subscribers.splice(indexToRemove, 1);
+      entry[0] === name
+    })
+    if (indexToRemove > -1) this.subscribers.splice(indexToRemove, 1)
   }
 
   constructor() {
-    this.subscribers = [];
+    this.subscribers = []
   }
 }
-export default ReactGeneralController;
+export default ReactGeneralController

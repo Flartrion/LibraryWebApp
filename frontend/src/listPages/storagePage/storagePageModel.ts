@@ -1,8 +1,8 @@
-import ListTab from "../support/listTab";
+import ListTab from "../support/listTab"
 
 const storagePageModel: {
-  tabSelection: ListTab;
+  tabSelection: ListTab
 } = {
   tabSelection: 0,
-};
-export default storagePageModel;
+}
+export default storagePageModel

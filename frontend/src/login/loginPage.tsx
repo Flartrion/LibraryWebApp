@@ -4,32 +4,32 @@ import {
   Button,
   CircularProgress,
   TextField,
-} from "@mui/material";
-import loginController from "./loginController";
-import React, { useEffect, useState } from "react";
-import { GitHub } from "@mui/icons-material";
+} from "@mui/material"
+import loginController from "./loginController"
+import React, { useEffect, useState } from "react"
+import { GitHub } from "@mui/icons-material"
 
 function LoginPage() {
-  const [processing, setProcessing] = useState(false);
+  const [processing, setProcessing] = useState(false)
 
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = (
     event: React.FormEvent<HTMLFormElement>
   ) => {
-    event.preventDefault();
-    setProcessing(true);
-    const data = new FormData(event.currentTarget);
-    const login = data.get("loginEmail").valueOf().toString();
-    const password = data.get("loginPassword").valueOf().toString();
+    event.preventDefault()
+    setProcessing(true)
+    const data = new FormData(event.currentTarget)
+    const login = data.get("loginEmail").valueOf().toString()
+    const password = data.get("loginPassword").valueOf().toString()
 
-    loginController.loginRequest(login, password);
-  };
+    loginController.loginRequest(login, password)
+  }
 
   useEffect(() => {
-    loginController.subscribeView("loginPage", setProcessing);
+    loginController.subscribeView("loginPage", setProcessing)
     return () => {
-      loginController.unsubscribeView("loginPage");
-    };
-  });
+      loginController.unsubscribeView("loginPage")
+    }
+  })
 
   return (
     <form onSubmit={handleSubmit} noValidate>
@@ -71,7 +71,7 @@ function LoginPage() {
 
         <Button
           onClick={() => {
-            location.href = "/login/github";
+            location.href = "/login/github"
           }}
         >
           <GitHub />
@@ -81,6 +81,6 @@ function LoginPage() {
         </Backdrop>
       </Box>
     </form>
-  );
+  )
 }
-export default LoginPage;
+export default LoginPage

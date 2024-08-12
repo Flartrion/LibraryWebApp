@@ -1,4 +1,4 @@
-import { CircularProgress, Container } from "@mui/material";
+import { CircularProgress, Container } from "@mui/material"
 
 function DefaultFallback() {
   return (
@@ -12,7 +12,7 @@ function DefaultFallback() {
     >
       <CircularProgress size={"100px"} />
     </Container>
-  );
+  )
 }
 
-export default DefaultFallback;
+export default DefaultFallback

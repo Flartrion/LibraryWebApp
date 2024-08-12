@@ -1,51 +1,51 @@
-import { Box, Divider, Tab, Tabs } from "@mui/material";
-import { lazy, Suspense, useEffect, useState } from "react";
-import itemPageController from "./itemPageController";
-import itemPageModel from "./itemPageModel";
-import userDataModel from "../../support/userDataModel";
-import itemViewModel from "./itemViewPage/itemViewModel";
-import DefaultFallback from "../../support/fallbacks/defaultFallback";
-import itemListController from "./itemList/itemListController";
-import ListTab from "../support/listTab";
-import itemAddController from "./itemAddPage/itemAddController";
-import itemAddModel from "./itemAddPage/itemAddModel";
-import addReducer from "./itemAddPage/reducer";
-import ItemTextFieldsAbstract from "./support/itemTextFieldsAbstract";
-import itemFilterModel from "./itemFilterPage/itemFilterModel";
-import filterReducer from "./itemFilterPage/reducer";
-import renderRow from "./itemList/renderRow";
-import itemListModel from "./itemList/itemListModel";
-import Item from "../../dataclasses/item";
-import ItemActionEnum from "./support/itemActionEnum";
+import { Box, Divider, Tab, Tabs } from "@mui/material"
+import { lazy, Suspense, useEffect, useState } from "react"
+import itemPageController from "./itemPageController"
+import itemPageModel from "./itemPageModel"
+import userDataModel from "../../support/userDataModel"
+import itemViewModel from "./itemViewPage/itemViewModel"
+import DefaultFallback from "../../support/fallbacks/defaultFallback"
+import itemListController from "./itemList/itemListController"
+import ListTab from "../support/listTab"
+import itemAddController from "./itemAddPage/itemAddController"
+import itemAddModel from "./itemAddPage/itemAddModel"
+import addReducer from "./itemAddPage/reducer"
+import ItemTextFieldsAbstract from "./support/itemTextFieldsAbstract"
+import itemFilterModel from "./itemFilterPage/itemFilterModel"
+import filterReducer from "./itemFilterPage/reducer"
+import renderRow from "./itemList/renderRow"
+import itemListModel from "./itemList/itemListModel"
+import Item from "../../dataclasses/item"
+import ItemActionEnum from "./support/itemActionEnum"
 const GenericVirtualList = lazy(
   () => import("../../components/listPage/genericList")
-);
+)
 const GeneralAddPage = lazy(
   () => import("../../components/addPage/genericAddPage")
-);
+)
 const GenericFilterPage = lazy(
   () => import("../../components/filterPage/genericFIlterPage")
-);
-const ItemViewPage = lazy(() => import("./itemViewPage/ItemViewPage"));
+)
+const ItemViewPage = lazy(() => import("./itemViewPage/ItemViewPage"))
 
 function ItemPage() {
-  const [tabSelection, setTabSelection] = useState(itemPageModel.tabSelection);
-  const [viewedItem, setViewedState] = useState<Item>(itemViewModel.item);
+  const [tabSelection, setTabSelection] = useState(itemPageModel.tabSelection)
+  const [viewedItem, setViewedState] = useState<Item>(itemViewModel.item)
 
   useEffect(() => {
-    itemListController.setViewedState = setViewedState;
-    itemPageController.subscribeView("itemPage", setTabSelection);
+    itemListController.setViewedState = setViewedState
+    itemPageController.subscribeView("itemPage", setTabSelection)
     return () => {
-      itemListController.setViewedState = undefined;
-      itemPageController.unsubscribeView("itemPage");
-    };
-  }, [itemListController, itemPageController]);
+      itemListController.setViewedState = undefined
+      itemPageController.unsubscribeView("itemPage")
+    }
+  }, [itemListController, itemPageController])
 
   function handleSelection(
     e: React.SyntheticEvent<Element, Event>,
     newValue: number
   ) {
-    itemPageController.updateModel(newValue);
+    itemPageController.updateModel(newValue)
   }
 
   function SelectedPage({ pageSelection }: any) {
@@ -59,7 +59,7 @@ function ItemPage() {
               listModel={itemListModel}
             />
           </Suspense>
-        );
+        )
       case ListTab.Filters:
         return (
           <Suspense fallback={<DefaultFallback />}>
@@ -70,13 +70,13 @@ function ItemPage() {
               textFieldGroup={ItemTextFieldsAbstract}
             />
           </Suspense>
-        );
+        )
       case ListTab.View:
         return (
           <Suspense fallback={<DefaultFallback />}>
-            <ItemViewPage item={viewedItem}></ItemViewPage>;
+            <ItemViewPage item={viewedItem}></ItemViewPage>
           </Suspense>
-        );
+        )
       case ListTab.Add:
         return (
           <Suspense fallback={<DefaultFallback />}>
@@ -88,7 +88,7 @@ function ItemPage() {
               enumUsed={ItemActionEnum}
             ></GeneralAddPage>
           </Suspense>
-        );
+        )
     }
   }
 
@@ -116,7 +116,7 @@ function ItemPage() {
       <Divider />
       <SelectedPage pageSelection={tabSelection} />
     </Box>
-  );
+  )
 }
 
-export default ItemPage;
+export default ItemPage

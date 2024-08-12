@@ -4,21 +4,21 @@ import {
   Button,
   CircularProgress,
   Container,
-} from "@mui/material";
-import { createElement, FC, Reducer, useEffect, useReducer } from "react";
+} from "@mui/material"
+import { createElement, FC, Reducer, useEffect, useReducer } from "react"
 
 interface GenericEditPageProps<T extends Id> {
-  item: T;
-  setEditState: React.Dispatch<React.SetStateAction<Boolean>>;
+  item: T
+  toView: () => void
   // TODO: Replace with class
-  editController: any;
-  reducer: Reducer<any, any>;
-  textFieldGroup: FC<any>;
+  editController: any
+  reducer: Reducer<any, any>
+  textFieldGroup: FC<any>
 }
 
 function GenericEditPage<T extends Id>({
   item,
-  setEditState,
+  toView,
   editController,
   reducer,
   textFieldGroup,
@@ -27,14 +27,14 @@ function GenericEditPage<T extends Id>({
     processing: false,
     errField: null,
     ...item,
-  });
+  })
 
   useEffect(() => {
-    editController.subscribedPageDispatch = dispatch;
+    editController.subscribedPageDispatch = dispatch
     return () => {
-      editController.subscribedPageDispatch = undefined;
-    };
-  }, [editController, dispatch]);
+      editController.subscribedPageDispatch = undefined
+    }
+  }, [editController, dispatch])
 
   return (
     <form onSubmit={editController.submitHandler}>
@@ -66,14 +66,14 @@ function GenericEditPage<T extends Id>({
             Submit
           </Button>
           <Button disabled>Reset</Button>
-          <Button onClick={() => setEditState(false)}>Cancel</Button>
+          <Button onClick={() => toView()}>Cancel</Button>
         </Box>
         <Backdrop open={state.processing}>
           <CircularProgress />
         </Backdrop>
       </Container>
     </form>
-  );
+  )
 }
 
-export default GenericEditPage;
+export default GenericEditPage

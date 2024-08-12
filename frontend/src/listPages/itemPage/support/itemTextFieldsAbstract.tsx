@@ -1,14 +1,14 @@
-import { TextField } from "@mui/material";
-import ItemActionEnum from "./itemActionEnum";
+import { TextField } from "@mui/material"
+import ItemActionEnum from "./itemActionEnum"
 
 interface ItemTextFieldsProps {
-  state?: any;
-  dispatch?: React.Dispatch<any>;
-  errField?: ItemActionEnum;
-  readonly?: boolean;
-  idreadonly?: boolean;
-  showId?: boolean;
-  requirements?: boolean;
+  state?: any
+  dispatch?: React.Dispatch<any>
+  errField?: ItemActionEnum
+  readonly?: boolean
+  idreadonly?: boolean
+  showId?: boolean
+  requirements?: boolean
 }
 
 function ItemTextFieldsAbstract({
@@ -146,7 +146,7 @@ function ItemTextFieldsAbstract({
         }
       />
     </>
-  );
+  )
 }
 
-export default ItemTextFieldsAbstract;
+export default ItemTextFieldsAbstract

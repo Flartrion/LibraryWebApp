@@ -1,4 +1,4 @@
-import User from "../../../dataclasses/user";
+import User from "../../../dataclasses/user"
 
 const userFilterModel: GenericFieldModel<User> = {
   id: "",
@@ -7,5 +7,5 @@ const userFilterModel: GenericFieldModel<User> = {
   fullName: "",
   phoneNumber: "",
   role: "",
-};
-export default userFilterModel;
+}
+export default userFilterModel

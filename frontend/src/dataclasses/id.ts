@@ -1,3 +1,3 @@
 type Id = {
-  id: string;
-};
+  id: string
+}

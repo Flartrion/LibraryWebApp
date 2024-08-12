@@ -1,5 +1,5 @@
-import itemReducerFabric from "../../support/itemReducerFabric";
+import itemReducerFabric from "../../support/itemReducerFabric"
 
-const reducer: React.Reducer<any, any> = itemReducerFabric(null);
+const reducer: React.Reducer<any, any> = itemReducerFabric(null)
 
-export default reducer;
+export default reducer

@@ -1,1 +1,1 @@
-type GenericFieldModel<T extends Id> = T;
+type GenericFieldModel<T extends Id> = T

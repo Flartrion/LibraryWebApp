@@ -1,12 +1,12 @@
-import { memo } from "react";
-import Item from "../../../dataclasses/item";
-import { ListItemButton, ListItemText } from "@mui/material";
-import itemListController from "./itemListController";
-import { areEqual } from "react-window";
+import { memo } from "react"
+import Item from "../../../dataclasses/item"
+import { ListItemButton, ListItemText } from "@mui/material"
+import itemListController from "./itemListController"
+import { areEqual } from "react-window"
 
 const renderRow = memo(({ data, index, style }: any) => {
-  const [itemSelection, items] = data;
-  const item: Item = items[index];
+  const [itemSelection, items] = data
+  const item: Item = items[index]
   // console.log(
   //   "I'm item " +
   //     index +
@@ -20,8 +20,8 @@ const renderRow = memo(({ data, index, style }: any) => {
       key={index}
       divider={true}
       onClick={(event) => {
-        event.stopPropagation();
-        itemListController.changeSelection(index);
+        event.stopPropagation()
+        itemListController.changeSelection(index)
       }}
       selected={itemSelection === index}
     >
@@ -30,7 +30,7 @@ const renderRow = memo(({ data, index, style }: any) => {
         </ListItemIcon> */}
       <ListItemText primary={item.title} secondary={item.authors} />
     </ListItemButton>
-  );
-}, areEqual);
+  )
+}, areEqual)
 
-export default renderRow;
+export default renderRow

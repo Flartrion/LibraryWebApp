@@ -1,8 +1,8 @@
-import ListTab from "../support/listTab";
+import ListTab from "../support/listTab"
 
 const userPageModel: {
-  tabSelection: ListTab;
+  tabSelection: ListTab
 } = {
   tabSelection: 0,
-};
-export default userPageModel;
+}
+export default userPageModel

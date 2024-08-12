@@ -5,4 +5,4 @@ const enum PageSelection {
 
   Login,
 }
-export default PageSelection;
+export default PageSelection

@@ -1,12 +1,12 @@
-import { memo } from "react";
-import { areEqual } from "react-window";
-import { ListItemButton, ListItemText } from "@mui/material";
-import storageListController from "./storageListController";
-import Storage from "../../../dataclasses/storage";
+import { memo } from "react"
+import { areEqual } from "react-window"
+import { ListItemButton, ListItemText } from "@mui/material"
+import storageListController from "./storageListController"
+import Storage from "../../../dataclasses/storage"
 
 const renderRow = memo(({ data, index, style }: any) => {
-  const [storageSelection, storages] = data;
-  const storage: Storage = storages[index];
+  const [storageSelection, storages] = data
+  const storage: Storage = storages[index]
   // console.log(
   //   "I'm item " +
   //     index +
@@ -20,8 +20,8 @@ const renderRow = memo(({ data, index, style }: any) => {
       key={index}
       divider={true}
       onClick={(event) => {
-        event.stopPropagation();
-        storageListController.changeSelection(index);
+        event.stopPropagation()
+        storageListController.changeSelection(index)
       }}
       selected={storageSelection === index}
     >
@@ -30,7 +30,7 @@ const renderRow = memo(({ data, index, style }: any) => {
         </ListItemIcon> */}
       <ListItemText primary={storage.address} secondary={"ID: " + storage.id} />
     </ListItemButton>
-  );
-}, areEqual);
+  )
+}, areEqual)
 
-export default renderRow;
+export default renderRow

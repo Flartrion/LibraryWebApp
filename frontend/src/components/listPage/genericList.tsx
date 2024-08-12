@@ -1,14 +1,14 @@
-import { CircularProgress } from "@mui/material";
-import ReactVirtualizedAutoSizer from "react-virtualized-auto-sizer";
-import { FixedSizeList } from "react-window";
-import { FC, useEffect, useMemo, useState } from "react";
-import GenericListController from "./genericListController";
-import DefaultFallback from "../../support/fallbacks/defaultFallback";
+import { CircularProgress } from "@mui/material"
+import ReactVirtualizedAutoSizer from "react-virtualized-auto-sizer"
+import { FixedSizeList } from "react-window"
+import { FC, useEffect, useMemo, useState } from "react"
+import GenericListController from "./genericListController"
+import DefaultFallback from "../../support/fallbacks/defaultFallback"
 
 interface GenericVirtualListProps<T extends Id> {
-  renderRow: FC;
-  listController: GenericListController<T>;
-  listModel: GenericListModel<T>;
+  renderRow: FC
+  listController: GenericListController<T>
+  listModel: GenericListModel<T>
 }
 // TODO: Gotta replace this with virtualized grid or something eventually if I want to implement pictures or something like that.
 // Do I, though?
@@ -17,24 +17,24 @@ function GenericVirtualList<T extends Id>({
   listController,
   listModel,
 }: GenericVirtualListProps<T>) {
-  const [selectedIndex, setItemSelection] = useState(listModel.selection);
-  const [itemsLoaded, setLoaded] = useState(listModel.loaded);
+  const [selectedIndex, setItemSelection] = useState(listModel.selection)
+  const [itemsLoaded, setLoaded] = useState(listModel.loaded)
   const data: [number, T[]] = useMemo(
     () => [selectedIndex, listModel.items],
     [selectedIndex, listModel.items]
-  );
+  )
 
   useEffect(() => {
-    listController.setSelectionState = setItemSelection;
-    listController.setLoadedState = setLoaded;
+    listController.setSelectionState = setItemSelection
+    listController.setLoadedState = setLoaded
     if (!listModel.loaded) {
-      listController.getInitial();
+      listController.getInitial()
     }
     return () => {
-      listController.setSelectionState = undefined;
-      listController.setLoadedState = undefined;
-    };
-  }, [listController]);
+      listController.setSelectionState = undefined
+      listController.setLoadedState = undefined
+    }
+  }, [listController])
 
   return (
     <ReactVirtualizedAutoSizer>
@@ -48,10 +48,10 @@ function GenericVirtualList<T extends Id>({
             itemCount={listModel.items.length}
             itemSize={50}
             itemKey={(index, data) => {
-              return data[1][index].id;
+              return data[1][index].id
             }}
             onScroll={(props) => {
-              listModel.scrollOffset = props.scrollOffset;
+              listModel.scrollOffset = props.scrollOffset
             }}
             initialScrollOffset={listModel.scrollOffset}
           >
@@ -62,6 +62,6 @@ function GenericVirtualList<T extends Id>({
         )
       }
     </ReactVirtualizedAutoSizer>
-  );
+  )
 }
-export default GenericVirtualList;
+export default GenericVirtualList

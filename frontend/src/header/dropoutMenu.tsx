@@ -6,34 +6,34 @@ import {
   ListSubheader,
   Menu,
   MenuItem,
-} from "@mui/material";
-import themeObserver from "../theming/themeObserver";
-import projectThemesArray from "../styles";
-import { Person } from "@mui/icons-material";
-import pageSelectorController from "../pageSelection/pageSelectorController";
-import { useState } from "react";
-import PageSelection from "../pageSelection/pageEnum";
-import loginController from "../login/loginController";
-import userDataModel from "../support/userDataModel";
-import itemPageController from "../listPages/itemPage/itemPageController";
-import ListTab from "../listPages/support/listTab";
-import storagePageController from "../listPages/storagePage/storagePageController";
+} from "@mui/material"
+import themeObserver from "../theming/themeObserver"
+import projectThemesArray from "../styles"
+import { Person } from "@mui/icons-material"
+import pageSelectorController from "../pageSelection/pageSelectorController"
+import { useState } from "react"
+import PageSelection from "../pageSelection/pageEnum"
+import loginController from "../login/loginController"
+import userDataModel from "../support/userDataModel"
+import itemPageController from "../listPages/itemPage/itemPageController"
+import ListTab from "../listPages/support/listTab"
+import storagePageController from "../listPages/storagePage/storagePageController"
 
 function HeaderMenu() {
-  const [headerMenuAnchor, setAnchor] = useState(null);
-  const menuOpened = Boolean(headerMenuAnchor);
-  const [drawerOpened, setDrawerOpened] = useState(false);
+  const [headerMenuAnchor, setAnchor] = useState(null)
+  const menuOpened = Boolean(headerMenuAnchor)
+  const [drawerOpened, setDrawerOpened] = useState(false)
 
   const handleMenuOpen = (e: React.MouseEvent) => {
-    setAnchor(e.currentTarget);
-  };
+    setAnchor(e.currentTarget)
+  }
   const handleMenuClose = () => {
-    setAnchor(null);
-  };
+    setAnchor(null)
+  }
   const handleThemeChange = (e: any, index: number) => {
-    document.cookie = "userTheme=" + index;
-    themeObserver.updateModel(index);
-  };
+    document.cookie = "userTheme=" + index
+    themeObserver.updateModel(index)
+  }
   const themesList = projectThemesArray.map((theme, index) => {
     return (
       <MenuItem
@@ -43,8 +43,8 @@ function HeaderMenu() {
       >
         {String(theme[0])}
       </MenuItem>
-    );
-  });
+    )
+  })
   return (
     <>
       <Avatar
@@ -70,7 +70,7 @@ function HeaderMenu() {
         {userDataModel.userRole == undefined ? (
           <MenuItem
             onClick={() => {
-              pageSelectorController.updateModel(PageSelection.Login);
+              pageSelectorController.updateModel(PageSelection.Login)
             }}
           >
             Login
@@ -78,12 +78,12 @@ function HeaderMenu() {
         ) : (
           <MenuItem
             onClick={() => {
-              pageSelectorController.updateModel(PageSelection.Login);
+              pageSelectorController.updateModel(PageSelection.Login)
               // TODO: When storage page is implemented, switch the page to storage list over there also
-              itemPageController.updateModel(ListTab.Items);
-              storagePageController.updateModel(ListTab.Items);
-              loginController.logout();
-              userDataModel.update();
+              itemPageController.updateModel(ListTab.Items)
+              storagePageController.updateModel(ListTab.Items)
+              loginController.logout()
+              userDataModel.update()
             }}
           >
             Logout
@@ -95,8 +95,8 @@ function HeaderMenu() {
         anchor="right"
         open={drawerOpened}
         onClick={(event) => {
-          event.stopPropagation();
-          setDrawerOpened(false);
+          event.stopPropagation()
+          setDrawerOpened(false)
         }}
       >
         <ListSubheader>Themes</ListSubheader>
@@ -104,6 +104,6 @@ function HeaderMenu() {
         <Divider />
       </Drawer>
     </>
-  );
+  )
 }
-export default HeaderMenu;
+export default HeaderMenu

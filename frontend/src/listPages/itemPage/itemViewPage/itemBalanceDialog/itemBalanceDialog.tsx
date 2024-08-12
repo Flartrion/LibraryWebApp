@@ -9,47 +9,47 @@ import {
   MenuItem,
   Skeleton,
   TextField,
-} from "@mui/material";
-import Item from "../../../../dataclasses/item";
-import { CancelOutlined, Check } from "@mui/icons-material";
-import { FormEvent, useEffect, useState } from "react";
-import itemBalanceController from "./itemBalanceController";
-import itemBalanceModel from "./itemBalanceModel";
-import Storage from "../../../../dataclasses/storage";
+} from "@mui/material"
+import Item from "../../../../dataclasses/item"
+import { Cancel, Check } from "@mui/icons-material"
+import { FormEvent, useEffect, useState } from "react"
+import itemBalanceController from "./itemBalanceController"
+import itemBalanceModel from "./itemBalanceModel"
+import Storage from "../../../../dataclasses/storage"
 
 interface ItemBalanceProps {
-  item: Item;
-  open: boolean;
-  onCancel: ({}: any) => void;
+  item: Item
+  open: boolean
+  onCancel: ({}: any) => void
 }
 
-function ItemBalanceDialog({ item, open, onCancel }: ItemBalanceProps) {
+function ItemBalanceChangeDialog({ item, open, onCancel }: ItemBalanceProps) {
   function handleConfirm(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const data = new FormData(e.currentTarget);
+    e.preventDefault()
+    const data = new FormData(e.currentTarget)
     // data.forEach((value, key, parent) => console.log(key + ": " + value));
-    itemBalanceController.newBalanceEntry(data);
+    itemBalanceController.newBalanceEntry(data)
     // TODO: Functionality
   }
-  const [storagesLoaded, setStoragesLoaded] = useState(itemBalanceModel.loaded);
+  const [storagesLoaded, setStoragesLoaded] = useState(itemBalanceModel.loaded)
 
   useEffect(() => {
-    itemBalanceController.onCancel = onCancel;
-    itemBalanceController.setStoragesLoadedState = setStoragesLoaded;
+    itemBalanceController.onCancel = onCancel
+    itemBalanceController.setStoragesLoadedState = setStoragesLoaded
     // console.log("setStoragesLoadedState set");
     if (open) {
       // console.log("starting loading");
-      itemBalanceController.loadStorages();
+      itemBalanceController.loadStorages()
       // As effect is executed on "open" prop change, that should make it only
       // reload storages on re-opening of this dialog,
       // which is intended behaviour
     }
     return () => {
       // console.log("setStoragesLoadedState unset");
-      itemBalanceController.setStoragesLoadedState = undefined;
-      itemBalanceController.onCancel = undefined;
-    };
-  }, [open]);
+      itemBalanceController.setStoragesLoadedState = undefined
+      itemBalanceController.onCancel = undefined
+    }
+  }, [open])
 
   return (
     <Dialog open={open}>
@@ -66,12 +66,7 @@ function ItemBalanceDialog({ item, open, onCancel }: ItemBalanceProps) {
           >
             {storagesLoaded ? (
               <>
-                <Input
-                  name="id"
-                  value="0"
-                  readOnly
-                  sx={{ display: "none" }}
-                />
+                <Input name="id" value="0" readOnly sx={{ display: "none" }} />
                 <TextField
                   label="Item ID"
                   name="idItem"
@@ -125,7 +120,7 @@ function ItemBalanceDialog({ item, open, onCancel }: ItemBalanceProps) {
           </Container>
         </DialogContent>
         <DialogActions>
-          <Button startIcon={<CancelOutlined />} autoFocus onClick={onCancel}>
+          <Button startIcon={<Cancel />} autoFocus onClick={onCancel}>
             Cancel
           </Button>
           <Button startIcon={<Check />} variant="outlined" type="submit">
@@ -134,7 +129,7 @@ function ItemBalanceDialog({ item, open, onCancel }: ItemBalanceProps) {
         </DialogActions>
       </form>
     </Dialog>
-  );
+  )
 }
 
-export default ItemBalanceDialog;
+export default ItemBalanceChangeDialog

@@ -1,5 +1,5 @@
-import storageReducerFabric from "../support/storageReducerFabric";
-import storageFilterModel from "./storageFilterModel";
+import storageReducerFabric from "../support/storageReducerFabric"
+import storageFilterModel from "./storageFilterModel"
 
-const storageFilterReducer = storageReducerFabric(storageFilterModel);
-export default storageFilterReducer;
+const storageFilterReducer = storageReducerFabric(storageFilterModel)
+export default storageFilterReducer

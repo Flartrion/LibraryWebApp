@@ -1,8 +1,8 @@
-import GenericEditController from "../../../../components/viewPage/editPage/genericEditController";
-import storageListController from "../../storageListPage/storageListController";
-import storageListModel from "../../storageListPage/storageListModel";
-import StorageActionEnum from "../../support/storageActionEnum";
-import storageViewModel from "../storageViewModel";
+import GenericEditController from "../../../../components/viewPage/editPage/genericEditController"
+import storageListController from "../../storageListPage/storageListController"
+import storageListModel from "../../storageListPage/storageListModel"
+import StorageActionEnum from "../../support/storageActionEnum"
+import storageViewModel from "../storageViewModel"
 
 const storageEditController = new GenericEditController(
   "storages/update",
@@ -10,5 +10,5 @@ const storageEditController = new GenericEditController(
   storageListController,
   storageViewModel,
   StorageActionEnum
-);
-export default storageEditController;
+)
+export default storageEditController

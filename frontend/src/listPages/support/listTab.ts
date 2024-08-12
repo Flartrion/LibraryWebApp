@@ -7,4 +7,4 @@ const enum ListTab {
   View,
   Add,
 }
-export default ListTab;
+export default ListTab

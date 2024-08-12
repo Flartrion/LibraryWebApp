@@ -1,13 +1,13 @@
-import { TextField } from "@mui/material";
-import StorageActionEnum from "./storageActionEnum";
+import { TextField } from "@mui/material"
+import StorageActionEnum from "./storageActionEnum"
 interface StorageTextFieldsProps {
-  state?: any;
-  dispatch?: React.Dispatch<any>;
-  errField?: StorageActionEnum;
-  readonly?: boolean;
-  idreadonly?: boolean;
-  showId?: boolean;
-  requirements?: boolean;
+  state?: any
+  dispatch?: React.Dispatch<any>
+  errField?: StorageActionEnum
+  readonly?: boolean
+  idreadonly?: boolean
+  showId?: boolean
+  requirements?: boolean
 }
 
 function StorageTextFieldsAbstract({
@@ -59,7 +59,7 @@ function StorageTextFieldsAbstract({
         }
       />
     </>
-  );
+  )
 }
 
-export default StorageTextFieldsAbstract;
+export default StorageTextFieldsAbstract

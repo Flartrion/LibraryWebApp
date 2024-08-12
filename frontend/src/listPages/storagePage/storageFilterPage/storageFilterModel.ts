@@ -1,7 +1,7 @@
-import Storage from "../../../dataclasses/storage";
+import Storage from "../../../dataclasses/storage"
 
 const storageFilterModel: GenericFieldModel<Storage> = {
   id: "",
   address: "",
-};
-export default storageFilterModel;
+}
+export default storageFilterModel

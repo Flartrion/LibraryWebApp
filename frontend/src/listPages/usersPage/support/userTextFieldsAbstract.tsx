@@ -1,14 +1,14 @@
-import { TextField } from "@mui/material";
-import UserActionEnum from "./userActionEnum";
+import { TextField } from "@mui/material"
+import UserActionEnum from "./userActionEnum"
 
 interface UserTextFieldsProps {
-  state?: any;
-  dispatch?: React.Dispatch<any>;
-  errField?: UserActionEnum;
-  readonly?: boolean;
-  idreadonly?: boolean;
-  showId?: boolean;
-  requirements?: boolean;
+  state?: any
+  dispatch?: React.Dispatch<any>
+  errField?: UserActionEnum
+  readonly?: boolean
+  idreadonly?: boolean
+  showId?: boolean
+  requirements?: boolean
 }
 
 function UserTextFieldsAbstract({
@@ -135,7 +135,7 @@ function UserTextFieldsAbstract({
         }
       />
     </>
-  );
+  )
 }
 
-export default UserTextFieldsAbstract;
+export default UserTextFieldsAbstract
