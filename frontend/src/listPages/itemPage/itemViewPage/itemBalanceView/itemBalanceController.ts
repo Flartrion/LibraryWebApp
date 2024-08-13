@@ -1,15 +1,13 @@
 import Storage, { newStorage } from "../../../../dataclasses/storage"
 import itemBalanceModel from "./itemBalanceModel"
 
-const itemBalanceController: {
-  setStoragesLoadedState: React.Dispatch<React.SetStateAction<boolean>>
-  loadStorages: () => void
-  newBalanceEntry: (data: FormData) => void
-  onCancel: ({}: any) => void
-} = {
-  onCancel: undefined,
-  setStoragesLoadedState: undefined,
-  loadStorages() {
+class ItemBalanceController {
+  dialogOnCancel: () => void = undefined
+  dialogSetStoragesLoadedState: React.Dispatch<React.SetStateAction<boolean>> =
+    undefined
+  viewSetStoragesLoadedState: React.Dispatch<React.SetStateAction<boolean>> =
+    undefined
+  loadStorages = () => {
     const filters = newStorage()
     const options = {
       method: "POST",
@@ -31,12 +29,14 @@ const itemBalanceController: {
           const storages: Storage[] = JSON.parse(body)
           //   console.log(storages);
           itemBalanceModel.storages = storages
-          itemBalanceModel.loaded = true
+          itemBalanceModel.storagesLoaded = true
           //   console.log("finished loading");
           //   console.log(this);
           //   console.log(this.setStoragesLoadedState);
-          if (this.setStoragesLoadedState != undefined)
-            this.setStoragesLoadedState(true)
+          if (this.dialogSetStoragesLoadedState != undefined)
+            this.dialogSetStoragesLoadedState(true)
+          if (this.viewSetStoragesLoadedState != undefined)
+            this.viewSetStoragesLoadedState(true)
           // console.log(items);
         } else {
           console.log(body)
@@ -45,9 +45,14 @@ const itemBalanceController: {
       .catch((reason) => {
         console.log(reason)
       })
-  },
+  }
 
-  newBalanceEntry(data: FormData) {
+  unloadStorages = () => {
+    itemBalanceModel.storages = undefined
+    itemBalanceModel.storagesLoaded = false
+  }
+
+  newBalanceEntry = (data: FormData) => {
     // console.log("Sending: " + JSON.stringify(Object.fromEntries(data)));
     const options = {
       method: "POST",
@@ -67,7 +72,7 @@ const itemBalanceController: {
       .then((body) => {
         if (responseStatus == 201) {
           console.log(body)
-          this.onCancel()
+          this.dialogOnCancel()
         } else {
           console.log(body)
         }
@@ -75,6 +80,9 @@ const itemBalanceController: {
       .catch((reason) => {
         console.log(reason)
       })
-  },
+  }
 }
+
+const itemBalanceController = new ItemBalanceController()
+
 export default itemBalanceController

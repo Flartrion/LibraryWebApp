@@ -89,7 +89,7 @@ function UserViewPage({ user }: UserViewPageProps) {
           <Suspense fallback={<BackdropFallback />}>
             <GenericDeleteDialog
               deleteController={userDeleteController}
-              item={user}
+              id={user.id}
               open={deleteOpen}
               onCancel={handleDeleteCancel}
             />

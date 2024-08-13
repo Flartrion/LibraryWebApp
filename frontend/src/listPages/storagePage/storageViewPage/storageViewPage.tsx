@@ -20,7 +20,7 @@ interface StorageViewPageProps {
   storage: Storage
 }
 
-function StorageViewPage({ storage: user }: StorageViewPageProps) {
+function StorageViewPage({ storage }: StorageViewPageProps) {
   const [editState, setEditState] = useState(false)
   const [deleteOpen, setDeleteOpen] = useState(false)
   const deleteFirstOpen = useRef(false)
@@ -62,7 +62,7 @@ function StorageViewPage({ storage: user }: StorageViewPageProps) {
         readonly={true}
         showId={true}
         idreadonly={true}
-        state={user}
+        state={storage}
       />
       <Box
         sx={{
@@ -94,7 +94,7 @@ function StorageViewPage({ storage: user }: StorageViewPageProps) {
           <Suspense fallback={<BackdropFallback />}>
             <GenericDeleteDialog
               deleteController={storageDeleteController}
-              item={user}
+              id={storage.id}
               open={deleteOpen}
               onCancel={handleDeleteCancel}
             />
@@ -105,7 +105,7 @@ function StorageViewPage({ storage: user }: StorageViewPageProps) {
   ) : (
     <Suspense fallback={<DefaultFallback />}>
       <GenericEditPage
-        item={user}
+        item={storage}
         editController={storageEditController}
         reducer={storageEditReducer}
         toView={toView}

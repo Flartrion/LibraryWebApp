@@ -2,25 +2,25 @@ import { Button, Dialog, DialogActions, DialogTitle } from "@mui/material"
 import GenericDeleteController from "./genericDeleteController"
 
 interface GenericDeleteDialogProps<T extends Id> {
-  item: T
+  id: string
   deleteController: GenericDeleteController<T>
   open: boolean
   onCancel: ({}: any) => any
 }
 
 function GenericDeleteDialog<T extends Id>({
-  item,
+  id,
   deleteController,
   open,
   onCancel = () => {},
 }: GenericDeleteDialogProps<T>) {
   function handleConfirm() {
-    deleteController.delete(item.id)
+    deleteController.delete(id)
   }
 
   return (
     <Dialog open={open}>
-      <DialogTitle>Really delete item {item.id}?</DialogTitle>
+      <DialogTitle>Really delete item {id}?</DialogTitle>
       <DialogActions>
         <Button autoFocus onClick={onCancel}>
           Cancel

@@ -1,13 +1,5 @@
 import { Alert, Box, Button, Container } from "@mui/material"
-import {
-  lazy,
-  MutableRefObject,
-  Suspense,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react"
 import userDataModel from "../../../support/userDataModel"
 import itemDeleteController from "./itemDeleteDialog/itemDeleteController"
 import ItemTextFieldsAbstract from "../support/itemTextFieldsAbstract"
@@ -18,9 +10,7 @@ import editReducer from "./itemEditPage/reducer"
 import BackdropFallback from "../../../support/fallbacks/backdropFallback"
 import ItemViewPageEnum from "../support/itemViewPageEnum"
 
-const ItemBalanceChangeDialog = lazy(
-  () => import("./itemBalanceDialog/itemBalanceDialog")
-)
+const ItemBalanceView = lazy(() => import("./itemBalanceView/itemBalanceView"))
 const GenericDeleteDialog = lazy(
   () => import("../../../components/viewPage/deleteDialog/genericDeleteDialog")
 )
@@ -35,9 +25,7 @@ interface ItemViewPageProps {
 function ItemViewPage({ item }: ItemViewPageProps) {
   const [page, setPage] = useState(ItemViewPageEnum.view)
   const [deleteOpen, setDeleteOpen] = useState(false)
-  const deleteFirstOpen: MutableRefObject<boolean> = useRef(null)
-  const [balanceOpen, setBalanceOpen] = useState(false)
-  const balanceChangeFirstOpen: MutableRefObject<boolean> = useRef(null)
+  const deleteFirstOpen = useRef(null)
 
   function handleDelete(e: React.MouseEvent<HTMLButtonElement>) {
     deleteFirstOpen.current = true
@@ -48,11 +36,6 @@ function ItemViewPage({ item }: ItemViewPageProps) {
     setPage(ItemViewPageEnum.edit)
   }
 
-  function handleEditBalance(e: React.MouseEvent<HTMLButtonElement>) {
-    balanceChangeFirstOpen.current = true
-    setBalanceOpen(true)
-  }
-
   function handleViewBalance(e: React.MouseEvent<HTMLButtonElement>) {
     setPage(ItemViewPageEnum.viewBalance)
   }
@@ -60,9 +43,7 @@ function ItemViewPage({ item }: ItemViewPageProps) {
   function handleDeleteCancel(e: React.MouseEvent<HTMLButtonElement>) {
     setDeleteOpen(false)
   }
-  function handleBalanceCancel(e: React.MouseEvent<HTMLButtonElement>) {
-    setBalanceOpen(false)
-  }
+
   function handleDeleteSuccess() {
     setDeleteOpen(false)
   }
@@ -122,13 +103,6 @@ function ItemViewPage({ item }: ItemViewPageProps) {
                 <Button
                   sx={{ flex: 1 }}
                   variant="contained"
-                  onClick={handleEditBalance}
-                >
-                  Edit Balance
-                </Button>
-                <Button
-                  sx={{ flex: 1 }}
-                  variant="contained"
                   onClick={handleViewBalance}
                 >
                   View Balance
@@ -145,18 +119,9 @@ function ItemViewPage({ item }: ItemViewPageProps) {
               <Suspense fallback={<BackdropFallback />}>
                 <GenericDeleteDialog
                   deleteController={itemDeleteController}
-                  item={item}
+                  id={item.id}
                   open={deleteOpen}
                   onCancel={handleDeleteCancel}
-                />
-              </Suspense>
-            )}
-            {balanceChangeFirstOpen.current && (
-              <Suspense fallback={<BackdropFallback />}>
-                <ItemBalanceChangeDialog
-                  item={item}
-                  onCancel={handleBalanceCancel}
-                  open={balanceOpen}
                 />
               </Suspense>
             )}
@@ -179,10 +144,9 @@ function ItemViewPage({ item }: ItemViewPageProps) {
       break
     case ItemViewPageEnum.viewBalance:
       retval = (
-        <Container>
-          <Alert variant="filled">W.I.P.</Alert>
-          <Button onClick={() => toView()}>Return</Button>
-        </Container>
+        <Suspense fallback={<DefaultFallback />}>
+          <ItemBalanceView id={item.id} toView={toView} />
+        </Suspense>
       )
       break
   }
