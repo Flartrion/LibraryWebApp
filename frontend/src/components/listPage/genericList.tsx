@@ -37,7 +37,13 @@ function GenericVirtualList<T extends Id>({
   }, [listController])
 
   return (
-    <Box minHeight={"15vh"} flexBasis={"auto"} flexGrow={1} flexShrink={0}>
+    <Box
+      display={"flex"}
+      minHeight={"15vh"}
+      flexBasis={"auto"}
+      flexGrow={1}
+      flexShrink={0}
+    >
       <ReactVirtualizedAutoSizer>
         {({ height, width }: any) =>
           itemsLoaded ? (

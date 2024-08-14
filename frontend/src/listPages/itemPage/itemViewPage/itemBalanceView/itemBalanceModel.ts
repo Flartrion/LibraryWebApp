@@ -1,3 +1,4 @@
+import ItemBalance from "../../../../dataclasses/itemBalance"
 import Storage from "../../../../dataclasses/storage"
 
 const itemBalanceModel: {

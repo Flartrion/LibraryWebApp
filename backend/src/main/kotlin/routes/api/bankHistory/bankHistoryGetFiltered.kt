@@ -21,26 +21,29 @@ fun Route.bankHistoryGetFiltered() {
     post("get") {
         try {
             val search = call.receive<BankHistoryEntry>()
-            val resultSet = dbQuery {
-                val item = ItemEntity.findById(UUID.fromString(search.idItem))
-                val storage = StorageEntity.findById(UUID.fromString(search.idStorage))
-                BankHistoryEntryEntity.find {
+            dbQuery {
+                var item: ItemEntity? = null
+                if (search.idItem != "")
+                    item = ItemEntity.findById(UUID.fromString(search.idItem))
+                var storage: StorageEntity? = null
+                if (search.idStorage != "")
+                    storage = StorageEntity.findById(UUID.fromString(search.idStorage))
+                val resultSet = BankHistoryEntryEntity.find {
                     (if (item != null) BankHistory.item eq item.id else Op.TRUE) and
                             (if (storage != null) BankHistory.storage eq storage.id else Op.TRUE)
                 }.sortedByDescending { it.date }
-            }
 
-            if (resultSet.isNotEmpty()) {
-                call.respondText(
-                    Json.encodeToString(resultSet.map { it.toDataclass() }),
-                    ContentType.Application.Json,
-                    HttpStatusCode.OK
-                )
-                return@post
-            } else {
-                call.respond(HttpStatusCode.NotFound, "No such items found in database")
-                return@post
+                if (resultSet.isNotEmpty()) {
+                    call.respondText(
+                        Json.encodeToString(resultSet.map { it.toDataclass() }),
+                        ContentType.Application.Json,
+                        HttpStatusCode.OK
+                    )
+                } else {
+                    call.respond(HttpStatusCode.NotFound, "No such items found in database")
+                }
             }
+            return@post
 
         } catch (e: Exception) {
             println(e.message)

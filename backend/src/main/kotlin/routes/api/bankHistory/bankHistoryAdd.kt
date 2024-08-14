@@ -4,7 +4,9 @@ import dataType.BankHistoryEntry
 import db.DatabaseSingleton.dbQuery
 import db.entity.BankHistoryEntryEntity
 import db.entity.ItemEntity
+import db.entity.ItemLocationEntity
 import db.entity.StorageEntity
+import db.model.ItemLocations
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -41,6 +43,23 @@ fun Route.bankHistoryAdd() {
             }
             val returnedValue = dbQuery {
                 if (storage != null && item != null) {
+                    val itemLocEntry = ItemLocationEntity.find {
+                        ItemLocations.storage eq storage.id
+                        ItemLocations.item eq item.id
+                    }
+                    if (itemLocEntry.empty()) {
+                        ItemLocationEntity.new {
+                            this.item = item
+                            this.storage = storage
+                            this.amount = entry.change.toInt()
+                        }
+                    } else {
+                        // Guaranteed to be only one - item-storage pair is a primary key
+                        itemLocEntry.first().apply {
+                            this.amount += entry.change.toInt()
+                        }
+                    }
+
                     return@dbQuery BankHistoryEntryEntity.new {
                         this.item = item
                         this.storage = storage

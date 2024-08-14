@@ -1,3 +1,6 @@
+import ItemBalance, {
+  newItemBalance,
+} from "../../../../dataclasses/itemBalance"
 import Storage, { newStorage } from "../../../../dataclasses/storage"
 import itemBalanceModel from "./itemBalanceModel"
 
@@ -6,6 +9,8 @@ class ItemBalanceController {
   dialogSetStoragesLoadedState: React.Dispatch<React.SetStateAction<boolean>> =
     undefined
   viewSetStoragesLoadedState: React.Dispatch<React.SetStateAction<boolean>> =
+    undefined
+  setVisibleEntriesState: React.Dispatch<React.SetStateAction<ItemBalance[]>> =
     undefined
   loadStorages = () => {
     const filters = newStorage()
@@ -71,8 +76,42 @@ class ItemBalanceController {
       })
       .then((body) => {
         if (responseStatus == 201) {
-          console.log(body)
+          // console.log(body)
+          itemBalanceModel.historyEntries.push(JSON.parse(body) as ItemBalance)
+          this.setVisibleEntriesState(itemBalanceModel.historyEntries)
           this.dialogOnCancel()
+        } else {
+          console.log(body)
+        }
+      })
+      .catch((reason) => {
+        console.log(reason)
+      })
+  }
+
+  loadEntries = (id: string) => {
+    const data = newItemBalance("", id)
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept-Encoding": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+    let responseStatus: number
+    const request = new Request("bankHistory/get", options)
+    fetch(request)
+      .then((response) => {
+        responseStatus = response.status
+        return response.text()
+      })
+      .then((body) => {
+        if (responseStatus == 200) {
+          // console.log(body)
+          itemBalanceModel.historyEntries = JSON.parse(body) as ItemBalance[]
+          itemBalanceModel.id = id
+          this.setVisibleEntriesState(itemBalanceModel.historyEntries)
         } else {
           console.log(body)
         }

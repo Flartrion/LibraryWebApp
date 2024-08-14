@@ -1,17 +1,18 @@
-import { CircularProgress, Container } from "@mui/material"
+import { Box, CircularProgress } from "@mui/material"
 
 function DefaultFallback() {
   return (
-    <Container
+    <Box
       sx={{
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        minHeight: "50%",
+        alignItems: "center",
+        flex: "1 1 auto",
       }}
     >
       <CircularProgress size={"100px"} />
-    </Container>
+    </Box>
   )
 }
 

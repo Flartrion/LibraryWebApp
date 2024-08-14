@@ -1,5 +1,4 @@
 import {
-  Alert,
   Box,
   Button,
   MenuItem,
@@ -19,6 +18,8 @@ import {
 import BackdropFallback from "../../../../support/fallbacks/backdropFallback"
 import itemBalanceModel from "./itemBalanceModel"
 import itemBalanceController from "./itemBalanceController"
+import DefaultFallback from "../../../../support/fallbacks/defaultFallback"
+const ItemBalanceList = lazy(() => import("./itemBalanceList"))
 const ItemBalanceNewDialog = lazy(() => import("./itemBalanceNewDialog"))
 
 interface ItemBalanceProps {
@@ -51,10 +52,17 @@ const ItemBalanceView = memo(
     useEffect(() => {
       //   console.log("loaded!")
       itemBalanceController.viewSetStoragesLoadedState = setStoragesLoaded
+      itemBalanceController.dialogSetStoragesLoadedState = setStoragesLoaded
+      itemBalanceController.setVisibleEntriesState = setEntries
       itemBalanceController.loadStorages()
+      if (entries == undefined) {
+        itemBalanceController.loadEntries(id)
+      }
       return () => {
         // console.log("unloaded!")
         itemBalanceController.viewSetStoragesLoadedState = undefined
+        itemBalanceController.dialogSetStoragesLoadedState = undefined
+        itemBalanceController.setVisibleEntriesState = undefined
         itemBalanceController.unloadStorages()
       }
     }, [id])
@@ -116,9 +124,13 @@ const ItemBalanceView = memo(
         ) : (
           <Skeleton variant="rounded" height="50px" width="100%"></Skeleton>
         )}
-        <Box flex={"1 1 auto"}>
-          <Alert severity="error">W.I.P.</Alert>
-        </Box>
+        {entries != null ? (
+          <Suspense fallback={<DefaultFallback />}>
+            <ItemBalanceList items={entries} />
+          </Suspense>
+        ) : (
+          <DefaultFallback />
+        )}
         {balanceChangeFirstOpen.current && (
           <Suspense fallback={<BackdropFallback />}>
             <ItemBalanceNewDialog
