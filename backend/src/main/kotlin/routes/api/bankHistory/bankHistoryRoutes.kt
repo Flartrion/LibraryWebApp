@@ -8,6 +8,7 @@ fun Route.bankHistoryRoutes() {
         route("bankHistory") {
             bankHistoryAdd()
             bankHistoryGetFiltered()
+            bankHistoryDelete()
         }
     }
 }

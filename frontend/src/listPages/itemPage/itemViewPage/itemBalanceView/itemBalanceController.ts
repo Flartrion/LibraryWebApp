@@ -5,6 +5,8 @@ import Storage, { newStorage } from "../../../../dataclasses/storage"
 import itemBalanceModel from "./itemBalanceModel"
 
 class ItemBalanceController {
+  storageFilter: string = ""
+
   dialogOnCancel: () => void = undefined
   dialogSetStoragesLoadedState: React.Dispatch<React.SetStateAction<boolean>> =
     undefined
@@ -12,6 +14,7 @@ class ItemBalanceController {
     undefined
   setVisibleEntriesState: React.Dispatch<React.SetStateAction<ItemBalance[]>> =
     undefined
+
   loadStorages = () => {
     const filters = newStorage()
     const options = {
@@ -57,6 +60,51 @@ class ItemBalanceController {
     itemBalanceModel.storagesLoaded = false
   }
 
+  filterByStorage = (idStorage: string) => {
+    this.storageFilter = idStorage
+    if (idStorage != "") {
+      itemBalanceModel.historyEntriesFiltered =
+        itemBalanceModel.historyEntries.filter(
+          (value) => value.idStorage == idStorage
+        )
+    } else
+      itemBalanceModel.historyEntriesFiltered = itemBalanceModel.historyEntries
+    this.setVisibleEntriesState(itemBalanceModel.historyEntriesFiltered)
+  }
+
+  private deleteEntryLocal = (idEntry: string) => {
+    itemBalanceModel.historyEntries.splice(
+      itemBalanceModel.historyEntries.findIndex((value) => value.id == idEntry)
+    )
+    if (this.storageFilter != "") {
+      itemBalanceModel.historyEntriesFiltered.splice(
+        itemBalanceModel.historyEntriesFiltered.findIndex(
+          (value, index) => value.id == idEntry
+        )
+      )
+    } else
+      itemBalanceModel.historyEntriesFiltered = itemBalanceModel.historyEntries
+    this.setVisibleEntriesState(itemBalanceModel.historyEntriesFiltered)
+  }
+
+  private addEntryLocal = (item: ItemBalance) => {
+    const sorter = (a: ItemBalance, b: ItemBalance) => {
+      if (a.date < b.date) return -1
+      else if (a.date == b.date) return 0
+      else return 1
+    }
+
+    itemBalanceModel.historyEntries.push(item)
+    itemBalanceModel.historyEntries.sort(sorter)
+    if (this.storageFilter != "") {
+      itemBalanceModel.historyEntriesFiltered.push(item)
+      itemBalanceModel.historyEntriesFiltered.sort(sorter)
+    } else
+      itemBalanceModel.historyEntriesFiltered = itemBalanceModel.historyEntries
+
+    this.setVisibleEntriesState(itemBalanceModel.historyEntriesFiltered)
+  }
+
   newBalanceEntry = (data: FormData) => {
     // TODO: Make it set state to "unloaded" so that newly added entry would be loaded
     // console.log("Sending: " + JSON.stringify(Object.fromEntries(data)));
@@ -78,9 +126,38 @@ class ItemBalanceController {
       .then((body) => {
         if (responseStatus == 201) {
           // console.log(body)
-          itemBalanceModel.historyEntries.push(JSON.parse(body) as ItemBalance)
-          this.setVisibleEntriesState(itemBalanceModel.historyEntries)
+          this.addEntryLocal(JSON.parse(body) as ItemBalance)
           this.dialogOnCancel()
+        } else {
+          console.log(body)
+        }
+      })
+      .catch((reason) => {
+        console.log(reason)
+      })
+  }
+
+  deleteBalanceEntry = (id: string) => {
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept-Encoding": "application/json",
+      },
+    }
+    let responseStatus: number
+    const request = new Request("bankHistory/delete/" + id, options)
+    fetch(request)
+      .then((response) => {
+        responseStatus = response.status
+        return response.text()
+      })
+      .then((body) => {
+        if (responseStatus == 200) {
+          // console.log(body)
+          this.deleteEntryLocal(id)
+          this.dialogOnCancel()
+          console.log("Successfuly deleted entry " + id)
         } else {
           console.log(body)
         }

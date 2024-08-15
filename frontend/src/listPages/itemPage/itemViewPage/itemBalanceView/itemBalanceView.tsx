@@ -10,6 +10,7 @@ import {
   lazy,
   memo,
   Suspense,
+  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -42,12 +43,14 @@ const ItemBalanceView = memo(
       setNewDialogOpen(true)
     }
 
-    const handleNewCancel = useMemo(
-      () => () => {
-        setNewDialogOpen(false)
-      },
-      [setNewDialogOpen]
-    )
+    const handleNewCancel = useCallback(() => {
+      setNewDialogOpen(false)
+    }, [setNewDialogOpen])
+
+    const handleChangeFilter = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      // console.log(e.target.value)
+      itemBalanceController.filterByStorage(e.target.value)
+    }
 
     useEffect(() => {
       //   console.log("loaded!")
@@ -105,9 +108,7 @@ const ItemBalanceView = memo(
             SelectProps={{
               displayEmpty: true,
             }}
-            onChange={(event) => {
-              console.log(event.target.value)
-            }}
+            onChange={handleChangeFilter}
             defaultValue={""}
           >
             <MenuItem key={0} value={""}>

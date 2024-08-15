@@ -14,7 +14,7 @@ function SiteHeader({ siteName }: any) {
       }}
       sx={{
         display: "flex",
-        flex: "1 1 content",
+        flex: "0 1 content",
         justifyContent: "space-between",
       }}
     >
