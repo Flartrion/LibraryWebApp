@@ -4,7 +4,6 @@ import dataType.BankHistoryEntry
 import db.DatabaseSingleton.dbQuery
 import db.entity.BankHistoryEntryEntity
 import db.entity.ItemEntity
-import db.entity.ItemLocationEntity
 import db.entity.StorageEntity
 import db.model.ItemLocations
 import io.ktor.http.*
@@ -17,6 +16,7 @@ import io.ktor.server.routing.*
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import org.jetbrains.exposed.sql.*
 import java.util.*
 
 fun Route.bankHistoryAdd() {
@@ -43,20 +43,29 @@ fun Route.bankHistoryAdd() {
             }
             val returnedValue = dbQuery {
                 if (storage != null && item != null) {
-                    val itemLocEntry = ItemLocationEntity.find {
-                        ItemLocations.storage eq storage.id
-                        ItemLocations.item eq item.id
-                    }
+                    val itemLocEntry = ItemLocations.selectAll()
+                        .where {
+                            // 'Tis a primary key, should only ever be a single entry or none at all
+                            (ItemLocations.item eq item.id) and
+                                    (ItemLocations.storage eq storage.id)
+                        }
+
                     if (itemLocEntry.empty()) {
-                        ItemLocationEntity.new {
-                            this.item = item
-                            this.storage = storage
-                            this.amount = entry.change.toInt()
+                        ItemLocations.insert {
+                            it[ItemLocations.item] = item.id
+                            it[ItemLocations.storage] = storage.id
+                            it[amount] = entry.change.toInt()
                         }
                     } else {
-                        // Guaranteed to be only one - item-storage pair is a primary key
-                        itemLocEntry.first().apply {
-                            this.amount += entry.change.toInt()
+                        ItemLocations.update(
+                            {
+                                (ItemLocations.item eq item.id) and
+                                        (ItemLocations.storage eq storage.id)
+                            },
+                        ) {
+                            with(SqlExpressionBuilder) {
+                                it[amount] = amount + entry.change.toInt()
+                            }
                         }
                     }
 

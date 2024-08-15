@@ -1,4 +1,4 @@
-import { memo } from "react"
+import { memo, useMemo } from "react"
 import ItemBalance from "../../../../dataclasses/itemBalance"
 import { Box } from "@mui/material"
 import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid"
@@ -8,21 +8,28 @@ interface ItemBalanceGridProps {
 }
 
 const ItemBalanceList = memo(({ items }: ItemBalanceGridProps) => {
-  const cols: GridColDef[] = [
-    { field: "idOwn", headerName: "Entry ID", width: 270 },
-    { field: "idStorage", headerName: "Storage ID", width: 270 },
-    { field: "date", headerName: "Date", flex: 1 },
-    { field: "change", headerName: "Change", flex: 1 },
-  ]
-  const rows: GridRowsProp = items.map((value, index) => {
-    return {
-      id: index,
-      idOwn: value.id,
-      idStorage: value.idStorage,
-      date: value.date,
-      change: value.change,
-    }
-  })
+  const cols: GridColDef[] = useMemo(
+    () => [
+      { field: "idOwn", headerName: "Entry ID", flex: 1 },
+      { field: "idStorage", headerName: "Storage ID", flex: 1 },
+      { field: "date", headerName: "Date", flex: 1 },
+      { field: "change", headerName: "Change", flex: 1 },
+    ],
+    [items]
+  )
+  const rows: GridRowsProp = useMemo(
+    () =>
+      items.map((value, index) => {
+        return {
+          id: index,
+          idOwn: value.id,
+          idStorage: value.idStorage,
+          date: value.date,
+          change: value.change,
+        }
+      }),
+    [items]
+  )
   return (
     <Box
       display={"flex"}

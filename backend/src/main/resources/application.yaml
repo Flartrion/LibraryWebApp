@@ -16,7 +16,7 @@ ktor:
       keyStorePassword: "$SSLKEYSTOREPASS:foobar"
       privateKeyPassword: "$SSLPKEYPASS:foobar"
 database:
-  init: "$DBINIT:false"
+  init: "$DBINIT:true"
   driverName: "$DBDRIVER:org.postgresql.Driver"
   hostname: "$DBHOSTNAME://localhost"
   jdbcURL: "$JDBCURL:jdbc:postgresql"
