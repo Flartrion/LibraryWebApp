@@ -1,5 +1,13 @@
 import { Alert, Box, Button, Container } from "@mui/material"
-import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react"
+import {
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 import userDataModel from "../../../support/userDataModel"
 import itemDeleteController from "./itemDeleteDialog/itemDeleteController"
 import ItemTextFieldsAbstract from "../support/itemTextFieldsAbstract"
@@ -55,7 +63,7 @@ function ItemViewPage({ item }: ItemViewPageProps) {
     }
   })
 
-  const toView = useMemo(() => () => setPage(ItemViewPageEnum.view), [setPage])
+  const toView = useCallback(() => setPage(ItemViewPageEnum.view), [item])
 
   let retval
   switch (page) {

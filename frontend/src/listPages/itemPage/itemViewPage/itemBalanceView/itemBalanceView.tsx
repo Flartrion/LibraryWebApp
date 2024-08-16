@@ -12,7 +12,6 @@ import {
   Suspense,
   useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from "react"
@@ -53,20 +52,18 @@ const ItemBalanceView = memo(
     }
 
     useEffect(() => {
-      //   console.log("loaded!")
+      console.log("loaded!")
       itemBalanceController.viewSetStoragesLoadedState = setStoragesLoaded
-      itemBalanceController.dialogSetStoragesLoadedState = setStoragesLoaded
       itemBalanceController.setVisibleEntriesState = setEntries
       itemBalanceController.loadStorages()
       if (entries == undefined) {
         itemBalanceController.loadEntries(id)
       }
       return () => {
-        // console.log("unloaded!")
+        console.log("unloaded!")
         itemBalanceController.viewSetStoragesLoadedState = undefined
-        itemBalanceController.dialogSetStoragesLoadedState = undefined
         itemBalanceController.setVisibleEntriesState = undefined
-        itemBalanceController.unloadStorages()
+        // itemBalanceController.unloadStorages()
       }
     }, [id])
 
@@ -125,7 +122,7 @@ const ItemBalanceView = memo(
         ) : (
           <Skeleton variant="rounded" height="50px" width="100%"></Skeleton>
         )}
-        {entries != null ? (
+        {entries != undefined ? (
           <Suspense fallback={<DefaultFallback />}>
             <ItemBalanceList items={entries} />
           </Suspense>
@@ -145,7 +142,7 @@ const ItemBalanceView = memo(
     )
   },
   (prevProps, nextProps) => {
-    return prevProps.id == nextProps.id && prevProps.toView === nextProps.toView
+    return prevProps.id == nextProps.id && prevProps.toView == nextProps.toView
   }
 )
 export default ItemBalanceView

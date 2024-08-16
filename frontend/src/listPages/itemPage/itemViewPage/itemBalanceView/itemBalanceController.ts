@@ -68,7 +68,8 @@ class ItemBalanceController {
           (value) => value.idStorage == idStorage
         )
     } else
-      itemBalanceModel.historyEntriesFiltered = itemBalanceModel.historyEntries
+      itemBalanceModel.historyEntriesFiltered =
+        itemBalanceModel.historyEntries.slice()
     this.setVisibleEntriesState(itemBalanceModel.historyEntriesFiltered)
   }
 
@@ -79,11 +80,12 @@ class ItemBalanceController {
     if (this.storageFilter != "") {
       itemBalanceModel.historyEntriesFiltered.splice(
         itemBalanceModel.historyEntriesFiltered.findIndex(
-          (value, index) => value.id == idEntry
+          (value) => value.id == idEntry
         )
       )
     } else
-      itemBalanceModel.historyEntriesFiltered = itemBalanceModel.historyEntries
+      itemBalanceModel.historyEntriesFiltered =
+        itemBalanceModel.historyEntries.slice()
     this.setVisibleEntriesState(itemBalanceModel.historyEntriesFiltered)
   }
 
@@ -100,7 +102,8 @@ class ItemBalanceController {
       itemBalanceModel.historyEntriesFiltered.push(item)
       itemBalanceModel.historyEntriesFiltered.sort(sorter)
     } else
-      itemBalanceModel.historyEntriesFiltered = itemBalanceModel.historyEntries
+      itemBalanceModel.historyEntriesFiltered =
+        itemBalanceModel.historyEntries.slice()
 
     this.setVisibleEntriesState(itemBalanceModel.historyEntriesFiltered)
   }
@@ -188,8 +191,16 @@ class ItemBalanceController {
         if (responseStatus == 200) {
           // console.log(body)
           itemBalanceModel.historyEntries = JSON.parse(body) as ItemBalance[]
+          itemBalanceModel.historyEntriesFiltered =
+            itemBalanceModel.historyEntries.slice()
           itemBalanceModel.id = id
           this.setVisibleEntriesState(itemBalanceModel.historyEntries)
+        } else if (responseStatus == 404) {
+          itemBalanceModel.historyEntries = []
+          itemBalanceModel.historyEntriesFiltered =
+            itemBalanceModel.historyEntries.slice()
+          itemBalanceModel.id = id
+          console.log(body)
         } else {
           console.log(body)
         }
