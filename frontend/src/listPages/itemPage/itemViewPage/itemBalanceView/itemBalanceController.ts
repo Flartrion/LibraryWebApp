@@ -7,7 +7,8 @@ import itemBalanceModel from "./itemBalanceModel"
 class ItemBalanceController {
   storageFilter: string = ""
 
-  dialogOnCancel: () => void = undefined
+  newDialogClose: () => void = undefined
+  deleteDialogClose: () => void = undefined
   dialogSetStoragesLoadedState: React.Dispatch<React.SetStateAction<boolean>> =
     undefined
   viewSetStoragesLoadedState: React.Dispatch<React.SetStateAction<boolean>> =
@@ -75,17 +76,20 @@ class ItemBalanceController {
 
   private deleteEntryLocal = (idEntry: string) => {
     itemBalanceModel.historyEntries.splice(
-      itemBalanceModel.historyEntries.findIndex((value) => value.id == idEntry)
+      itemBalanceModel.historyEntries.findIndex((value) => value.id == idEntry),
+      1
     )
     if (this.storageFilter != "") {
       itemBalanceModel.historyEntriesFiltered.splice(
         itemBalanceModel.historyEntriesFiltered.findIndex(
           (value) => value.id == idEntry
-        )
+        ),
+        1
       )
     } else
       itemBalanceModel.historyEntriesFiltered =
         itemBalanceModel.historyEntries.slice()
+
     this.setVisibleEntriesState(itemBalanceModel.historyEntriesFiltered)
   }
 
@@ -130,7 +134,7 @@ class ItemBalanceController {
         if (responseStatus == 201) {
           // console.log(body)
           this.addEntryLocal(JSON.parse(body) as ItemBalance)
-          this.dialogOnCancel()
+          this.newDialogClose()
         } else {
           console.log(body)
         }
@@ -142,7 +146,7 @@ class ItemBalanceController {
 
   deleteBalanceEntry = (id: string) => {
     const options = {
-      method: "POST",
+      method: "DELETE",
       headers: {
         "Content-Type": "application/json",
         "Accept-Encoding": "application/json",
@@ -159,7 +163,7 @@ class ItemBalanceController {
         if (responseStatus == 200) {
           // console.log(body)
           this.deleteEntryLocal(id)
-          this.dialogOnCancel()
+          this.deleteDialogClose()
           console.log("Successfuly deleted entry " + id)
         } else {
           console.log(body)

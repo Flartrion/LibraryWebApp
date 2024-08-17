@@ -36,7 +36,7 @@ const ItemBalanceNewDialog = memo(
     )
 
     useEffect(() => {
-      itemBalanceController.dialogOnCancel = onCancel
+      itemBalanceController.newDialogClose = onCancel
       itemBalanceController.dialogSetStoragesLoadedState = setStoragesLoaded
       // console.log("setStoragesLoadedState set");
       if (open) {
@@ -49,7 +49,7 @@ const ItemBalanceNewDialog = memo(
       return () => {
         // console.log("setStoragesLoadedState unset");
         itemBalanceController.dialogSetStoragesLoadedState = undefined
-        itemBalanceController.dialogOnCancel = undefined
+        itemBalanceController.newDialogClose = undefined
       }
     }, [open])
 

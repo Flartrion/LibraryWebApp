@@ -16,7 +16,7 @@ import org.jetbrains.exposed.sql.update
 import java.util.*
 
 fun Route.bankHistoryDelete() {
-    delete("{id}") {
+    delete("delete/{id}") {
         val principal = call.principal<JWTPrincipal>()
         if (principal == null) {
             call.respond(HttpStatusCode.Unauthorized, "User ID failed")
