@@ -11,7 +11,6 @@ import GenericEditController from "./genericEditController"
 interface GenericEditPageProps<T extends Id> {
   item: T
   toView: () => void
-  // TODO: Replace with class
   editController: GenericEditController<T>
   reducer: Reducer<any, any>
   textFieldGroup: FC<any>
@@ -61,7 +60,7 @@ function GenericEditPage<T extends Id>({
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-evenly",
-            gap: "10px"
+            gap: "10px",
           }}
         >
           <Button sx={{ flex: "1 1 auto" }} variant="contained" type="submit">

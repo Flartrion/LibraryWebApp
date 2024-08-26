@@ -9,4 +9,6 @@ object Rents : UUIDTable() {
     val idStorage = reference("id_storage", Storages.id)
     val dateFrom = date("date_from")
     val dateUntil = date("date_until")
+    val dateStatus = date("date_status")
+    val status = integer("status")
 }

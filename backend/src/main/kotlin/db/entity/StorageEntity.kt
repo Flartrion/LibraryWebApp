@@ -2,7 +2,6 @@ package db.entity
 
 import dataType.Storage
 import db.model.Storages
-import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.UUIDEntity
 import org.jetbrains.exposed.dao.UUIDEntityClass
 import org.jetbrains.exposed.dao.id.EntityID

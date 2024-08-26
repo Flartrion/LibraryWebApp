@@ -3,6 +3,7 @@ type ItemBalance = Id & {
   idStorage: string
   date: string
   change: string
+  address: string
 }
 
 export default ItemBalance
@@ -12,7 +13,8 @@ export function newItemBalance(
   idItem: string = "",
   idStorage: string = "",
   date: string = "",
-  change: string = ""
+  change: string = "",
+  address: string = ""
 ): ItemBalance {
   const retval = {} as ItemBalance
   retval.id = id
@@ -20,5 +22,6 @@ export function newItemBalance(
   retval.idStorage = idStorage
   retval.date = date
   retval.change = change
+  retval.address = address
   return retval
 }

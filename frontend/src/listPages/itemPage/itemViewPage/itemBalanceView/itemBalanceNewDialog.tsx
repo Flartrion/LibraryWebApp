@@ -13,8 +13,8 @@ import {
 import { Cancel, Check } from "@mui/icons-material"
 import { FormEvent, memo, useEffect, useState } from "react"
 import itemBalanceController from "./itemBalanceController"
-import itemBalanceModel from "./itemBalanceModel"
-import Storage from "../../../../dataclasses/storage"
+import storageStorageModel from "../../support/storageLoading/storageStorageModel"
+import storageStorageController from "../../support/storageLoading/storageStorageController"
 
 interface ItemBalanceProps {
   id: string
@@ -32,23 +32,27 @@ const ItemBalanceNewDialog = memo(
       // TODO: Functionality
     }
     const [storagesLoaded, setStoragesLoaded] = useState(
-      itemBalanceModel.storagesLoaded
+      storageStorageModel.loaded
     )
 
     useEffect(() => {
       itemBalanceController.newDialogClose = onCancel
-      itemBalanceController.dialogSetStoragesLoadedState = setStoragesLoaded
+      storageStorageController.setLoadedStates.push(setStoragesLoaded)
       // console.log("setStoragesLoadedState set");
       if (open) {
         // console.log("starting loading");
-        itemBalanceController.loadStorages()
+        storageStorageController.loadStorages()
         // As effect is executed on "open" prop change, that should make it only
         // reload storages on re-opening of this dialog,
         // which is intended behaviour
       }
       return () => {
         // console.log("setStoragesLoadedState unset");
-        itemBalanceController.dialogSetStoragesLoadedState = undefined
+        storageStorageController.setLoadedStates.splice(
+          storageStorageController.setLoadedStates.findIndex(
+            (value) => value === setStoragesLoaded
+          )
+        )
         itemBalanceController.newDialogClose = undefined
       }
     }, [open])
@@ -90,7 +94,7 @@ const ItemBalanceNewDialog = memo(
                     margin="normal"
                     required
                   >
-                    {itemBalanceModel.storages.map((value, index) => (
+                    {storageStorageModel.storages.map((value, index) => (
                       <MenuItem key={value.id} value={value.id}>
                         {index + ": " + value.address}
                       </MenuItem>

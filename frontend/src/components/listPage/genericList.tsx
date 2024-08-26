@@ -1,4 +1,4 @@
-import { Box, CircularProgress } from "@mui/material"
+import { Box } from "@mui/material"
 import ReactVirtualizedAutoSizer from "react-virtualized-auto-sizer"
 import { FixedSizeList } from "react-window"
 import { FC, useEffect, useMemo, useState } from "react"

@@ -17,6 +17,7 @@ import itemEditController from "./itemEditPage/itemEditController"
 import editReducer from "./itemEditPage/reducer"
 import BackdropFallback from "../../../support/fallbacks/backdropFallback"
 import ItemViewPageEnum from "../support/itemViewPageEnum"
+import availabilityLoader from "./itemRentDialog.ts/availabilityLoader"
 
 const ItemBalanceView = lazy(() => import("./itemBalanceView/itemBalanceView"))
 const GenericDeleteDialog = lazy(
@@ -119,7 +120,8 @@ function ItemViewPage({ item }: ItemViewPageProps) {
             )}
             {/* TODO: Functionality */}
             {userDataModel.userRole != undefined && (
-              <Button sx={{ flex: 1 }} variant="contained">
+              <Button sx={{ flex: 1 }} variant="contained"
+              onClick={()=>{availabilityLoader.loadAvailability(item.id)}}>
                 Book rent
               </Button>
             )}

@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from "react"
+import React from "react"
 import ItemBalance from "../../../../dataclasses/itemBalance"
 import {
   Button,
@@ -9,7 +9,6 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material"
-import itemBalanceModel from "./itemBalanceModel"
 import { DeleteForeverOutlined } from "@mui/icons-material"
 
 interface ItemBalanceGridProps {
@@ -18,18 +17,6 @@ interface ItemBalanceGridProps {
 }
 
 const ItemBalanceList = ({ items, handleDelete }: ItemBalanceGridProps) => {
-  /** Contains original item and, for now, address additionally */
-  const transformedItems: [ItemBalance, string][] = useMemo(() => {
-    // console.log("recalculated")
-    return items.map((item) => {
-      return [
-        item,
-        itemBalanceModel.storages.find(
-          (storage) => storage.id == item.idStorage
-        ).address,
-      ]
-    })
-  }, [items])
   return (
     <TableContainer sx={{ flex: "1 1 auto" }} component={Paper}>
       <Table>
@@ -42,15 +29,15 @@ const ItemBalanceList = ({ items, handleDelete }: ItemBalanceGridProps) => {
             <TableCell align="center">Actions</TableCell>
           </TableRow>
         </TableHead>
-        {transformedItems.map((value: [ItemBalance, string]) => {
+        {items.map((value: ItemBalance) => {
           return (
             <TableRow>
-              <TableCell>{value[0].id}</TableCell>
-              <TableCell align="right">{value[1]}</TableCell>
-              <TableCell align="right">{value[0].date}</TableCell>
-              <TableCell align="right">{value[0].change}</TableCell>
+              <TableCell>{value.id}</TableCell>
+              <TableCell align="right">{value.address}</TableCell>
+              <TableCell align="right">{value.date}</TableCell>
+              <TableCell align="right">{value.change}</TableCell>
               <TableCell align="center">
-                <Button onClick={handleDelete(value[0].id)}>
+                <Button onClick={handleDelete(value.id)}>
                   <DeleteForeverOutlined />
                 </Button>
               </TableCell>

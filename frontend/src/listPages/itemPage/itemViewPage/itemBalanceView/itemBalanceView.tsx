@@ -6,12 +6,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material"
-import { lazy, memo, Suspense, useEffect, useRef, useState } from "react"
+import { lazy, Suspense, useEffect, useRef, useState } from "react"
 import BackdropFallback from "../../../../support/fallbacks/backdropFallback"
 import itemBalanceModel from "./itemBalanceModel"
 import itemBalanceController from "./itemBalanceController"
 import DefaultFallback from "../../../../support/fallbacks/defaultFallback"
 import ItemBalanceDeleteDialog from "./itemBalanceDeleteDialog"
+import storageStorageController from "../../support/storageLoading/storageStorageController"
+import storageStorageModel from "../../support/storageLoading/storageStorageModel"
 const ItemBalanceList = lazy(() => import("./itemBalanceList"))
 const ItemBalanceNewDialog = lazy(() => import("./itemBalanceNewDialog"))
 
@@ -58,15 +60,20 @@ const ItemBalanceView = ({ id, toView }: ItemBalanceProps) => {
 
   useEffect(() => {
     // console.log("loaded!")
-    itemBalanceController.viewSetStoragesLoadedState = setStoragesLoaded
+
     itemBalanceController.setVisibleEntriesState = setEntries
-    itemBalanceController.loadStorages()
+    storageStorageController.setLoadedStates.push(setStoragesLoaded)
+    storageStorageController.loadStorages()
     if (entries == undefined) {
       itemBalanceController.loadEntries(id)
     }
     return () => {
       // console.log("unloaded!")
-      itemBalanceController.viewSetStoragesLoadedState = undefined
+      storageStorageController.setLoadedStates.splice(
+        storageStorageController.setLoadedStates.findIndex((value) => {
+          value === setStoragesLoaded
+        })
+      )
       itemBalanceController.setVisibleEntriesState = undefined
       // itemBalanceController.unloadStorages()
     }
@@ -112,7 +119,7 @@ const ItemBalanceView = ({ id, toView }: ItemBalanceProps) => {
           <MenuItem key={0} value={""}>
             <Typography>...</Typography>
           </MenuItem>
-          {itemBalanceModel.storages.map((value, index) => (
+          {storageStorageModel.storages.map((value, index) => (
             <MenuItem key={value.id} value={value.id}>
               <Typography>
                 {index}: {value.address}

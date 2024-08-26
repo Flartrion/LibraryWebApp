@@ -1,7 +1,6 @@
 import ItemBalance, {
   newItemBalance,
 } from "../../../../dataclasses/itemBalance"
-import Storage, { newStorage } from "../../../../dataclasses/storage"
 import itemBalanceModel from "./itemBalanceModel"
 
 class ItemBalanceController {
@@ -9,57 +8,9 @@ class ItemBalanceController {
 
   newDialogClose: () => void = undefined
   deleteDialogClose: () => void = undefined
-  dialogSetStoragesLoadedState: React.Dispatch<React.SetStateAction<boolean>> =
-    undefined
-  viewSetStoragesLoadedState: React.Dispatch<React.SetStateAction<boolean>> =
-    undefined
+
   setVisibleEntriesState: React.Dispatch<React.SetStateAction<ItemBalance[]>> =
     undefined
-
-  loadStorages = () => {
-    const filters = newStorage()
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept-Encoding": "application/json",
-      },
-      body: JSON.stringify(filters),
-    }
-    let responseStatus: number
-    const request = new Request("storages/get", options)
-    fetch(request)
-      .then((response) => {
-        responseStatus = response.status
-        return response.text()
-      })
-      .then((body) => {
-        if (responseStatus == 200) {
-          const storages: Storage[] = JSON.parse(body)
-          //   console.log(storages);
-          itemBalanceModel.storages = storages
-          itemBalanceModel.storagesLoaded = true
-          //   console.log("finished loading");
-          //   console.log(this);
-          //   console.log(this.setStoragesLoadedState);
-          if (this.dialogSetStoragesLoadedState != undefined)
-            this.dialogSetStoragesLoadedState(true)
-          if (this.viewSetStoragesLoadedState != undefined)
-            this.viewSetStoragesLoadedState(true)
-          // console.log(items);
-        } else {
-          console.log(body)
-        }
-      })
-      .catch((reason) => {
-        console.log(reason)
-      })
-  }
-
-  unloadStorages = () => {
-    itemBalanceModel.storages = undefined
-    itemBalanceModel.storagesLoaded = false
-  }
 
   filterByStorage = (idStorage: string) => {
     this.storageFilter = idStorage

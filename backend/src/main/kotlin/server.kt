@@ -7,6 +7,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.html.*
 import routes.api.bankHistory.bankHistoryRoutes
+import routes.api.itemLocations.itemLocationRoutes
 import routes.api.items.itemRoutes
 import routes.api.storages.storagesRouting
 import routes.api.users.userRoutes
@@ -35,6 +36,7 @@ fun Application.module() {
         itemRoutes()
         userRoutes()
         bankHistoryRoutes()
+        itemLocationRoutes()
 
 //        rentsRouting()
 //        itemLocationRouting()

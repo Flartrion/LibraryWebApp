@@ -8,5 +8,6 @@ data class BankHistoryEntry(
     val idItem: String,
     val idStorage: String,
     val change: String,
-    val date: String
+    val date: String,
+    val address: String
 )

@@ -23,5 +23,7 @@ class BankHistoryEntryEntity(id: EntityID<UUID>) : UUIDEntity(id), DataClassable
         storage.id.value.toString(),
         change.toString(),
         date.toString(),
+        // Spontaneously throwing in an address to reduce client-side calculations
+        storage.address
     )
 }

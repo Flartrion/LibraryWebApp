@@ -30,7 +30,11 @@ fun Route.bankHistoryDelete() {
         }
 
         try {
-            val id = call.parameters["id"].toString()
+            val id = call.parameters["id"]
+            if (id == null) {
+                call.respond(HttpStatusCode.BadRequest, "Malformed or missing id")
+                return@delete
+            }
 
             val returnedValue = dbQuery {
                 val entry = BankHistoryEntryEntity.findById(UUID.fromString(id))
@@ -45,7 +49,8 @@ fun Route.bankHistoryDelete() {
                         }
 
                     if (itemLocEntry.empty()) {
-                        throw IllegalArgumentException("Deleting entry for which no itemlocation exists!")
+                        call.respond(HttpStatusCode.OK, "Warning: Deleting a entry for which no itemlocation exists!")
+                        throw IllegalArgumentException("Deleting a entry for which no itemlocation exists!")
                     } else {
                         ItemLocations.update(
                             {
