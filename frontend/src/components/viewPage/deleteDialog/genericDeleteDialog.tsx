@@ -22,7 +22,7 @@ function GenericDeleteDialog<T extends Id>({
     <Dialog open={open}>
       <DialogTitle>Really delete item {id}?</DialogTitle>
       <DialogActions>
-        <Button autoFocus onClick={onCancel}>
+        <Button autoFocus variant="contained" onClick={onCancel}>
           Cancel
         </Button>
         <Button variant="outlined" onClick={handleConfirm}>

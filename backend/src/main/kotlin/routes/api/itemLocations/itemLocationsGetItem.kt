@@ -43,7 +43,7 @@ fun Route.itemLocationGetItem() {
                         it[Storages.address]
                     )
                 }
-                println(results)
+//                println(results)
 
                 call.respond(HttpStatusCode.OK, results)
             }

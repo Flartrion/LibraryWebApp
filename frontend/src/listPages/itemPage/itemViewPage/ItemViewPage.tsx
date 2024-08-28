@@ -1,10 +1,9 @@
-import { Alert, Box, Button, Container } from "@mui/material"
-import {
+import { Box, Button, Container } from "@mui/material"
+import React, {
   lazy,
   Suspense,
   useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from "react"
@@ -19,6 +18,7 @@ import BackdropFallback from "../../../support/fallbacks/backdropFallback"
 import ItemViewPageEnum from "../support/itemViewPageEnum"
 import availabilityLoader from "./itemRentDialog.ts/availabilityLoader"
 
+const ItemRentDialog = lazy(() => import("./itemRentDialog.ts/itemRentDialog"))
 const ItemBalanceView = lazy(() => import("./itemBalanceView/itemBalanceView"))
 const GenericDeleteDialog = lazy(
   () => import("../../../components/viewPage/deleteDialog/genericDeleteDialog")
@@ -35,18 +35,12 @@ function ItemViewPage({ item }: ItemViewPageProps) {
   const [page, setPage] = useState(ItemViewPageEnum.view)
   const [deleteOpen, setDeleteOpen] = useState(false)
   const deleteFirstOpen = useRef(null)
+  const [rentOpen, setRentOpen] = useState(false)
+  const rentFirstOpen = useRef(null)
 
   function handleDelete(e: React.MouseEvent<HTMLButtonElement>) {
     deleteFirstOpen.current = true
     setDeleteOpen(true)
-  }
-
-  function handleEdit(e: React.MouseEvent<HTMLButtonElement>) {
-    setPage(ItemViewPageEnum.edit)
-  }
-
-  function handleViewBalance(e: React.MouseEvent<HTMLButtonElement>) {
-    setPage(ItemViewPageEnum.viewBalance)
   }
 
   function handleDeleteCancel(e: React.MouseEvent<HTMLButtonElement>) {
@@ -57,14 +51,31 @@ function ItemViewPage({ item }: ItemViewPageProps) {
     setDeleteOpen(false)
   }
 
+  function handleEdit(e: React.MouseEvent<HTMLButtonElement>) {
+    setPage(ItemViewPageEnum.edit)
+  }
+
+  function handleViewBalance(e: React.MouseEvent<HTMLButtonElement>) {
+    setPage(ItemViewPageEnum.viewBalance)
+  }
+
+  function handleRent(e: React.MouseEvent<HTMLButtonElement>) {
+    rentFirstOpen.current = true
+    setRentOpen(true)
+  }
+
+  function handleRentCancel(e: React.MouseEvent<HTMLButtonElement>) {
+    setRentOpen(false)
+  }
+
+  const toView = useCallback(() => setPage(ItemViewPageEnum.view), [item])
+
   useEffect(() => {
     itemDeleteController.onSuccessAction = handleDeleteSuccess
     return () => {
       itemDeleteController.onSuccessAction = undefined
     }
   })
-
-  const toView = useCallback(() => setPage(ItemViewPageEnum.view), [item])
 
   let retval
   switch (page) {
@@ -120,8 +131,7 @@ function ItemViewPage({ item }: ItemViewPageProps) {
             )}
             {/* TODO: Functionality */}
             {userDataModel.userRole != undefined && (
-              <Button sx={{ flex: 1 }} variant="contained"
-              onClick={()=>{availabilityLoader.loadAvailability(item.id)}}>
+              <Button sx={{ flex: 1 }} variant="contained" onClick={handleRent}>
                 Book rent
               </Button>
             )}
@@ -132,6 +142,15 @@ function ItemViewPage({ item }: ItemViewPageProps) {
                   id={item.id}
                   open={deleteOpen}
                   onCancel={handleDeleteCancel}
+                />
+              </Suspense>
+            )}
+            {rentFirstOpen.current && (
+              <Suspense fallback={<BackdropFallback />}>
+                <ItemRentDialog
+                  id={item.id}
+                  open={rentOpen}
+                  onCancel={handleRentCancel}
                 />
               </Suspense>
             )}

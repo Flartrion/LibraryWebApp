@@ -1,5 +1,8 @@
+import availabilityModel from "./availabilityModel"
+
 class AvailabilityLoader {
-  setLoadedState: React.Dispatch<React.SetStateAction<boolean>> = undefined
+  setLoadedState: React.Dispatch<React.SetStateAction<Availability[]>> =
+    undefined
 
   loadAvailability(idItem: string) {
     const options = {
@@ -18,13 +21,14 @@ class AvailabilityLoader {
       })
       .then((body) => {
         if (responseStatus == 200) {
-          const availability: any[] = JSON.parse(body)
+          const availability: Availability[] = JSON.parse(body)
 
-          console.log("finished loading")
-          console.log(availability)
-          //   console.log(this);
-          //   console.log(this.setStoragesLoadedState);
-          // console.log(items);
+          //   console.log("finished loading")
+          //   console.log(availability)
+          if (this.setLoadedState != undefined)
+            this.setLoadedState(availability)
+          availabilityModel.availability = availability
+          availabilityModel.loadedFor = idItem
         } else {
           console.log(body)
         }
