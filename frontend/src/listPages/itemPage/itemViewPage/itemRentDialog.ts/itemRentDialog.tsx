@@ -15,6 +15,7 @@ import {
 import { Cancel, Check } from "@mui/icons-material"
 import { FormEvent, memo, useEffect, useState } from "react"
 import availabilityLoader from "./availabilityLoader"
+import itemRentController from "./itemRentController"
 
 interface ItemRentProps {
   id: string
@@ -28,9 +29,8 @@ const ItemRentDialog = memo(({ id, open, onCancel }: ItemRentProps) => {
   function handleConfirm(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const data = new FormData(e.currentTarget)
-    data.forEach((value, key, parent) => console.log(key + ": " + value))
-
-    // TODO: Functionality
+    // data.forEach((value, key, parent) => console.log(key + ": " + value))
+    itemRentController.newRentEntry(data)
   }
 
   useEffect(() => {
@@ -64,7 +64,7 @@ const ItemRentDialog = memo(({ id, open, onCancel }: ItemRentProps) => {
           >
             {availability != null ? (
               <>
-                <Input name="id" value="0" readOnly sx={{ display: "none" }} />
+                <Input name="id" value="" readOnly sx={{ display: "none" }} />
                 <TextField
                   label="Item ID"
                   name="idItem"
@@ -90,6 +90,12 @@ const ItemRentDialog = memo(({ id, open, onCancel }: ItemRentProps) => {
                     </MenuItem>
                   ))}
                 </TextField>
+                <Input
+                  name="idUser"
+                  value=""
+                  readOnly
+                  sx={{ display: "none" }}
+                />
                 <Input
                   name="dateFrom"
                   value=""

@@ -64,7 +64,6 @@ class ItemBalanceController {
   }
 
   newBalanceEntry = (data: FormData) => {
-    // TODO: Make it set state to "unloaded" so that newly added entry would be loaded
     // console.log("Sending: " + JSON.stringify(Object.fromEntries(data)));
     const options = {
       method: "POST",

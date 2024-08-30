@@ -12,6 +12,7 @@ import routes.api.items.itemRoutes
 import routes.api.storages.storagesRouting
 import routes.api.users.userRoutes
 import routes.api.login.loginRouting
+import routes.api.rents.rentRoutes
 import security.configureSecurity
 
 
@@ -37,6 +38,7 @@ fun Application.module() {
         userRoutes()
         bankHistoryRoutes()
         itemLocationRoutes()
+        rentRoutes()
 
 //        rentsRouting()
 //        itemLocationRouting()
